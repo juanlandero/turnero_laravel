@@ -27,7 +27,6 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
 
             $table->foreignId('office_id')->constrained();
-            $table->foreignId('speciality_type_id')->constrained();
 
             $table->string('is_active', true);
             $table->timestamps();
