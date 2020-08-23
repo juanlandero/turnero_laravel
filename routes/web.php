@@ -18,3 +18,11 @@ Route::get('/', function () {
 });
 
 Route::get('public-display', 'PublicDisplayController@numberDisplay');
+Route::get('public-shift', 'PublicDisplayController@shiftSelector');
+Route::post('public-shift/get-speciality', 'PublicDisplayController@getSpeciality');
+
+
+Route::post('verify-client', 'ClientController@verifyClient');
+Route::post('new-ticket', 'ShiftController@create');
+
+Route::get('list-shift', 'PublicDisplayController@getListShifts');

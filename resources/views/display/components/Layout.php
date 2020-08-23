@@ -15,12 +15,12 @@
 	
 		<main class="app-public-display">
 			<!-- ENCABEZADO -->
-			@include('public_display.components.header')
+			@include('display.components.Header')
 
 			<!-- CONTENIDO -->
 			<div class="row height-content" style="margin: 0px;">
 				<!-- PANEL IZQUIERDO -->
-				@include('public_display.components.shift_list')
+				@include('display.components.ShiftList')
 
 				<!-- PANEL DERECHO -->
 				<div class="col-8 text-center">
@@ -36,7 +36,7 @@
 						</div>
 
 						<!-- CARRUSEL -->
-						@include('public_display.components.carousel')
+						@include('display.components.Carousel')
 					</div>
 				</div>
 
