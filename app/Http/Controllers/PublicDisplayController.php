@@ -3,23 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\SpecialityType;
 use App\Shift;
+use App\Office;
 
 class PublicDisplayController extends Controller
 {
-    public function numberDisplay(){
-        return view('display/NumberDisplay');
+    public function index(){
+        return view('Index');
     }
 
     public function shiftSelector(){
         return view('display/ShiftSelector');
     }
 
-    public function getSpeciality(){
-        $speciality = SpecialityType::all();
-
-        return $speciality;
+    public function numberDisplay(){
+        return view('display/NumberDisplay');
     }
 
     public function getListShifts(){

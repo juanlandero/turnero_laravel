@@ -22,22 +22,18 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row justify-content-center">
                     <speciality-button v-for="button in menu" 
                         v-bind:key="button.id"
                         :id="button.id"
-                        :speciality="button.speciality_name"
-                        :class_btn="button.class_icon"
+                        :speciality="button.speciality"
+                        :class_btn="button.class_btn"
                         @press-button="setSpecialityTicket(button.id)"
                     ></speciality-button>
                 </div>
             </div>
 
             @include('display.modals.NumberClient')
-            @include('display.modals.Sex')
-
-            
-
 		</main>     
     </div>
 

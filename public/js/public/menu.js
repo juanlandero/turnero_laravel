@@ -6,7 +6,7 @@ Vue.component('speciality-button', {
     ],
     template: `
         <div class="col-sm-6 col-md-6 col-lg-4 mb-3 text-center">
-            <button class="btn btn-light btn-lg btn-block" type="button" data-toggle="modal" data-target="#client-modal" @click="$emit('press-button')">
+            <button class="btn btn-light btn-lg btn-block" type="button" @click="$emit('press-button')">
                 <p><i :class="class_btn"></i></p>
                 {{ speciality }}
             </button>
@@ -20,23 +20,21 @@ var appTodo = new Vue({
     data: {
         menu: [],
         ticket:{
-            client_number:null,
             speciality: 0,
+            has_number: true,
+            client_number:null,
             sex: null
         },
         count: 0
     },
     mounted: function(){
-        this.getSpeciality()
+        this.getSpecialities()
     },
     methods: {
-        getSpeciality () {
+        getSpecialities () {
             var _that = this
 
-            axios.post('public-shift/get-speciality', {
-                firstName: 'Fred',
-                lastName: 'Flintstone'
-            })
+            axios.post('shift/get-speciality')
             .then(function (response) {
                 _that.menu = response.data
             })
@@ -54,11 +52,20 @@ var appTodo = new Vue({
             }
 
             this.ticket.speciality = speciality
+            $('#client-modal').modal('show')
+            $('#client-modal').on('shown.bs.modal', function () {
+                $('#client').trigger('focus')
+            })
         },
 
         verifyClientNumber (){
-
             var _that = this
+
+            //En caso de que entre sin especialidad
+            if (this.ticket.speciality == 0) {
+                this.clearTicketData()
+                $('#client-modal').modal('hide')
+            }
 
             if (this.ticket.client_number != null) {
                 axios.post('verify-client', {
@@ -67,15 +74,18 @@ var appTodo = new Vue({
                 .then(function (response) {
                     console.log(response.data)
 
-                    _that.ticket.sex = response.data['client'].sex
-
-                    _that.createTicket()
+                    if (response.data.success == 'true') {
+                        _that.ticket.sex = response.data['client'].sex
+                        _that.createTicket()
+                    } else{
+                        alert('No existe su numero de cliente')
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
                 })
             } else {
-                alert('Debe insertar su número de cliente, si no cuenta con uno presione. NO')
+                alert('Debe insertar un número de cliente, si no cuenta con uno presione. NO')
             }
         },
 
@@ -85,16 +95,33 @@ var appTodo = new Vue({
             axios.post('new-ticket', _that.ticket)
             .then(function (response) {
                 _that.clearTicketData()
+                $('#client-modal').modal('hide')
             })
             .catch(function (error) {
                 console.log(error);
             })
         },
 
-        clearTicketData(){
-            this.ticket.client_number = null
-            this.ticket.sex = null
+        setBooleanFalse () {
+        },
+
+        setSex (sex) {
+            this.ticket.sex = sex
+            $('#client-modal').modal('hide')
+            this.createTicket()
+            this.printTicket()
+        },
+
+        printTicket(){
+            //Imprimir ticket
+            this.clearTicketData()
+        },
+
+        clearTicketData (){
             this.ticket.speciality = 0
-        }
+            this.ticket.client_number = null
+            this.ticket.has_number = true
+            this.ticket.sex = null
+        },
     }
 })

@@ -13,9 +13,9 @@ class ClientController extends Controller
         $client = Client::where('client_number', $clientNumber)->first();
 
         if ($client != null) {
-            return ['client' => $client];
+            return ['success' => 'true', 'client' => $client];
         } else {
-            return ['text' => 'No existe ese número de cliente'];
+            return ['success' => 'false', 'text' => 'No existe ese número de cliente'];
         }
 
     }

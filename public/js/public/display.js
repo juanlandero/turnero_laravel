@@ -46,7 +46,6 @@ var appTodo = new Vue({
 
         date(){
             var d = new Date()
-            alert('prueba')
            
             this.hour = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds()
             

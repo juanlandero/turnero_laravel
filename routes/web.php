@@ -13,16 +13,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', 'PublicDisplayController@index');
+Route::post('/verify', 'OfficeController@verifyOffice');
+
+Route::prefix('public')->group(function () {
+    Route::get('shift', 'PublicDisplayController@shiftSelector')->name('select.speciality');
+    Route::post('shift/get-speciality', 'SpecialityController@getSpeciality');
+    
+    Route::post('verify-client', 'ClientController@verifyClient');
+    Route::post('new-ticket', 'ShiftController@create');
 });
 
+
+
+
 Route::get('public-display', 'PublicDisplayController@numberDisplay');
-Route::get('public-shift', 'PublicDisplayController@shiftSelector');
-Route::post('public-shift/get-speciality', 'PublicDisplayController@getSpeciality');
 
 
-Route::post('verify-client', 'ClientController@verifyClient');
-Route::post('new-ticket', 'ShiftController@create');
 
 Route::get('list-shift', 'PublicDisplayController@getListShifts');
