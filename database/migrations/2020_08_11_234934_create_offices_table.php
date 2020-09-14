@@ -23,8 +23,20 @@ class CreateOfficesTable extends Migration
 
             $table->foreignId('municipality_id')->constrained('municipalities');
 
+            $table->boolean('is_active', true);
+
             $table->timestamps();
         });
+
+        DB::statement("INSERT INTO  offices
+            (
+                id, name, address, phone, channel, office_key, municipality_id, is_active, created_at, updated_at
+            )
+            VALUES
+                ( 1, 'Madero Centro', 'Calle uno cruce con dos', '993128484', 'centro-0129-as', '12345', 1, true, NOW(), NOW()),
+                ( 2, 'Madero Sur', 'Calle uno cruce con dos', '993128484', 'centro-0129sur', '54321', 1, true, NOW(), NOW()),
+                ( 3, 'Madero Norte', 'Calle uno cruce con dos', '993128484', 'centro-0129-nt', '11110', 1, true, NOW(), NOW())
+        ");
     }
 
     /**

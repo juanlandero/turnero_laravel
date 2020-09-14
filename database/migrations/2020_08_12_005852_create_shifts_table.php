@@ -18,6 +18,7 @@ class CreateShiftsTable extends Migration
             $table->string('shift', 10);
 
             $table->foreignId('shift_type_id')->constrained();
+            $table->string('sex_client', 15)->nullable();
             $table->foreignId('speciality_type_id')->constrained();
             $table->foreignId('office_id')->constrained();
             $table->foreignId('shift_status_id')->constrained('shift_status');

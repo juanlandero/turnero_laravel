@@ -25,9 +25,6 @@ class CreateUsersTable extends Migration
             // $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 200);
             $table->rememberToken();
-
-            $table->foreignId('office_id')->constrained();
-
             $table->string('is_active', true);
             $table->timestamps();
         });
