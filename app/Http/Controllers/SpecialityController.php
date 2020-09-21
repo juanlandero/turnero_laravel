@@ -20,36 +20,45 @@ class SpecialityController extends Controller
         $arrSpecialities = array();
         $office_id = session('NUM_OFFICE');
 
-        $userOffices = UserOffice::join('offices', 'user_offices.office_id', '=', 'offices.id')
+        // BUSCAMOS LOS USARIOS DE SUCURSAL
+        $objUserOffices = UserOffice::join('offices', 'user_offices.office_id', '=', 'offices.id')
                                         ->select('user_id', 'offices.id as office')
                                         ->where('offices.id', $office_id)
                                         ->get();
 
-        foreach ($userOffices as $user) {
+        // BUSCAMOS LAS ESPECIALIDADES DE CADA USUARIO 
+        foreach ($objUserOffices as $user) {
             $duplicateSpeciality = false;
 
-            $specialityUser = SpecialityTypeUser::join('speciality_types', 'speciality_type_users.speciality_type_id', '=', 'speciality_types.id')
+            // UN USUARIO PUEDE TENER MAS DE UNA ESPECIALIDAD
+            $objSpecialityUser = SpecialityTypeUser::join('speciality_types', 'speciality_type_users.speciality_type_id', '=', 'speciality_types.id')
                                                 ->where('speciality_type_users.user_id', $user->user_id)
                                                 ->select(
                                                     'speciality_types.id AS speciality_id',
                                                     'speciality_types.name AS speciality_name',
                                                     'speciality_types.class_icon'
                                                 )
-                                                ->first();
+                                                ->get();
+            
 
-            foreach ($arrSpecialities as $speciality) {
-                if ($specialityUser->speciality_id == $speciality['id']) {
-                    $duplicateSpeciality = true;
+            // SI EL SUSUARIO TIENE MAS DE UNA ESPECIALIDAD SE DEBE BUSCAR QUE NO SE DUPLIQUEN EN LA 
+            // REPRESENTACION DE LA PANTALLA
+            foreach ($objSpecialityUser as $specialityUser) {
+                foreach ($arrSpecialities as $speciality) {
+                    if ($specialityUser->speciality_id == $speciality['id']) {
+                        $duplicateSpeciality = true;
+                    }
                 }
-            }
 
-            if (!$duplicateSpeciality) {
-                array_push($arrSpecialities, array(
-                    'id' => $specialityUser->speciality_id,
-                    'speciality' => $specialityUser->speciality_name,
-                    'class_btn' => $specialityUser->class_icon
-                ));
-            }
+                // SOLO SE INSERTA EN EL ARRAY SU NO ESTA DUPLICADO EL VALOR
+                if (!$duplicateSpeciality) {
+                    array_push($arrSpecialities, array(
+                        'id' => $specialityUser->speciality_id,
+                        'speciality' => $specialityUser->speciality_name,
+                        'class_btn' => $specialityUser->class_icon
+                    ));
+                }
+            }            
         }
 
         return $arrSpecialities;

@@ -25,10 +25,9 @@ Route::prefix('public')->group(function () {
 });
 
 
-
-
 Route::get('public-display', 'PublicDisplayController@numberDisplay');
 
-
-
 Route::get('list-shift', 'PublicDisplayController@getListShifts');
+
+
+Route::get('prueba/{specialityId}', 'AdvisorController@selectAdvisor');

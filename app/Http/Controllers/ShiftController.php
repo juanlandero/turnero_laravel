@@ -12,8 +12,8 @@ class ShiftController extends Controller
     public function generateTicketNumber($speciality){
         $numberTicket = "";
         //OBTENIENDO LA LETRA DE LA ESPECIALIDAD PARA GENERAR EL NÚMERO
-        $qrSpeciality = SpecialityType::where('id', $speciality)->select('name', 'id')->first();
-        $letter = substr($qrSpeciality->name, 0, -(strlen($qrSpeciality->name)-1));
+        $objSpeciality = SpecialityType::where('id', $speciality)->select('name', 'id')->first();
+        $letter = substr($objSpeciality->name, 0, -(strlen($objSpeciality->name)-1));
 
         $number = (Shift::where([
                                     ['office_id', session()->get('NUM_OFFICE')],
@@ -66,7 +66,7 @@ class ShiftController extends Controller
         $newTicket->office_id           = session()->get('NUM_OFFICE');
         $newTicket->sex_client          = $sex;
         $newTicket->shift_status_id     = 1;
-        $newTicket->user_advisor_id     = 1;
+        $newTicket->user_advisor_id     = AdvisorController::selectAdvisor($specialityId);
         $newTicket->has_incident        = 0;
         $newTicket->is_active           = 1;
         $newTicket->save();
