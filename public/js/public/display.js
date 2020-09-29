@@ -17,8 +17,8 @@ var appTodo = new Vue({
     data: {
         channel: null,
         attending:{
-            shift: 000,
-            box: 00
+            shift: 'A001',
+            box: '02'
         },
         shiftList: {},
         hour: null
@@ -50,24 +50,21 @@ var appTodo = new Vue({
             this.hour = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds()
         },
 
-        pusher () {
-                var _that = this
-                
-                // Enable pusher logging - don't include this in production
-                Pusher.logToConsole = true;
+        pusher () {        
+            // Enable pusher logging - don't include this in production
+            Pusher.logToConsole = true;
+    
+            var _that = this
+            var pusher = new Pusher('56423364aba2e84b5180', {
+                cluster: 'us2'
+            })
+            var channel = pusher.subscribe(this.channel);
 
-                var pusher = new Pusher('56423364aba2e84b5180', {
-                    cluster: 'us2'
-                });
-
-                var channel = pusher.subscribe(this.channel);
-
-                channel.bind('toPanel', function(data) {
-                    if (data != null) {
-                        _that.addShift(data.text)
-                    }
-                });
-
+            channel.bind('toPanel', function(data) {
+                if (data != null) {
+                    _that.addShift(data.text)
+                }
+            })
         },
 
         addShift (data) {
@@ -92,5 +89,8 @@ var appTodo = new Vue({
             
         },
 
+        atenddingShift () {
+
+        }
     }
 })

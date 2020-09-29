@@ -32,19 +32,26 @@
 			<div class="row height-content" style="margin: 0px;">
 				<!-- PANEL IZQUIERDO -->
                 <div class="col-4">
-                    <div class="tile" style="height: 100%">
+                    <div class="rodw tile mb-2">
                         <div class="row text-center">
-                            <div class="col line-head"><h2>Turno</h2></div>
-                            <div class="col line-head"><h2>Caja</h2></div>
+                            <div class="col line-head"><h3>Turno</h3></div>
+                            <div class="col line-head"><h3>Caja</h3></div>
+						</div>
+                        <div class="row text-center">
+							<div class="col text-success"><h1>${ attending.shift }</h1></div>
+							<div class="col text-success"><h1>${ attending.box }</h1></div>
                         </div>
+						
+                       
+					</div> 
 
+					<div class="rdow tile" style="height: 70%">
                         <item-shift v-for="shift in shiftList"
                             v-bind:key = "shift.id"
                             :id = "shift.id"
                             :shift = "shift.shift"
                             :box = "shift.box_name"
                         ></item-shift>
-                       
                     </div> 
                 </div>
 
@@ -63,15 +70,12 @@
 						</div>
 
 						<!-- CARRUSEL -->
-						@include('display.components.Carousel')
+						{{-- @include('display.components.Carousel') --}}
 					</div>
 				</div>
-
 			</div>
-			
-	
-		</main>
 
+		</main>
 	</div>
 			
 	{{-- Scripts --}}
@@ -87,28 +91,6 @@
 	<script>
 
 		$('.carousel').carousel()
-
-		// var _that = this
-	
-		// alert('hola')
-
-		// // Enable pusher logging - don't include this in production
-		// Pusher.logToConsole = true;
-
-		// var pusher = new Pusher('56423364aba2e84b5180', {
-		// 	cluster: 'us2'
-		// });
-
-		// var channel = pusher.subscribe(this.channel);
-
-		// channel.bind('toPanel', function(data) {
-		// 	// alert(JSON.stringify(data));
-		// 	// this.addShift("hola")
-		// 	if (data != null) {
-		// 		_that.addShift(data.text)
-		// 		alert('si entro')
-		// 	}
-		// });
 
 	</script>
 </body>
