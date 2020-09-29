@@ -16,16 +16,70 @@ class PublicDisplayController extends Controller
         return view('display/ShiftSelector');
     }
 
+    public function getDataOffice(){
+        $officeId = session()->get('NUM_OFFICE');
+
+        $channel = Office::select('channel')->where('id', $officeId)->first();
+
+        return $channel;
+    }
+
     public function numberDisplay(){
         return view('display/NumberDisplay');
     }
 
     public function getListShifts(){
-        $listShift = Shift::where([
-                                ['shift_status_id', 1],
-                                ['is_active', 1],
-                            ])->get();
+        
+        $channel = Office::select('channel')->where('id', session()->get('NUM_OFFICE'))->first();
 
-        return ['listShift' => $listShift];
+        $listShift = Shift::join('users', 'shifts.user_advisor_id', '=', 'users.id')
+                            ->join('user_offices', 'users.id', '=', 'user_offices.user_id')
+                            ->join('boxes', 'user_offices.box_id', 'boxes.id')
+                            ->where([
+                                ['shifts.shift_status_id', 1],
+                                ['shifts.is_active', 1],
+                                ['shifts.created_at', 'like', session()->get('DATE').'%']
+                            ])
+                            ->select(
+                                'shifts.id',
+                                'shifts.shift',
+                                'shifts.shift_status_id',
+                                'shifts.is_active',
+                                'shifts.created_at',
+                                'boxes.box_name'
+                            )
+                            ->get();
+
+        return ['listShift' => $listShift, 'channel' => $channel];
+    }
+
+    public function getShift(Request $r){
+
+        $shiftId = $r->input('shiftId');
+
+        $listShift = Shift::join('users', 'shifts.user_advisor_id', '=', 'users.id')
+                            ->join('user_offices', 'users.id', '=', 'user_offices.user_id')
+                            ->join('boxes', 'user_offices.box_id', 'boxes.id')
+                            ->where([
+                                ['shifts.shift_status_id', 1],
+                                ['shifts.is_active', 1],
+                                ['shifts.created_at', 'like', session()->get('DATE').'%'],
+                                ['shifts.id', $shiftId]
+                            ])
+                            ->select(
+                                'shifts.id',
+                                'shifts.shift',
+                                'shifts.shift_status_id',
+                                'shifts.is_active',
+                                'shifts.created_at',
+                                'boxes.box_name'
+                            )
+                            ->first();
+
+                //     $l = Shift::all();
+
+                // dd($listShift);
+
+        return ['shift' => $listShift];
     }
 }

@@ -6,8 +6,7 @@ Vue.component('item-shift', {
     ],
     template: `
         <div class="row text-center my-1">
-            <div class="col-6 line-head text-success"><h1>{{ shift }}</h1></div>
-            <div class="col-6 line-head text-muted"><h1>{{ box }}</h1></div>
+            <div class="col-12 line-head text-success"><h1>{{ shift }}</h1></div>
         </div>
     `,
 })
@@ -16,14 +15,15 @@ var appTodo = new Vue({
     delimiters: ['${', '}'],
     el: '#app-public-display',
     data: {
+        channel: null,
         attending:{
-            shift: null,
-            box: null
+            shift: 000,
+            box: 00
         },
         shiftList: {},
         hour: null
     },
-    mounted: function(){
+    created: function(){
         this.getListTickets()
         this.date()
     },
@@ -32,12 +32,12 @@ var appTodo = new Vue({
         getListTickets () {
             var _that = this
 
-            axios.get('/list-shift', {
+            axios.get('list-shift', {
                 client: this.ticketList
             })
             .then(function (response) {
-                console.log(response.data['listShift'])
                 _that.shiftList = response.data['listShift']
+                _that.channel = response.data['channel'].channel
             })
             .catch(function (error) {
                 console.log(error);
@@ -48,7 +48,49 @@ var appTodo = new Vue({
             var d = new Date()
            
             this.hour = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds()
+        },
+
+        pusher () {
+                var _that = this
+                
+                // Enable pusher logging - don't include this in production
+                Pusher.logToConsole = true;
+
+                var pusher = new Pusher('56423364aba2e84b5180', {
+                    cluster: 'us2'
+                });
+
+                var channel = pusher.subscribe(this.channel);
+
+                channel.bind('toPanel', function(data) {
+                    if (data != null) {
+                        _that.addShift(data.text)
+                    }
+                });
+
+        },
+
+        addShift (data) {
+            var _that = this
+            var shift_id = data
+
+            if (shift_id != null) {
+                            
+                axios.post('get-shift', {
+                    shiftId: shift_id
+                })
+                .then(function (response) {
+                    _that.shiftList.push (
+                        response.data['shift']
+                        )
+                    console.log(response)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+            }
             
-        }
+        },
+
     }
 })

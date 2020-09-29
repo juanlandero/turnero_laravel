@@ -18,12 +18,11 @@ class SpecialityController extends Controller
 {
     public function getSpeciality(){
         $arrSpecialities = array();
-        $office_id = session('NUM_OFFICE');
+        $officeId = session()->get('NUM_OFFICE');
 
         // BUSCAMOS LOS USARIOS DE SUCURSAL
-        $objUserOffices = UserOffice::join('offices', 'user_offices.office_id', '=', 'offices.id')
-                                        ->select('user_id', 'offices.id as office')
-                                        ->where('offices.id', $office_id)
+        $objUserOffices = UserOffice::select('user_id', 'office_id')
+                                        ->where('office_id', $officeId)
                                         ->get();
 
         // BUSCAMOS LAS ESPECIALIDADES DE CADA USUARIO 
@@ -39,7 +38,6 @@ class SpecialityController extends Controller
                                                     'speciality_types.class_icon'
                                                 )
                                                 ->get();
-            
 
             // SI EL SUSUARIO TIENE MAS DE UNA ESPECIALIDAD SE DEBE BUSCAR QUE NO SE DUPLIQUEN EN LA 
             // REPRESENTACION DE LA PANTALLA
@@ -57,6 +55,8 @@ class SpecialityController extends Controller
                         'speciality' => $specialityUser->speciality_name,
                         'class_btn' => $specialityUser->class_icon
                     ));
+                } else {
+                    $duplicateSpeciality = false;
                 }
             }            
         }

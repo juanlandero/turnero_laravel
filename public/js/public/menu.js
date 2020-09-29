@@ -20,6 +20,7 @@ var appTodo = new Vue({
     data: {
         menu: [],
         ticket:{
+            channel: null,
             speciality: 0,
             has_number: true,
             client_number:null,
@@ -29,8 +30,22 @@ var appTodo = new Vue({
     },
     mounted: function(){
         this.getSpecialities()
+        this.getChannel()
     },
     methods: {
+
+        getChannel(){
+            var _that = this
+
+            axios.post('shift/get-channel')
+            .then(function (response) {
+                _that.ticket.channel = response.data.channel
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+        },
+
         getSpecialities () {
             var _that = this
 
@@ -44,8 +59,6 @@ var appTodo = new Vue({
         },
 
         setSpecialityTicket (speciality) {
-            // Eliminar después de probar
-            console.log(speciality)
 
             if (this.ticket.speciality != 0) {
                 this.clearTicketData()

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\SpecialityType;
 use App\Client;
 use App\Shift;
+use App\Events\ShiftScreenMsg;
+
 
 class ShiftController extends Controller
 {
@@ -46,6 +48,7 @@ class ShiftController extends Controller
         $specialityId = $request->input('speciality');
         $clientNumber = $request->input('client_number');
         $sex = $request->input('sex');
+        $channel = $request->input('channel');
         $typeTicket = 1;
 
         if ($clientNumber != null) {
@@ -70,6 +73,11 @@ class ShiftController extends Controller
         $newTicket->has_incident        = 0;
         $newTicket->is_active           = 1;
         $newTicket->save();
+
+        $text = $newTicket->id;
+
+        event(new ShiftScreenMsg($channel, $text));
+
 
         return ['id' => $newTicket->id];
     }
