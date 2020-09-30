@@ -31,10 +31,12 @@ Route::prefix('public')->group(function () {
 });
 
 
+Route::get('dashboard/login', ['as' => 'login', 'uses' => 'Dashboard\LoginController@index']);
+Route::post('dashboard/login', ['as' => 'login-dashboard', 'uses' => 'Dashboard\LoginController@store']);
+Route::get('dashboard/logout', ['as' => 'logout', 'uses' => 'Dashboard\LoginController@logout']);
 
-Route::prefix('dashboard')->group(function () {
+Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
     Route::get('/', 'Dashboard\IndexController@index');
-    Route::get('/login', 'Dashboard\LoginController@index');
 
     Route::get('shift', 'DashboardController@adminShift');
 });

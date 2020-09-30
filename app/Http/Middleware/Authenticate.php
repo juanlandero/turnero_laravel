@@ -3,6 +3,12 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Contracts\Auth\Guard;
+use App\Http\Controllers\Dashboard\LoginController;
+use App\UserPrivilege;
+use Closure;
+use Session;
+use Auth;
 
 class Authenticate extends Middleware
 {
@@ -14,8 +20,30 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
-        if (! $request->expectsJson()) {
+        if(!$request->expectsJson()) {
             return route('login');
+        }
+    }
+
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+        if(Auth::check() && Session::has('_DASHBOARD_SESSION_') && Session::get('_DASHBOARD_SESSION_') == LoginController::DASHBOARD_SESSION) {
+            if(!Session::has('privilegesMenu')) {
+                Session::put("privilegesMenu", UserPrivilege::getPrivilegesMenu(Auth::user()));
+            }
+            
+            View()->share('_PRIVILEGES_MENU_', Session::get('privilegesMenu'));
+
+            return $next($request);
+        } else {
+            return redirect()->to('/dashboard/logout');
         }
     }
 }
