@@ -33,6 +33,9 @@ Route::prefix('public')->group(function () {
 
 
 Route::prefix('dashboard')->group(function () {
+    Route::get('/', 'Dashboard\IndexController@index');
+    Route::get('/login', 'Dashboard\LoginController@index');
+
     Route::get('shift', 'DashboardController@adminShift');
 });
 
