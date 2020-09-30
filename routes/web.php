@@ -38,6 +38,12 @@ Route::get('dashboard/logout', ['as' => 'logout', 'uses' => 'Dashboard\LoginCont
 Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
     Route::get('/', 'Dashboard\IndexController@index');
 
+    Route::group(['prefix' => 'offices'], function () {
+        Route::get('/', 'Dashboard\OfficeController@index');
+        Route::get('/create', 'Dashboard\OfficeController@create');
+        Route::post('/create', ['as' => 'office-store', 'uses' => 'Dashboard\OfficeController@store']);
+    });
+
     Route::get('shift', 'DashboardController@adminShift');
 });
 

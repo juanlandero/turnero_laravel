@@ -27,5 +27,10 @@ class Errors {
     const SESION_01_ID = "2_0001";
     const SESION_01_TITLE = "La sesión ha expirado.";
     const SESION_01_MESSAGE = "La sesión del usuario ha finalizado, debe iniciar sesión nuevamente.";
+
+    //OFFICES
+    const OFFICE_CREATE_01_ID = "3_0001";
+    const OFFICE_CREATE_01_TITLE = "Sucursal";
+    const OFFICE_CREATE_01_MESSAGE = "Ocurrió un problema al crear la sucursal, vuelve a intentar más tarde.";
 }
 ?>
