@@ -44,6 +44,24 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::post('/create', ['as' => 'office-store', 'uses' => 'Dashboard\OfficeController@store']);
     });
 
+    Route::group(['prefix' => 'users-admins'], function () {
+        Route::get('/', 'Dashboard\UserAdminController@index');
+        Route::get('/create', 'Dashboard\UserAdminController@create');
+        Route::post('/create', ['as' => 'user-admin-store', 'uses' => 'Dashboard\UserAdminController@store']);
+    });
+
+    Route::group(['prefix' => 'users-supervisors'], function () {
+        Route::get('/', 'Dashboard\UserSupervisorController@index');
+        Route::get('/create', 'Dashboard\UserSupervisorController@create');
+        Route::post('/create', ['as' => 'user-admin-store', 'uses' => 'Dashboard\UserSupervisorController@store']);
+    });
+
+    Route::group(['prefix' => 'users-advisers'], function () {
+        Route::get('/', 'Dashboard\UserAdviserController@index');
+        Route::get('/create', 'Dashboard\UserAdviserController@create');
+        Route::post('/create', ['as' => 'user-admin-store', 'uses' => 'Dashboard\UserAdviserController@store']);
+    });
+
     Route::get('shift', 'DashboardController@adminShift');
 });
 
