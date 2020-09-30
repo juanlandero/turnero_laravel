@@ -18,7 +18,7 @@
                     <i class="fa fa-user fa-lg"></i>
                 </a>
                 <ul class="dropdown-menu settings-menu dropdown-menu-right">
-                    <li><a class="dropdown-item" href="#"><i class="fa fa-sign-out fa-lg"></i> Cerrar Sesión</a></li>
+                    <li><a class="dropdown-item" href="{{ URL::to('/dashboard/logout') }}><i class="fa fa-sign-out fa-lg"></i> Cerrar Sesión</a></li>
                 </ul>
             </li>
         </ul>

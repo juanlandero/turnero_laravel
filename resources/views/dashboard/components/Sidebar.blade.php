@@ -5,31 +5,45 @@
         <div class="app-sidebar__user">
             <img class="app-sidebar__user-avatar" src="https://s3.amazonaws.com/uifaces/faces/twitter/jsa/48.jpg" alt="User Image" />
             <div>
-                <p class="app-sidebar__user-name">John Doe</p>
+                <p class="app-sidebar__user-name">{{ Auth::user()->name }}</p>
                 <p class="app-sidebar__user-designation">Administrador</p>
             </div>
         </div>
 
         <ul class="app-menu">
             <li>
-                <a class="app-menu__item" href="dashboard.html">
+                <a
+                    @if(Request::path() == 'dashboard') {!!'class="app-menu__item active"' !!} @else {!!'class="app-menu__item"' !!} @endif
+                    href="{{URL::to('dashboard')}}"
+                >
                     <i class="app-menu__icon fa fa-dashboard"></i>
                     <span class="app-menu__label">Dashboard</span>
                 </a>
             </li>
-            <li class="treeview">
-                <a class="app-menu__item" href="#" data-toggle="treeview">
-                    <i class="app-menu__icon fa fa-laptop"></i>
-                    <span class="app-menu__label">UI Elements</span>
-                    <i class="treeview-indicator fa fa-angle-right"></i>
-                </a>
-                <ul class="treeview-menu">
-                    <li><a class="treeview-item" href="bootstrap-components.html"><i class="icon fa fa-circle-o"></i> Bootstrap Elements</a></li>
-                    <li><a class="treeview-item" href="https://fontawesome.com/v4.7.0/icons/" target="_blank" rel="noopener"><i class="icon fa fa-circle-o"></i> Font Icons</a></li>
-                    <li><a class="treeview-item" href="ui-cards.html"><i class="icon fa fa-circle-o"></i> Cards</a></li>
-                    <li><a class="treeview-item" href="widgets.html"><i class="icon fa fa-circle-o"></i> Widgets</a></li>
-                </ul>
-            </li>
+
+            @foreach ($_PRIVILEGES_MENU_ as $itemMenu)
+                <li class="treeview">
+                    <a class="app-menu__item" href="#" data-toggle="treeview">
+                        <i class="app-menu__icon {{ $itemMenu['category']['icon'] }}"></i>
+                        <span class="app-menu__label">{{ $itemMenu['category']['privilege_category'] }}</span>
+                        <i class="treeview-indicator fa fa-angle-right"></i>
+                    </a>
+
+                    @if( sizeof($itemMenu['privileges']) > 0 )
+                        <ul class="treeview-menu">
+                            @foreach ($itemMenu['privileges'] as $itemPrivilege)
+                                <li>
+                                    <a @if(Request::path() == ('dashboard/') . $itemPrivilege['menu_url'] ) {!!'class="treeview-item active"' !!} @else {!!'class="treeview-item"' !!} @endif
+                                        href="{{URL::to('dashboard/' . $itemPrivilege['menu_url']) }}"
+                                    >
+                                        <i class="icon fa fa-circle-o"></i> {{ $itemPrivilege['description'] }}
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
+                </li>
+            @endforeach
         </ul>
     </aside>
 @endsection

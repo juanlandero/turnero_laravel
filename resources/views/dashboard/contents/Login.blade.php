@@ -16,20 +16,35 @@
         </section>
 
         <section class="login-content">
+            @if(Session::has('login_error_message'))
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="bs-component">
+                            <div class="alert alert-dismissible alert-warning">
+                                <button class="close" type="button" data-dismiss="alert">×</button>
+                                <h4>{{ Session::get('login_error_title' )}}</h4>
+                                <p>{{ Session::get('login_error_message' )}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            
+
             <div class="logo">
                 <h1>Madero Refacciones</h1>
             </div>
 
             <div class="login-box">
-                <form class="login-form" action="index.html">
+                {!! Form::open(['route' => 'login-dashboard', 'class' => 'login-form']) !!}
                     <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>INICIAR SESIÓN</h3>
                     <div class="form-group">
                         <label class="control-label">USUARIO</label>
-                        <input class="form-control" type="text" placeholder="Correo" autofocus>
+                        <input class="form-control" type="text" placeholder="Correo" name="txtEmail" autofocus />
                     </div>
                     <div class="form-group">
                         <label class="control-label">CONTRASEÑA</label>
-                        <input class="form-control" type="password" placeholder="Contraseña">
+                        <input class="form-control" type="password" name="txtPassword" placeholder="Contraseña" />
                     </div>
                     <div class="form-group">
                         <div class="utility">
@@ -40,7 +55,7 @@
                     <div class="form-group btn-container">
                         <button class="btn btn-primary btn-block"><i class="fa fa-sign-in fa-lg fa-fw"></i>ENTRAR</button>
                     </div>
-                </form>
+                {!! Form::close() !!}
 
                 <form class="forget-form" action="index.html">
                     <h3 class="login-head"><i class="fa fa-lg fa-fw fa-lock"></i>¿Olvidaste la contraseña?</h3>
