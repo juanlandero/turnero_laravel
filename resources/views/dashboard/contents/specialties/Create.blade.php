@@ -1,22 +1,22 @@
-@section('title', 'Usuarios Supervisores')
+@section('title', 'Especialidades')
 
 @section('content')
 <div class="app-title">
     <div>
-        <h1><i class="fa fa-globe"></i> Usuario</h1>
-        <p>Nuevo supervisor</p>
+        <h1><i class="fa fa-globe"></i> Especialidades</h1>
+        <p>Nueva especialidad</p>
     </div>
 
     <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="#">Usuarios</a></li>
-        <li class="breadcrumb-item active"><a href="#">Crear supervisor</a></li>
+        <li class="breadcrumb-item"><a href="#">Especialidades</a></li>
+        <li class="breadcrumb-item active"><a href="#">Crear</a></li>
     </ul>
 </div>
 
 @if(Session::has('error_message'))
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         <div class="bs-component">
           <div class="alert alert-dismissible alert-danger">
             <button class="close" type="button" data-dismiss="alert">×</button>
@@ -29,7 +29,7 @@
 
 @if($errors->any())
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         <div class="bs-component">
           <div class="alert alert-dismissible alert-danger">
             <button class="close" type="button" data-dismiss="alert">×</button>
@@ -46,43 +46,29 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-8 col-lg-6">
-        {!! Form::open(['route' => 'user-supervisor-store']) !!}
+        {!! Form::open(['route' => 'specialty-store']) !!}
             <div class="tile">
                 <div class="tile-body">
                     <div class="form-group">
                         <label class="control-label">Nombre</label>
-                        <input class="form-control" name="txtName" type="text" placeholder="Ingresa un nombre" required />
+                        <input class="form-control" name="txtName" type="text" placeholder="Ingresa el nombre de la especialidad" required />
                     </div>
                     <div class="form-group">
-                        <label class="control-label">Apellido Paterno</label>
-                        <input class="form-control" name="txtFirstName" type="text" placeholder="Ingresa el apellido paterno" required />
+                        <label class="control-label">Descripción</label>
+                        <textarea class="form-control" name="txtDescription" rows="2" placeholder="Ingresa una descripción de la especialidad" required></textarea>
                     </div>
                     <div class="form-group">
-                        <label class="control-label">Apellido Materno</label>
-                        <input class="form-control" name="txtSecondName" type="text" placeholder="Ingresa el apellido materno" required />
+                        <label class="control-label">Icono</label>
+                        <input class="form-control" name="txtIcon" type="text" placeholder="fa fa-ejemplo" required/>
+                        <small class="form-text text-muted">Para consultar el listado de iconos disponibles entra a <a href="https://fontawesome.com/icons">Font Awesome</a></small>
                     </div>
-                    <div class="form-group">
-                        <label for="exampleSelect1">Sucursal</label>
-                        <select class="form-control" name="cmbOffice">
-                            @foreach ($lstOffices as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Email</label>
-                        <input class="form-control" name="txtEmail" type="text" placeholder="Ingresa un correo para el usuario" required />
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Contraseña</label>
-                        <input class="form-control" name="txtPassword" type="password" placeholder="Ingresa una contraseña para el usuario" required />
                     </div>
                 </div>
                 <div class="tile-footer">
                     <button class="btn btn-primary" type="submit">
                         <i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar
                     </button>&nbsp;&nbsp;&nbsp;
-                    <a class="btn btn-secondary" href="/dashboard/users-supervisors">
+                    <a class="btn btn-secondary" href="/dashboard/offices">
                         <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar
                     </a>
                 </div>

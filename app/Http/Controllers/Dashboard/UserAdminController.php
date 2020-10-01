@@ -21,39 +21,37 @@ class UserAdminController extends Controller
     }
 
     public function store(Request $request) {
-        /* $request->validate([
+        $request->validate([
             'txtName'           => 'required|string|max:255',
-            'txtPhone'          => 'nullable|string|max:50',
-            'txtAddress'        => 'required|string',
-            'txtChannel'        => 'required|string|unique:offices,channel|max:80',
-            'txtOfficeKey'      => 'required|string|unique:offices,office_key|max:20',
-            'cmbMunicipality'   => 'required|integer|exists:municipalities,id'
+            'txtFirstName'      => 'required|string|max:50',
+            'txtSecondName'     => 'required|string|max:50',
+            'txtEmail'          => 'required|string|unique:users,email|max:80',
+            'txtPassword'       => 'required|string|max:20'
         ],[
-            'txtChannel.unique'     => 'El canal ingresado ya pertenece a otra sucursal.',
-            'txtOfficeKey.unique'   => 'Este código de sucursal no está disponible.'
+            'txtEmail.unique'   => 'El correo ingresado ya pertenece a otro usuario.'
         ]);
 
-        $objReturn = new ActionReturn('dashboard/offices/create', 'dashboard/offices');
+        $objReturn = new ActionReturn('dashboard/users-admins/create', 'dashboard/users-admins');
 
-        $objOffice                  = new Office();
-        $objOffice->name            = $request->txtName;
-        $objOffice->address         = $request->txtAddress;
-        $objOffice->phone           = $request->txtPhone;
-        $objOffice->channel         = $request->txtChannel;
-        $objOffice->office_key      = $request->txtOfficeKey;
-        $objOffice->municipality_id = $request->cmbMunicipality;
-        $objOffice->is_active       = true;
+        $objUser                  = new User();
+        $objUser->name            = $request->txtName;
+        $objUser->first_name      = $request->txtFirstName;
+        $objUser->second_name     = $request->txtSecondName;
+        $objUser->user_type_id    = 1;
+        $objUser->email           = $request->txtEmail;
+        $objUser->password        = bcrypt($request->txtPassword);
+        $objUser->is_active       = true;
 
         try {
-            if($objOffice->save()) {
-                $objReturn->setResult(true, Messages::OFFICE_CREATE_TITLE, Messages::OFFICE_CREATE_MESSAGE);
+            if($objUser->save()) {
+                $objReturn->setResult(true, Messages::USER_ADMIN_CREATE_TITLE, Messages::USER_ADMIN_CREATE_MESSAGE);
             } else {
-                $objReturn->setResult(false, Errors::OFFICE_CREATE_01_TITLE, Errors::OFFICE_CREATE_01_MESSAGE);
+                $objReturn->setResult(false, Errors::USER_CREATE_01_TITLE, Errors::USER_CREATE_01_MESSAGE);
             }
         } catch(Exception $exception) {
             $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
         }
 
-        return $objReturn->getRedirectPath(); */
+        return $objReturn->getRedirectPath();
     }
 }

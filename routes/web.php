@@ -53,13 +53,19 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
     Route::group(['prefix' => 'users-supervisors'], function () {
         Route::get('/', 'Dashboard\UserSupervisorController@index');
         Route::get('/create', 'Dashboard\UserSupervisorController@create');
-        Route::post('/create', ['as' => 'user-admin-store', 'uses' => 'Dashboard\UserSupervisorController@store']);
+        Route::post('/create', ['as' => 'user-supervisor-store', 'uses' => 'Dashboard\UserSupervisorController@store']);
     });
 
     Route::group(['prefix' => 'users-advisers'], function () {
         Route::get('/', 'Dashboard\UserAdviserController@index');
         Route::get('/create', 'Dashboard\UserAdviserController@create');
-        Route::post('/create', ['as' => 'user-admin-store', 'uses' => 'Dashboard\UserAdviserController@store']);
+        Route::post('/create', ['as' => 'user-adviser-store', 'uses' => 'Dashboard\UserAdviserController@store']);
+    });
+
+    Route::group(['prefix' => 'specialties'], function () {
+        Route::get('/', 'Dashboard\SpecialtiesController@index');
+        Route::get('/create', 'Dashboard\SpecialtiesController@create');
+        Route::post('/create', ['as' => 'specialty-store', 'uses' => 'Dashboard\SpecialtiesController@store']);
     });
 
     Route::get('shift', 'DashboardController@adminShift');
