@@ -76,10 +76,6 @@ class PublicDisplayController extends Controller
                             )
                             ->first();
 
-                //     $l = Shift::all();
-
-                // dd($listShift);
-
         return ['shift' => $listShift];
     }
 }

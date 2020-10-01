@@ -74,10 +74,10 @@ class ShiftController extends Controller
         $newTicket->is_active           = 1;
         $newTicket->save();
 
-        $text = $newTicket->id;
+        $idTicket = $newTicket->id;
+        $idUser = $newTicket->user_advisor_id;
 
-        event(new ShiftScreenMsg($channel, $text));
-
+        event(new ShiftScreenMsg($channel, $idTicket, $idUser));
 
         return ['id' => $newTicket->id];
     }

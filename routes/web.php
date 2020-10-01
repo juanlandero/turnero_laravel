@@ -39,6 +39,8 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
     Route::get('/', 'Dashboard\IndexController@index');
 
     Route::get('shift', 'DashboardController@adminShift');
+    Route::post('get-user', 'DashboardController@getUser');
+    Route::post('get-shift-advisor', 'DashboardController@getShiftAdvisor');
 });
 
 

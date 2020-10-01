@@ -1,56 +1,61 @@
-Vue.component('item-shift', {
+Vue.component('item-my-list', {
     props: [
-        'id',
         'shift',
-        'box',
+        'type',
+        'speciality',
     ],
     template: `
-        <div class="row text-center my-1">
-            <div class="col-12 line-head text-success"><h1>{{ shift }}</h1></div>
+        <div class="row text-center mb-2">
+            <div class="col-4"><h6>{{ shift }}</h6></div>
+            <div class="col-4"><h6>{{ type }}</h6></div>
+            <div class="col-4"><h6>{{ speciality }}</h6></div>                  
         </div>
     `,
 })
 
 var appTodo = new Vue({
     delimiters: ['${', '}'],
-    el: '#app-public-display',
+    el: '#app-panel-tickets',
     data: {
-        serviceOn: false,
+        isActive: false,
         channel: null,
+        user: null,
         attending:{
             shift: 'A001',
+            speciality: 'Frenos',
+            type: 'Premium',
+            sex: 'M',
+            client: 'Juan Carlos Landero Isidro',
+            number: '0987',
             box: '02'
         },
-        shiftList: {},
-        hour: null
+        shiftList: []
     },
     created: function(){
-        this.getListTickets()
-        this.date()
+        
     },
     methods: {
 
-        getListTickets () {
+        setServiceOn () {
             var _that = this
 
-            axios.get('list-shift', {
-                client: this.ticketList
-            })
+            axios.post('get-user')
             .then(function (response) {
-                _that.shiftList = response.data['listShift']
-                _that.channel = response.data['channel'].channel
+
+                if (response.data['channel'] == null) {
+                    alert('Necesita ser vinculado con una oficina')
+                }else{
+                    _that.channel = response.data['channel']
+                    _that.user = response.data['idUser']
+                    _that.pusher()
+                }
+
             })
             .catch(function (error) {
                 console.log(error);
             })
         },
-
-        date(){
-            var d = new Date()
-           
-            this.hour = d.getHours()+':'+d.getMinutes()+':'+d.getSeconds()
-        },
-
+        
         pusher () {        
             // Enable pusher logging - don't include this in production
             Pusher.logToConsole = true;
@@ -63,37 +68,33 @@ var appTodo = new Vue({
 
             channel.bind('toPanel', function(data) {
                 if (data != null) {
-                    _that.addShift(data.idTicket)
+                    _that.addShift(data)
                 }
             })
 
-            this.serviceOn = true
+            this.isActive = true
         },
 
-        addShift (data) {
+        addShift (dataChannel) {
             var _that = this
-            var shift_id = data
+            var shift_id = dataChannel.idTicket
 
-            if (shift_id != null) {
+            if (dataChannel.idUser == this.user) {
                             
-                axios.post('get-shift', {
+                axios.post('get-shift-advisor', {
                     shiftId: shift_id
                 })
                 .then(function (response) {
+                    console.log(response.data['shift'])
                     _that.shiftList.push (
                         response.data['shift']
                     )
-                    console.log(response)
                 })
                 .catch(function (error) {
                     console.log(error);
                 })
             }
             
-        },
-
-        atenddingShift () {
-
         }
     }
 })
