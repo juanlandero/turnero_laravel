@@ -10,15 +10,29 @@ class Messages {
     
     //OFFICES
     CONST OFFICE_CREATE_TITLE   = "Sucursal";
-    CONST OFFICE_CREATE_MESSAGE = "La nueva sucursal se creó satisfactoriamente.";
+    CONST OFFICE_CREATE_MESSAGE = "La nueva sucursal se creó exitosamente.";
 	
 	//USUARIOS
-	const USUARIOS_CREATE_TITLE = "Nuevo usuario creado.";
-	const USUARIOS_CREATE_MESSAGE = "El nuevo usuario se creó exitosamente.";
-	const USUARIOS_EDIT_TITLE = "Usuario modificado.";
-	const USUARIOS_EDIT_MESSAGE = "El usuario se modificó exitosamente.";
-	const USUARIOS_DELETE_TITLE = "Usuario eliminado.";
-	const USUARIOS_DELETE_MESSAGE = "El usuario se eliminó exitosamente.";
+	const USER_ADMIN_CREATE_TITLE 	= "Usuario.";
+	const USER_ADMIN_CREATE_MESSAGE = "El nuevo usuario administrador se creó exitosamente.";
+	const USER_ADMIN_EDIT_TITLE 	= "Usuario.";
+	const USER_ADMIN_EDIT_MESSAGE 	= "El usuario administrador se modificó exitosamente.";
+	const USER_ADMIN_DELETE_TITLE 	= "Usuario.";
+	const USER_ADMIN_DELETE_MESSAGE = "El usuario administrador se eliminó exitosamente.";
+
+	const USER_SUPERVISOR_CREATE_TITLE 		= "Usuario.";
+	const USER_SUPERVISOR_CREATE_MESSAGE 	= "El nuevo usuario supervisor se creó exitosamente.";
+	const USER_SUPERVISOR_EDIT_TITLE 		= "Usuario.";
+	const USER_SUPERVISOR_EDIT_MESSAGE 		= "El usuario supervisor se modificó exitosamente.";
+	const USER_SUPERVISOR_DELETE_TITLE 		= "Usuario.";
+	const USER_SUPERVISOR_DELETE_MESSAGE 	= "El usuario supervisor se eliminó exitosamente.";
+
+	const SPECIALTY_CREATE_TITLE 		= "Especialidad.";
+	const SPECIALTY_CREATE_MESSAGE		= "La especialidad se creó exitosamente.";
+	const SPECIALTY_EDIT_TITLE 			= "Especialidad.";
+	const SPECIALTY_EDIT_MESSAGE 		= "La especialidad se modificó exitosamente.";
+	const SPECIALTY_DELETE_TITLE 		= "Especialidad.";
+	const SPECIALTY_DELETE_MESSAGE		= "La especialidad se eliminó exitosamente.";
 }
 
 ?>

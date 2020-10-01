@@ -4,7 +4,7 @@
 <div class="app-title">
     <div>
         <h1><i class="fa fa-globe"></i> Usuario</h1>
-        <p>Nueva administrador</p>
+        <p>Nuevo administrador</p>
     </div>
 
     <ul class="app-breadcrumb breadcrumb">
@@ -16,7 +16,7 @@
 
 @if(Session::has('error_message'))
 <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-6">
         <div class="bs-component">
           <div class="alert alert-dismissible alert-danger">
             <button class="close" type="button" data-dismiss="alert">×</button>
@@ -29,7 +29,7 @@
 
 @if($errors->any())
 <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-6">
         <div class="bs-component">
           <div class="alert alert-dismissible alert-danger">
             <button class="close" type="button" data-dismiss="alert">×</button>
@@ -46,43 +46,35 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-8 col-lg-6">
-        {!! Form::open(['route' => 'office-store']) !!}
+        {!! Form::open(['route' => 'user-admin-store']) !!}
             <div class="tile">
                 <div class="tile-body">
                     <div class="form-group">
                         <label class="control-label">Nombre</label>
-                        <input class="form-control" name="txtName" type="text" placeholder="Ingresa el nombre de la sucursal" required />
+                        <input class="form-control" name="txtName" type="text" placeholder="Ingresa un nombre" required />
                     </div>
                     <div class="form-group">
-                        <label class="control-label">Dirección</label>
-                        <textarea class="form-control" name="txtAddress" rows="4" placeholder="Ingresa la dirección de la sucursal" required></textarea>
+                        <label class="control-label">Apellido Paterno</label>
+                        <input class="form-control" name="txtFirstName" type="text" placeholder="Ingresa el apellido paterno" required />
                     </div>
                     <div class="form-group">
-                        <label class="control-label">Teléfono</label>
-                        <input class="form-control" name="txtPhone" type="text" placeholder="Número teléfonico de la sucursal" />
+                        <label class="control-label">Apellido Materno</label>
+                        <input class="form-control" name="txtSecondName" type="text" placeholder="Ingresa el apellido materno" required />
                     </div>
                     <div class="form-group">
-                        <label class="control-label">Canal</label>
-                        <input class="form-control" name="txtChannel" type="text" placeholder="Canal para notificaciones en tiempo real" required />
+                        <label class="control-label">Email</label>
+                        <input class="form-control" name="txtEmail" type="text" placeholder="Ingresa un correo para el usuario" required />
                     </div>
                     <div class="form-group">
-                        <label class="control-label">Clave sucursal</label>
-                        <input class="form-control" name="txtOfficeKey" type="text" placeholder="Clave para accesar al apartado público del turnero" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleSelect1">Municipio</label>
-                        <select class="form-control" name="cmbMunicipality">
-                            @foreach ($lstMunicipalities as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                            @endforeach
-                        </select>
+                        <label class="control-label">Contraseña</label>
+                        <input class="form-control" name="txtPassword" type="password" placeholder="Ingresa una contraseña para el usuario" required />
                     </div>
                 </div>
                 <div class="tile-footer">
                     <button class="btn btn-primary" type="submit">
                         <i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar
                     </button>&nbsp;&nbsp;&nbsp;
-                    <a class="btn btn-secondary" href="/dashboard/offices">
+                    <a class="btn btn-secondary" href="/dashboard/users-admins">
                         <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar
                     </a>
                 </div>

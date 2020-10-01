@@ -13,5 +13,9 @@ class Office extends Model
     public function municipality() {
         return $this->belongsTo(Municipality::class);
     }
+
+    public function userOffice() {
+        return $this->hasMany(UserOffice::class);
+    }
     /* RELATIONSHIPS - FIN */
 }

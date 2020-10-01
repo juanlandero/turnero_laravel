@@ -16,7 +16,7 @@
 
 @if(Session::has('success_message'))
 <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-6">
         <div class="bs-component">
             <div class="alert alert-dismissible alert-success">
                 <button class="close" type="button" data-dismiss="alert">×</button>

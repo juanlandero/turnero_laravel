@@ -32,5 +32,15 @@ class Errors {
     const OFFICE_CREATE_01_ID = "3_0001";
     const OFFICE_CREATE_01_TITLE = "Sucursal";
     const OFFICE_CREATE_01_MESSAGE = "Ocurrió un problema al crear la sucursal, vuelve a intentar más tarde.";
+
+    //USERS
+    const USER_CREATE_01_ID = "3_0001";
+    const USER_CREATE_01_TITLE = "Usuario";
+    const USER_CREATE_01_MESSAGE = "Ocurrió un problema al crear al usuario, vuelve a intentar más tarde.";
+
+    //SPECIALTIES
+    const SPECIALTY_CREATE_01_ID = "4_0001";
+    const SPECIALTY_CREATE_01_TITLE = "Especialidad";
+    const SPECIALTY_CREATE_01_MESSAGE = "Ocurrió un problema al crear la especialidad, vuelve a intentar más tarde.";
 }
 ?>
