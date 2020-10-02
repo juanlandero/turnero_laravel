@@ -25,9 +25,10 @@ class CreateBoxesTable extends Migration
                 id, box_name, is_active, created_at, updated_at
             )
             VALUES
-                ( 1, 'Caja 1', true, NOW(), NOW()),
-                ( 2, 'Caja 2', true, NOW(), NOW()),
-                ( 3, 'Caja 3', true, NOW(), NOW())
+                ( 1, 'No aplica', false, NOW(), NOW()),
+                ( 2, 'Caja 1', true, NOW(), NOW()),
+                ( 3, 'Caja 2', true, NOW(), NOW()),
+                ( 4, 'Caja 3', true, NOW(), NOW())
         ");
     }
 

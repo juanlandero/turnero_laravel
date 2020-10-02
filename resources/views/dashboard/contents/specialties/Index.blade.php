@@ -3,13 +3,13 @@
 @section('content')
 <div class="app-title">
     <div>
-        <h1><i class="fa fa-globe"></i> Sucursales</h1>
-        <p>Listado de sucursales</p>
+        <h1><i class="fa fa-rocket"></i> Especialidades</h1>
+        <p>Listado de especialidades</p>
     </div>
 
     <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="#">Sucursales</a></li>
+        <li class="breadcrumb-item"><a href="#">Especialidades</a></li>
         <li class="breadcrumb-item active"><a href="#">Listado</a></li>
     </ul>
 </div>
@@ -33,38 +33,34 @@
             <div class="tile-title">
                 <div class="row">
                     <div class="col-md-12 text-right">
-                        <a href="/dashboard/offices/create" class="btn btn-primary" role="button">Nueva sucursal</a>
+                        <a href="/dashboard/specialties/create" class="btn btn-primary" role="button">Nueva especialidad</a>
                     </div>
                 </div>
             </div>
             <div class="tile-body">
                 <div class="table-responsive">
-                    <table class="table table-hover table-bordered" id="officeTable">
+                    <table class="table table-hover table-bordered" id="dataTable">
                         <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre</th>
-                                <th>Dirección</th>
-                                <th>Teléfono</th>
-                                <th>Municipio</th>
+                                <th>Descripción</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($lstOffices as $item)
+                            @foreach ($lstSpecialties as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->address }}</td>
-                                    <td>{{ $item->phone }}</td>
-                                    <td>{{ $item->municipality->name }}</td>
+                                    <td>{{ $item->description }}</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
                                             <button class="btn btn-primary" type="button"><i class="fa fa-cogs fa-lg"></i></button>
                                             <div class="btn-group" role="group">
                                                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                                                 <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="/dashboard/offices/edit/{{ $item->id }}">Editar</a>
+                                                    <a class="dropdown-item" href="/dashboard/specialties/edit/{{ $item->id }}">Editar</a>
                                                     <a class="dropdown-item" href="#">Eliminar</a>
                                                 </div>
                                             </div>
@@ -86,7 +82,7 @@
     <script type="text/javascript" src="{{ asset('js/plugins/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/plugins/dataTables.bootstrap.min.js') }}"></script>
     <script type="text/javascript">
-        $('#officeTable').DataTable( {
+        $('#dataTable').DataTable( {
             "language": {
                 "lengthMenu": "Mostrar _MENU_ registros por página",
                 "zeroRecords": "No existen registros",

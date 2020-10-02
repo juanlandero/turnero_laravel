@@ -32,9 +32,11 @@ class UserSeeder extends Seeder
         VALUES
             (1, 'Tickets', 1, 'fa fa-ticket'),
             (2, 'Reportes', 2, 'fa fa-line-chart'),
-            (3, 'Especialidades', 3, 'fa fa-handshake-o'),
-            (4, 'Usuarios', 4, 'fa fa-user'),
-            (5, 'Sucursales', 5, 'fa fa-globe')");
+            (3, 'Especialidades', 3, 'fa fa-rocket'),
+            (4, 'Administradores', 4, 'fa fa-user'),
+            (5, 'Supervisores', 5, 'fa fa-user'),
+            (6, 'Asesores', 6, 'fa fa-user'),
+            (7, 'Sucursales', 7, 'fa fa-globe')");
 
         //PRIVILEGES
         DB::statement("INSERT INTO
@@ -43,15 +45,30 @@ class UserSeeder extends Seeder
             id, privilege_category_id, privilege, description, menu, menu_order, menu_url, is_active
         )
         VALUES
-            (1, 4, 'USERS', 'Lista de usuarios',          1, 1, 'users', 1),
-            (2, 4, 'USERS_CREATE', 'Nuevo usuario',       1, 2, 'users/create', 1),
-            (3, 4, 'USERS_EDIT', 'Editar usuario',        0, NULL, NULL, 1),
-            (4, 4, 'USERS_DELETE', 'Borrar usuario',      0, NULL, NULL, 1),
+            (1, 4, 'USERS_ADMINS', 'Lista de administradores',         1, 1, 'users-admins', 1),
+            (2, 4, 'USERS_ADMINS_CREATE', 'Nuevo administrador',       1, 2, 'users-admins/create', 1),
+            (3, 4, 'USERS_ADMINS_EDIT', 'Editar administrador',        0, NULL, NULL, 1),
+            (4, 4, 'USERS_ADMINS_DELETE', 'Borrar administrador',      0, NULL, NULL, 1),
+
+            (5, 5, 'USERS_SUPERVISORS', 'Lista de supervisores',         1, 1, 'users-supervisors', 1),
+            (6, 5, 'USERS_SUPERVISORS_CREATE', 'Nuevo supervisor',       1, 2, 'users-supervisors/create', 1),
+            (7, 5, 'USERS_SUPERVISORS_EDIT', 'Editar supervisor',        0, NULL, NULL, 1),
+            (8, 5, 'USERS_SUPERVISORS_DELETE', 'Borrar supervisor',      0, NULL, NULL, 1),
+
+            (9, 6, 'USERS_ADVISERS', 'Lista de asesores',               1, 1, 'users-advisers', 1),
+            (10, 6, 'USERS_ADVISERS_CREATE', 'Nuevo asesor',            1, 2, 'users-advisers/create', 1),
+            (11, 6, 'USERS_ADVISERS_EDIT', 'Editar asesor',             0, NULL, NULL, 1),
+            (12, 6, 'USERS_ADVISERS_DELETE', 'Borrar asesor',           0, NULL, NULL, 1),
             
-            (5, 5, 'OFFICES', 'Lista de sucursales',      1, 1, 'offices', 1),
-            (6, 5, 'OFFICES_CREATE', 'Nueva sucursal',    1, 2, 'offices/create', 1),
-            (7, 5, 'OFFICES_EDIT', 'Editar sucursal',     0, NULL, NULL, 1),
-            (8, 5, 'OFFICES_DELETE', 'Borrar sucursal',   0, NULL, NULL, 1);");
+            (13, 7, 'OFFICES', 'Lista de sucursales',                   1, 1, 'offices', 1),
+            (14, 7, 'OFFICES_CREATE', 'Nueva sucursal',                 1, 2, 'offices/create', 1),
+            (15, 7, 'OFFICES_EDIT', 'Editar sucursal',                  0, NULL, NULL, 1),
+            (16, 7, 'OFFICES_DELETE', 'Borrar sucursal',                0, NULL, NULL, 1),
+            
+            (17, 3, 'SPECIALTIES', 'Lista de especialidades',           1, 1, 'specialties', 1),
+            (18, 3, 'SPECIALTIES_CREATE', 'Nueva especialidad',         1, 2, 'specialties/create', 1),
+            (19, 3, 'SPECIALTIES_EDIT', 'Editar especialidad',          0, NULL, NULL, 1),
+            (20, 3, 'SPECIALTIES_DELETE', 'Borrar especialidad',        0, NULL, NULL, 1);;");
 
         // USER PRIVILEGES
         DB::statement("INSERT INTO
@@ -60,13 +77,25 @@ class UserSeeder extends Seeder
             user_id, privilege_id
         )
         VALUES
-         (4, 1),
-         (4, 2),
-         (4, 3),
-         (4, 4),
-         (4, 5),
-         (4, 6),
-         (4, 7),
-         (4, 8);");
+            (4, 1),
+            (4, 2),
+            (4, 3),
+            (4, 4),
+            (4, 5),
+            (4, 6),
+            (4, 7),
+            (4, 8),
+            (4, 9),
+            (4, 10),
+            (4, 11),
+            (4, 12),
+            (4, 13),
+            (4, 14),
+            (4, 15),
+            (4, 16),
+            (4, 17)
+            (4, 18)
+            (4, 19)
+            (4, 20);");
     }
 }
