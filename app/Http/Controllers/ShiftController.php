@@ -82,5 +82,19 @@ class ShiftController extends Controller
         return ['id' => $newTicket->id];
     }
 
-    
+    public function changeStatusShift(Request $request){
+
+        $shiftId = $request->input('shiftId');
+        $statusId = $request->input('typeStatus');
+
+        $status = Shift::where('id', $shiftId)->first();
+        
+        if ($status->count() > 0) {
+            
+            $status->shift_status_id = $statusId;
+            $status->save();
+        }
+
+        return $status;
+    }
 }

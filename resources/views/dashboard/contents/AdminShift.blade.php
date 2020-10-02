@@ -137,22 +137,22 @@
 		<div class="row" v-if="isActive">
 			<!-- Panel izquierdo -->
 			<div class="col-md-4">
-				<a class="mb-2 btn btn-primary btn-block" href="">Siguiente turno</a>
-				<div class="tile p-0">
+				{{-- <a class="mb-2 btn btn-primary btn-block" href="">Siguiente turno</a> --}}
+				<div class="tile p-0" style="height: 85%">
 					<h4 class="tile-title folder-head text-center">En espera</h4>
 					<div class="tile-body">
 						<div class="row text-center my-2">
 							<div class="col-4"><h6>Turno</h6></div>
 							<div class="col-4"><h6>Tipo</h6></div>
-							<div class="col-4"><h6>Especialidad</h6></div>								
+							<div class="col-4 text-truncate"><h6>Especialidad</h6></div>								
 						</div>
 
 						<item-my-list v-for="myShift in shiftList"
 							v-bind:key = "myShift.id"
 							:id = "myShift.id"
 							:shift = "myShift.shift"
-							:type = "myShift.shift_type_id"
-							:speciality = "myShift.speciality_type_id"
+							:type = "myShift.shift_type"
+							:speciality = "myShift.speciality"
 						></item-my-list>
 					</div>
 				</div>
@@ -161,13 +161,28 @@
 			<!-- Panel derecho -->
 			<div class="col-md-8">
 				<div class="tile">
+					<div class="tile-title-w-btn">
+						<h3 class="title">Turno actual</h3>
+						<p>
+							<a class="btn btn-info icon-btn" href="#" v-on:click="nextShift()">
+								<i class="fa fa-check"></i> Siguiente turno
+							</a>
+						</p>
+					</div>
 					<div class="row">
-						<div class="col-12 line-head text-center">
+
+						
+{{-- 
+						<div class="col-9 lined-head text-center">
 							<h3>Turno actual</h3>
 						</div>
+						<div class="col-3">
+							<p><a class="btn btn-primary icon-btn" href="https://gitlab.com/meno/dropzone" target="_blank"><i class="fa fa-file"></i>Siguiente</a></p>
+
+						</div> --}}
 					</div>
 
-					<div class="row text-center my-3">
+					<div class="row text-center my-2">
 						<div class="col-4">
 							<h2><i class="fa fa-dashboard"></i>${ attending.shift }</h2>
 							<p>TURNO</p>
@@ -180,16 +195,20 @@
 							<h2>${ attending.speciality }</h2>
 							<p>ESPECIALIDAD</p>
 						</div>
+						<div class="col-6">
+							<h2>${ attending.time }</h2>
+							<p>GENERADO</p>
+						</div>
 					</div>
 
 					<div class="row line-head"></div>
 
-					<div class="row text-center ">
+					<div class="row text-center my-2">
 						<div class="col-4">
 							<h2><i class="fa fa-dashboard"></i>${ attending.number }</h2>
 							<p>NÚMERO</p>
 						</div>
-						<div class="col-4">
+						<div class="col-8">
 							<h2><i class="fa fa-dashboard"></i>${ attending.client }</h2>
 							<p>CLIENTE</p>
 						</div>
@@ -202,15 +221,11 @@
 
 
 				<div class="row">
-					<div class="col-4">
-						<button class="btn btn-danger btn-block" type="button">Abandonado</button>
+					<div class="col-6">
+						<button class="btn btn-danger btn-block" type="button" v-on:click="changeStatusShift(4)">Abandonado</button>
 					</div>
-					<div class="col-4">
-						<button class="btn btn-success btn-block" type="button">Atendido</button>
-					</div>
-
-					<div class="col-4">
-						<button class="btn btn-info btn-block" type="button">Iniciar</button>
+					<div class="col-6">
+						<button class="btn btn-success btn-block" type="button" v-on:click="changeStatusShift(3)">Atender</button>
 					</div>
 				</div>
 			</div>

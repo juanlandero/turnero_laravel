@@ -1,5 +1,6 @@
 Vue.component('item-my-list', {
     props: [
+        'id',
         'shift',
         'type',
         'speciality',
@@ -21,9 +22,12 @@ var appTodo = new Vue({
         channel: null,
         user: null,
         attending:{
-            shift: 'A001',
-            speciality: 'Frenos',
-            type: 'Premium',
+            id: 0,
+            status:'',
+            shift: '-',
+            speciality: '-',
+            type: '-',
+            time: '-',
             sex: 'M',
             client: 'Juan Carlos Landero Isidro',
             number: '0987',
@@ -95,6 +99,52 @@ var appTodo = new Vue({
                 })
             }
             
+        },
+
+        nextShift () {
+            if (this.shiftList.length > 0) {
+                console.log('No vacia')
+
+                this.attending.id = this.shiftList[0].id
+                this.attending.shift = this.shiftList[0].shift
+                this.attending.speciality = this.shiftList[0].speciality
+                this.attending.type = this.shiftList[0].shift_type
+                this.attending.time = this.shiftList[0].time
+
+                this.shiftList.splice(0, 1)
+
+                //falta modificar la bd y jalar si es un usuario premium
+            } else {
+                alert('No hay turnos por el momento')
+                this.setNotShiftAttending()
+            }
+        },
+
+        changeStatusShift (status) {
+            if (this.attending.id != 0) {
+                console.log('No vacia')
+
+                axios.post('status-shift', {
+                    shiftId: this.attending.id,
+                    typeStatus: status
+                })
+                .then(function (response) {
+                    console.log(response.data)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+
+            } else {
+                alert('Pase a un turno para poder atenderlo')
+            }
+        },
+
+        setNotShiftAttending () {
+            this.attending.shift = '-'
+            this.attending.speciality = '-'
+            this.attending.type = '-'
+            this.attending.time = '-'
         }
     }
 })

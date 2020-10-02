@@ -31,7 +31,16 @@ class DashboardController extends Controller
 
         $idShift = $r->input('shiftId');
 
-        $objShift = Shift::where('shifts.id', $idShift)
+        $objShift = Shift::join('shift_types', 'shifts.shift_type_id', '=', 'shift_types.id')
+                        ->join('speciality_types', 'shifts.speciality_type_id', '=', 'speciality_types.id')
+                        ->where('shifts.id', $idShift)
+                        ->select(
+                            'shifts.id',
+                            'shifts.shift',
+                            'shift_types.shift_type',
+                            'speciality_types.name as speciality',
+                            'shifts.created_at as time'
+                        )
                         ->first();
 
 
