@@ -35,7 +35,23 @@ var appPanel = new Vue({
         },
         shiftList: []
     },
+
     methods: {
+        getListShift (dataChannel) {
+            var _that = this
+                            
+            axios.post('get-shift-advisor', {
+                type: 1,
+                userId: this.user
+            })
+            .then(function (response) {
+                console.log(response.data)
+                _that.shiftList = response.data['shift']
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+        },
 
         setServiceOn () {
             var _that = this
@@ -50,6 +66,7 @@ var appPanel = new Vue({
                     _that.panelChannel = response.data['channel'].panel_channel
                     _that.user = response.data['idUser']
                     _that.pusher()
+                    _that.getListShift()
                 }
 
             })
@@ -84,6 +101,7 @@ var appPanel = new Vue({
             if (dataChannel.idUser == this.user) {
                             
                 axios.post('get-shift-advisor', {
+                    type: 2,
                     shiftId: shift_id
                 })
                 .then(function (response) {
@@ -111,28 +129,17 @@ var appPanel = new Vue({
                     'panel_channel': _that.panelChannel
                 })
                 .then(function (response) {
-
-                    // if (response.data['channel'] == null) {
-                    //     alert('Necesita ser vinculado con una oficina')
-                    // }else{
-                    //     _that.channel = response.data['channel']
-                    //     _that.user = response.data['idUser']
-                    //     _that.pusher()
-                    // }
-
+                    _that.attending.shift = _that.shiftList[0].shift
+                    _that.attending.speciality = _that.shiftList[0].speciality
+                    _that.attending.type = _that.shiftList[0].shift_type
+                    _that.attending.time = _that.shiftList[0].time.substring(11, 19)
+    
+                    _that.shiftList.splice(0, 1)
                 })
                 .catch(function (error) {
                     console.log(error);
-                })
+                })               
 
-                this.attending.shift = this.shiftList[0].shift
-                this.attending.speciality = this.shiftList[0].speciality
-                this.attending.type = this.shiftList[0].shift_type
-                this.attending.time = this.shiftList[0].time.substring(11, 19)
-
-                this.shiftList.splice(0, 1)
-
-                //falta modificar la bd y jalar si es un usuario premium
             } else {
                 alert('No hay turnos por el momento')
                 this.setNotShiftAttending()

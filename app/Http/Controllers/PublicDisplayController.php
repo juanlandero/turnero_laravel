@@ -51,6 +51,7 @@ class PublicDisplayController extends Controller
                                 'shifts.created_at',
                                 'boxes.box_name'
                             )
+                            ->orderBy('shifts.id', 'asc')
                             ->get();
 
         return ['listShift' => $listShift, 'channel' => $channel];
