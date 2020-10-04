@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\SpecialityType;
 use App\Client;
 use App\Shift;
-use App\Events\ShiftScreenMsg;
+use App\Events\MenuGeneratorMsg;
+use App\Events\AdminPanelMsg;
 
 
 class ShiftController extends Controller
@@ -77,9 +78,19 @@ class ShiftController extends Controller
         $idTicket = $newTicket->id;
         $idUser = $newTicket->user_advisor_id;
 
-        event(new ShiftScreenMsg($channel, $idTicket, $idUser));
+        event(new MenuGeneratorMsg($channel, $idTicket, $idUser));
 
         return ['id' => $newTicket->id];
+    }
+
+    public function nextShift(Request $request){
+
+        $shiftId = $request->input('shiftId');
+        $panelChannel = $request->input('panel_channel');
+
+        event(new AdminPanelMsg($panelChannel, $shiftId));
+
+        return true;
     }
 
     public function changeStatusShift(Request $request){

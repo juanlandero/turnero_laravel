@@ -14,12 +14,13 @@ Vue.component('item-my-list', {
     `,
 })
 
-var appTodo = new Vue({
+var appPanel = new Vue({
     delimiters: ['${', '}'],
     el: '#app-panel-tickets',
     data: {
         isActive: false,
-        channel: null,
+        menuChannel: null,
+        panelChannel: null,
         user: null,
         attending:{
             id: 0,
@@ -31,12 +32,8 @@ var appTodo = new Vue({
             sex: 'M',
             client: 'Juan Carlos Landero Isidro',
             number: '0987',
-            box: '02'
         },
         shiftList: []
-    },
-    created: function(){
-        
     },
     methods: {
 
@@ -49,7 +46,8 @@ var appTodo = new Vue({
                 if (response.data['channel'] == null) {
                     alert('Necesita ser vinculado con una oficina')
                 }else{
-                    _that.channel = response.data['channel']
+                    _that.menuChannel = response.data['channel'].menu_channel
+                    _that.panelChannel = response.data['channel'].panel_channel
                     _that.user = response.data['idUser']
                     _that.pusher()
                 }
@@ -68,9 +66,9 @@ var appTodo = new Vue({
             var pusher = new Pusher('56423364aba2e84b5180', {
                 cluster: 'us2'
             })
-            var channel = pusher.subscribe(this.channel);
+            var menuChannelPusher = pusher.subscribe(this.menuChannel);
 
-            channel.bind('toPanel', function(data) {
+            menuChannelPusher.bind('toPublicPanel', function(data) {
                 if (data != null) {
                     _that.addShift(data)
                 }
@@ -98,18 +96,39 @@ var appTodo = new Vue({
                     console.log(error);
                 })
             }
-            
         },
 
         nextShift () {
+            var _that = this
+
             if (this.shiftList.length > 0) {
                 console.log('No vacia')
 
                 this.attending.id = this.shiftList[0].id
+
+                axios.post('next-shift', {
+                    'shiftId': _that.attending.id,
+                    'panel_channel': _that.panelChannel
+                })
+                .then(function (response) {
+
+                    // if (response.data['channel'] == null) {
+                    //     alert('Necesita ser vinculado con una oficina')
+                    // }else{
+                    //     _that.channel = response.data['channel']
+                    //     _that.user = response.data['idUser']
+                    //     _that.pusher()
+                    // }
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+
                 this.attending.shift = this.shiftList[0].shift
                 this.attending.speciality = this.shiftList[0].speciality
                 this.attending.type = this.shiftList[0].shift_type
-                this.attending.time = this.shiftList[0].time
+                this.attending.time = this.shiftList[0].time.substring(11, 19)
 
                 this.shiftList.splice(0, 1)
 

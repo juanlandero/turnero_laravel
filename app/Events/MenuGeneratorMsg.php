@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ShiftScreenMsg implements ShouldBroadcast
+class MenuGeneratorMsg implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -40,6 +40,6 @@ class ShiftScreenMsg implements ShouldBroadcast
     }
 
     public function broadcastAs(){
-        return 'toPanel';
+        return 'toPublicPanel';
     }
 }

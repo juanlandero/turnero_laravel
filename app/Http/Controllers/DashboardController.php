@@ -20,11 +20,12 @@ class DashboardController extends Controller
         $channel = UserOffice::join('offices', 'user_offices.office_id', '=', 'offices.id')
                             ->where('user_offices.user_id', Auth::id())
                             ->select(
-                                'offices.channel'
+                                'offices.menu_channel',
+                                'offices.panel_channel'
                                 )
                             ->first();
 
-        return ['channel' => $channel->channel, 'idUser' => Auth::id()];
+        return ['channel' => $channel, 'idUser' => Auth::id()];
     }
 
     public function getShiftAdvisor(Request $r){

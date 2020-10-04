@@ -19,7 +19,7 @@ class PublicDisplayController extends Controller
     public function getDataOffice(){
         $officeId = session()->get('NUM_OFFICE');
 
-        $channel = Office::select('channel')->where('id', $officeId)->first();
+        $channel = Office::select('menu_channel')->where('id', $officeId)->first();
 
         return $channel;
     }
@@ -30,7 +30,10 @@ class PublicDisplayController extends Controller
 
     public function getListShifts(){
         
-        $channel = Office::select('channel')->where('id', session()->get('NUM_OFFICE'))->first();
+        $channel = Office::select(
+                                'menu_channel',
+                                'panel_channel'
+                        )->where('id', session()->get('NUM_OFFICE'))->first();
 
         $listShift = Shift::join('users', 'shifts.user_advisor_id', '=', 'users.id')
                             ->join('user_offices', 'users.id', '=', 'user_offices.user_id')

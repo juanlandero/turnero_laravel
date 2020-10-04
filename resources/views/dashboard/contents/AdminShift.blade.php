@@ -138,7 +138,7 @@
 			<!-- Panel izquierdo -->
 			<div class="col-md-4">
 				{{-- <a class="mb-2 btn btn-primary btn-block" href="">Siguiente turno</a> --}}
-				<div class="tile p-0" style="height: 85%">
+				<div class="tile p-0" style="height: 400px; overflow-y: scroll;">
 					<h4 class="tile-title folder-head text-center">En espera</h4>
 					<div class="tile-body">
 						<div class="row text-center my-2">
@@ -169,34 +169,22 @@
 							</a>
 						</p>
 					</div>
-					<div class="row">
-
-						
-{{-- 
-						<div class="col-9 lined-head text-center">
-							<h3>Turno actual</h3>
-						</div>
-						<div class="col-3">
-							<p><a class="btn btn-primary icon-btn" href="https://gitlab.com/meno/dropzone" target="_blank"><i class="fa fa-file"></i>Siguiente</a></p>
-
-						</div> --}}
-					</div>
 
 					<div class="row text-center my-2">
-						<div class="col-4">
-							<h2><i class="fa fa-dashboard"></i>${ attending.shift }</h2>
+						<div class="col-3">
+							<h3><i class="fa fa-dashboard"></i>${ attending.shift }</h3>
 							<p>TURNO</p>
 						</div>
-						<div class="col-4">
-							<h2>${ attending.type }</h2>
+						<div class="col-3">
+							<h3>${ attending.type }</h3>
 							<p>TIPO</p>
 						</div>
-						<div class="col-4">
-							<h2>${ attending.speciality }</h2>
+						<div class="col-3">
+							<h3>${ attending.speciality }</h3>
 							<p>ESPECIALIDAD</p>
 						</div>
-						<div class="col-6">
-							<h2>${ attending.time }</h2>
+						<div class="col-3">
+							<h3>${ attending.time }</h3>
 							<p>GENERADO</p>
 						</div>
 					</div>
@@ -205,29 +193,32 @@
 
 					<div class="row text-center my-2">
 						<div class="col-4">
-							<h2><i class="fa fa-dashboard"></i>${ attending.number }</h2>
+							<h3><i class="fa fa-dashboard"></i>${ attending.number }</h3>
 							<p>NÚMERO</p>
 						</div>
 						<div class="col-8">
-							<h2><i class="fa fa-dashboard"></i>${ attending.client }</h2>
+							<h3><i class="fa fa-dashboard"></i>${ attending.client }</h3>
 							<p>CLIENTE</p>
 						</div>
 						<div class="col-4">
-							<h2>${ attending.sex }</h2>
+							<h3>${ attending.sex }</h3>
 							<p>SEXO</p>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-4">
+							<button class="btn btn-danger btn-block" type="button" v-on:click="changeStatusShift(4)">Abandonado</button>
+						</div>
+						<div class="col-4">
+							<button class="btn btn-success btn-block" type="button" v-on:click="changeStatusShift(3)">Atender</button>
+						</div>
+						<div class="col-4">
+							<button class="btn btn-success btn-block" type="button" v-on:click="changeStatusShift(3)">Atender</button>
 						</div>
 					</div>
 				</div>
 
-
-				<div class="row">
-					<div class="col-6">
-						<button class="btn btn-danger btn-block" type="button" v-on:click="changeStatusShift(4)">Abandonado</button>
-					</div>
-					<div class="col-6">
-						<button class="btn btn-success btn-block" type="button" v-on:click="changeStatusShift(3)">Atender</button>
-					</div>
-				</div>
 			</div>
 		</div>
 		
