@@ -10,21 +10,23 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ShiftScreenMsg implements ShouldBroadcast
+class MenuGeneratorMsg implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $channel;
-    public $text;
+    public $idTicket;
+    public $idUser;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($channel, $text)
+    public function __construct($channel, $idTicket, $idUser)
     {
         $this->channel = $channel;
-        $this->text = $text;
+        $this->idTicket = $idTicket;
+        $this->idUser = $idUser;
     }
 
     /**
@@ -38,6 +40,6 @@ class ShiftScreenMsg implements ShouldBroadcast
     }
 
     public function broadcastAs(){
-        return 'toPanel';
+        return 'toPublicPanel';
     }
 }

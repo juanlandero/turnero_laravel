@@ -14,7 +14,7 @@ Vue.component('speciality-button', {
     `,
 })
 
-var appTodo = new Vue({
+var appMenu = new Vue({
     delimiters: ['${', '}'],
     el: '#app-ticket-generator',
     data: {
@@ -26,7 +26,7 @@ var appTodo = new Vue({
             client_number:null,
             sex: null
         },
-        count: 0
+        // count: 08
     },
     mounted: function(){
         this.getSpecialities()
@@ -39,7 +39,7 @@ var appTodo = new Vue({
 
             axios.post('shift/get-channel')
             .then(function (response) {
-                _that.ticket.channel = response.data.channel
+                _that.ticket.channel = response.data.menu_channel
             })
             .catch(function (error) {
                 console.log(error);
@@ -113,9 +113,6 @@ var appTodo = new Vue({
             .catch(function (error) {
                 console.log(error);
             })
-        },
-
-        setBooleanFalse () {
         },
 
         setSex (sex) {

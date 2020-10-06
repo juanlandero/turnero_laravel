@@ -16,14 +16,14 @@
 	
 	<div class="full-display" id="app-public-display">
 	
-		<main class="app-public-display">
+		<main class="app-public-display" v-if="serviceOn">
 			<!-- ENCABEZADO -->
             <div class="app-public-display-title">
                 <div>
                     <img src="{{ asset('img/madero-logo.jpeg') }}" height="20px" alt="">
                 </div>
             
-                <div><h1 v-on:click="pusher()">Bienvenidos</h1></div>
+                <div><h1>Bienvenidos</h1></div>
             
                 <div><h5 class="text-success">${ hour }</h5></div>
             </div>
@@ -32,7 +32,7 @@
 			<div class="row height-content" style="margin: 0px;">
 				<!-- PANEL IZQUIERDO -->
                 <div class="col-4">
-                    <div class="rodw tile mb-2">
+                    <div class="roew tile mb-2">
                         <div class="row text-center">
                             <div class="col line-head"><h3>Turno</h3></div>
                             <div class="col line-head"><h3>Caja</h3></div>
@@ -41,8 +41,6 @@
 							<div class="col text-success"><h1>${ attending.shift }</h1></div>
 							<div class="col text-success"><h1>${ attending.box }</h1></div>
                         </div>
-						
-                       
 					</div> 
 
 					<div class="rdow tile" style="height: 70%">
@@ -76,8 +74,15 @@
 			</div>
 
 		</main>
+
+
+		<div class="row align-items-center justify-content-center" v-else style="height: 300px">
+			<div class="col-5 ">
+				<button class="btn btn-primary btn-lg btn-block" type="button"  v-on:click="pusher()">Iniciar servicio</button>
+			</div>
+		</div>
 	</div>
-			
+	
 	{{-- Scripts --}}
 	<script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>

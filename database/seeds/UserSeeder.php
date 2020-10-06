@@ -23,6 +23,36 @@ class UserSeeder extends Seeder
         $objUser->is_active     = true;
         $objUser->save();
 
+        $objUser1                = new User();
+        $objUser1->name          = "Carlos";
+        $objUser1->first_name    = "Rodriguez";
+        $objUser1->second_name   = "Madrigal";
+        $objUser1->user_type_id  = 2;
+        $objUser1->email         = "carlos@dashboard.mx";
+        $objUser1->password      = bcrypt('1234567*');
+        $objUser1->is_active     = true;
+        $objUser1->save();
+
+        $objUser2                = new User();
+        $objUser2->name          = "Lorena";
+        $objUser2->first_name    = "Gomez";
+        $objUser2->second_name   = "Gomez";
+        $objUser2->user_type_id  = 2;
+        $objUser2->email         = "lorena@dashboard.mx";
+        $objUser2->password      = bcrypt('1234567*');
+        $objUser2->is_active     = true;
+        $objUser2->save();
+
+        $objUser3                = new User();
+        $objUser3->name          = "Diego";
+        $objUser3->first_name    = "Hernandez";
+        $objUser3->second_name   = "Hernandez";
+        $objUser3->user_type_id  = 2;
+        $objUser3->email         = "diego@dashboard.mx";
+        $objUser3->password      = bcrypt('1234567*');
+        $objUser3->is_active     = true;
+        $objUser3->save();
+
         //PRIVILEGES CATEGORIES
         DB::statement("INSERT INTO
             privileges_categories
@@ -93,9 +123,37 @@ class UserSeeder extends Seeder
             (4, 14),
             (4, 15),
             (4, 16),
-            (4, 17)
-            (4, 18)
-            (4, 19)
+            (4, 17),
+            (4, 18),
+            (4, 19),
             (4, 20);");
+
+        // USER OFFICES
+        // DB::statement("INSERT INTO  user_offices
+        // (
+        //     id, user_id, office_id, box_id, created_at, updated_at
+        // )
+        // VALUES
+        //     ( 1, 1, 1, 1, 1, true, NOW(), NOW()),
+        //     ( 2, 2, 1, 2, 1, true, NOW(), NOW()),
+        //     ( 3, 3, 1, 3, 1, true, NOW(), NOW()),
+        //     ( 4, 4, 1, 3, 1, true, NOW(), NOW());
+        // ");
+
+         // SPECIALITY TYPE USER
+        // DB::statement("INSERT INTO  speciality_type_users
+        // (
+        //     id, speciality_type_id, user_id, created_at, updated_at
+        // )
+        // VALUES
+        //     ( 1, 5, 1, true, NOW(), NOW()),
+        //     ( 2, 5, 2, true, NOW(), NOW()),
+        //     ( 3, 2, 3, true, NOW(), NOW()),
+        //     ( 4, 2, 1, true, NOW(), NOW()),
+        //     ( 5, 1, 1, true, NOW(), NOW()),
+        //     ( 6, 3, 3, true, NOW(), NOW()),
+        //     ( 7, 5, 4, true, NOW(), NOW()),
+        //     ( 8, 4, 4, true, NOW(), NOW());
+        // ");
     }
 }

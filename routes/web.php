@@ -69,6 +69,10 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
     });
 
     Route::get('shift', 'DashboardController@adminShift');
+    Route::post('get-user', 'DashboardController@getUser');
+    Route::post('get-shift-advisor', 'DashboardController@getShiftAdvisor');
+    Route::post('status-shift', 'ShiftController@changeStatusShift');
+    Route::post('next-shift', 'ShiftController@nextShift');
 });
 
 

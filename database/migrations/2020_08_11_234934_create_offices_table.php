@@ -18,7 +18,8 @@ class CreateOfficesTable extends Migration
             $table->string('name', 45);
             $table->string('address', 45);
             $table->string('phone', 15)->nullable();
-            $table->string('channel', 45);
+            $table->string('menu_channel', 45);
+            $table->string('panel_channel', 45);
             $table->string('office_key', 15);
 
             $table->foreignId('municipality_id')->constrained('municipalities');
@@ -30,12 +31,12 @@ class CreateOfficesTable extends Migration
 
         DB::statement("INSERT INTO  offices
             (
-                id, name, address, phone, channel, office_key, municipality_id, is_active, created_at, updated_at
+                id, name, address, phone, menu_channel, panel_channel, office_key, municipality_id, is_active, created_at, updated_at
             )
             VALUES
-                ( 1, 'Madero Centro', 'Calle uno cruce con dos', '993128484', 'centro-0129-as', '12345', 1, true, NOW(), NOW()),
-                ( 2, 'Madero Sur', 'Calle uno cruce con dos', '993128484', 'centro-0129sur', '54321', 1, true, NOW(), NOW()),
-                ( 3, 'Madero Norte', 'Calle uno cruce con dos', '993128484', 'centro-0129-nt', '11110', 1, true, NOW(), NOW())
+                ( 1, 'Madero Centro', 'Calle uno cruce con dos', '993128484', 'centro-0129-as', 'panel-12', '12345', 1, true, NOW(), NOW()),
+                ( 2, 'Madero Sur', 'Calle uno cruce con dos', '993128484', 'centro-0129sur', 'panel-76', '54321', 1, true, NOW(), NOW()),
+                ( 3, 'Madero Norte', 'Calle uno cruce con dos', '993128484', 'centro-0129-nt', 'panel-32', '11110', 1, true, NOW(), NOW())
         ");
     }
 
