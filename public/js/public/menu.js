@@ -90,14 +90,35 @@ var appMenu = new Vue({
                         _that.ticket.sex = response.data['client'].sex
                         _that.createTicket()
                     } else{
-                        alert('No existe su numero de cliente')
+                        $.notify({
+                            title: "  ",
+                            message: " Número de cliente incorrecto.",
+                            icon: 'fa fa-times-circle' 
+                        },{
+                            allow_dismiss: false,
+                            newest_on_top: true,
+                            z_index: 10310,
+                            type: "danger"
+                        })
+                        // alert('No existe su numero de cliente')
                     }
                 })
                 .catch(function (error) {
                     console.log(error);
                 })
             } else {
-                alert('Debe insertar un número de cliente, si no cuenta con uno presione. NO')
+               
+                $.notify({
+                    title: "  ",
+                    message: " Inserte su número de cliente.",
+                    icon: 'fa fa-exclamation-circle' 
+                },{
+                    allow_dismiss: false,
+                    newest_on_top: true,
+	                z_index: 10310,
+                    type: "warning"
+                })
+
             }
         },
 

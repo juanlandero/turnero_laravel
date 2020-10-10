@@ -11696,13 +11696,13 @@ body.stop-scrolling {
   background-color: #28a745;
 }
 .notify-alert.alert-info {
-  background-color: #17a2b8;
+  background-color: #138496;
 }
 .notify-alert.alert-warning {
-  background-color: #ffce3a;
+  background-color: #ffc107;
 }
 .notify-alert.alert-danger {
-  background-color: #e04b59;
+  background-color: #dc3545;
 }
 .notify-alert button[data-notify=dismiss] {
   margin-left: 5px;

@@ -10,6 +10,7 @@
 	<!-- Main CSS-->
 	<link href="{{ asset('css/all.css') }}" rel="stylesheet">
 	<link href="{{ asset('css/main.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
 	<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
 </head>
@@ -233,7 +234,8 @@
 	<script src="{{ asset('js/popper.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
 	<script src="{{ asset('js/main.js') }}"></script>
-	<script src="{{ asset('js/plugins/pace.min.js') }}"></script>
+	{{-- <script src="{{ asset('js/plugins/pace.min.js') }}"></script> --}}
+	<script src="{{ asset('js/plugins/bootstrap-notify.min.js') }}"></script>
 	
 	<script src="{{ asset('js/axios.js') }}"></script>
 	<script src="{{ asset('js/vue.js') }}"></script>

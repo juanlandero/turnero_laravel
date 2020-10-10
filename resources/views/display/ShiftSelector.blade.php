@@ -7,6 +7,7 @@
 
     <link href="{{ asset('css/public-css.css') }}" rel="stylesheet">
     <link href="{{ asset('css/all.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
 </head>
 <body>
 	<div class="full-display">
@@ -38,7 +39,9 @@
     </div>
 
     <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('js/popper.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
+	<script src="{{ asset('js/plugins/bootstrap-notify.min.js') }}"></script>
     
     <script src="{{ asset('js/axios.js') }}"></script>
     <script src="{{ asset('js/vue.js') }}"></script>

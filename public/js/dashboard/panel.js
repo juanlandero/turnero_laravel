@@ -46,7 +46,7 @@ var appPanel = new Vue({
             })
             .then(function (response) {
                 _that.shiftList = response.data
-                console.log(response.data)
+                // console.log(response.data)
             })
             .catch(function (error) {
                 console.log(error);
@@ -60,7 +60,17 @@ var appPanel = new Vue({
             .then(function (response) {
 
                 if (response.data['channel'] == null) {
-                    alert('Necesita ser vinculado con una oficina')
+                    $.notify({
+                        title: "  ",
+                        message: " Necesita ser vinculado con una oficina.",
+                        icon: 'fa fa-exclamation-circle' 
+                    },{
+                        allow_dismiss: false,
+                        newest_on_top: true,
+                        z_index: 10310,
+                        type: "warning"
+                    })
+                    // alert('Necesita ser vinculado con una oficina')
                 }else{
                     _that.menuChannel = response.data['channel'].menu_channel
                     _that.panelChannel = response.data['channel'].panel_channel
@@ -120,7 +130,6 @@ var appPanel = new Vue({
 
             if (this.shiftList.length > 0) {
                 // console.log('No vacia')
-
                 this.attending.id = this.shiftList[0].id
 
                 axios.post('next-shift', {
@@ -143,7 +152,14 @@ var appPanel = new Vue({
                 })               
 
             } else {
-                alert('No hay turnos por el momento')
+                $.notify({
+                    title: "  ",
+                    message: " No hay turnos por el momento.",
+                    icon: 'fa fa-info-circle' 
+                },{
+                    newest_on_top: true,
+                    type: "info"
+                })
                 this.setNotShiftAttending()
             }
         },
@@ -164,7 +180,14 @@ var appPanel = new Vue({
                 })
 
             } else {
-                alert('Pase a un turno para poder atenderlo')
+                $.notify({
+                    title: "  ",
+                    message: " Pase un turno para atenderlo.",
+                    icon: 'fa fa-info-circle' 
+                },{
+                    newest_on_top: true,
+                    type: "info"
+                })
             }
         },
 
