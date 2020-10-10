@@ -25,8 +25,7 @@ var appMenu = new Vue({
             has_number: true,
             client_number:null,
             sex: null
-        },
-        // count: 08
+        }
     },
     mounted: function(){
         this.getSpecialities()
@@ -85,7 +84,7 @@ var appMenu = new Vue({
                     client: this.ticket.client_number
                 })
                 .then(function (response) {
-                    console.log(response.data)
+                    // console.log(response.data)
 
                     if (response.data.success == 'true') {
                         _that.ticket.sex = response.data['client'].sex

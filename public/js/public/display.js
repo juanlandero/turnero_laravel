@@ -35,9 +35,7 @@ var appDisplay = new Vue({
         getListTickets () {
             var _that = this
 
-            axios.get('list-shift', {
-                client: this.ticketList
-            })
+            axios.get('list-shift')
             .then(function (response) {
                 _that.shiftList = response.data['listShift']
                 _that.menuChannel = response.data['channel'].menu_channel
@@ -72,8 +70,8 @@ var appDisplay = new Vue({
             })
 
             panelChannelPusher.bind('toPublicPanel', function(data) {
-                console.log(data)
-                _that.atenddingShift (data.channel, data.idTicket)
+                // console.log(data)
+                _that.atenddingShift (data.idTicket)
             })
 
             this.serviceOn = true
@@ -101,34 +99,32 @@ var appDisplay = new Vue({
             
         },
 
-        atenddingShift (channel, shiftId) {
+        atenddingShift (shiftId) {
             var _that = this
             if (this.shiftList.length > 0) {
-                console.log('No vacia')
+                // console.log('No vacia')
 
                 this.shiftList.forEach(function (shift, index, arr) {
 
-                    console.log(index)
-                    console.log('*******')
-
                     if (shift.id == shiftId) {
-                        console.log('-------')
-                        console.log(shift, index)
                         _that.attending.id = shift.id
                         _that.attending.shift = shift.shift
                         _that.attending.box = shift.box_name
 
                         _that.shiftList.splice(index, 1)
-
                     } 
                 });
-
                 
-                //falta modificar la bd y jalar si es un usuario premium
             } else {
                 alert('No hay turnos por el momento')
                 this.setNotShiftAttending()
             }
+        },
+
+        setNotShiftAttending () {
+            _that.attending.id = 0
+            _that.attending.shift = '-'
+            _that.attending.box = '-'
         },
     }
 })

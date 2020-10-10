@@ -10,7 +10,11 @@ class ClientController extends Controller
     public function verifyClient(Request $r){
         $clientNumber = $r['client'];
 
-        $client = Client::where('client_number', $clientNumber)->first();
+        $client = Client::where([
+                                ['client_number', $clientNumber],
+                                ['is_active', 1]
+                            ])
+                            ->first();
 
         if ($client != null) {
             return ['success' => 'true', 'client' => $client];

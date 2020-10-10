@@ -29,11 +29,11 @@ var appPanel = new Vue({
             speciality: '-',
             type: '-',
             time: '-',
-            sex: 'M',
-            client: 'Juan Carlos Landero Isidro',
-            number: '0987',
+            sex: '-',
+            client: '-',
+            number: '-',
         },
-        shiftList: []
+        shiftList:[]
     },
 
     methods: {
@@ -45,8 +45,8 @@ var appPanel = new Vue({
                 userId: this.user
             })
             .then(function (response) {
+                _that.shiftList = response.data
                 console.log(response.data)
-                _that.shiftList = response.data['shift']
             })
             .catch(function (error) {
                 console.log(error);
@@ -105,9 +105,8 @@ var appPanel = new Vue({
                     shiftId: shift_id
                 })
                 .then(function (response) {
-                    console.log(response.data['shift'])
                     _that.shiftList.push (
-                        response.data['shift']
+                        response.data[0]
                     )
                 })
                 .catch(function (error) {
@@ -120,7 +119,7 @@ var appPanel = new Vue({
             var _that = this
 
             if (this.shiftList.length > 0) {
-                console.log('No vacia')
+                // console.log('No vacia')
 
                 this.attending.id = this.shiftList[0].id
 
@@ -133,6 +132,9 @@ var appPanel = new Vue({
                     _that.attending.speciality = _that.shiftList[0].speciality
                     _that.attending.type = _that.shiftList[0].shift_type
                     _that.attending.time = _that.shiftList[0].time.substring(11, 19)
+                    _that.attending.client = _that.shiftList[0].name_client
+                    _that.attending.number = _that.shiftList[0].number_client
+                    _that.attending.sex = _that.shiftList[0].sex_client
     
                     _that.shiftList.splice(0, 1)
                 })
@@ -171,6 +173,9 @@ var appPanel = new Vue({
             this.attending.speciality = '-'
             this.attending.type = '-'
             this.attending.time = '-'
+            this.attending.client = '-'
+            this.attending.number = '-'
+            this.attending.sex = '-'
         }
     }
 })

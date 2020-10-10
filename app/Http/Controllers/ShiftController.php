@@ -68,17 +68,15 @@ class ShiftController extends Controller
         $newTicket->shift_type_id       = $typeTicket;
         $newTicket->speciality_type_id  = $specialityId;
         $newTicket->office_id           = session()->get('NUM_OFFICE');
-        $newTicket->sex_client          = $sex;
         $newTicket->shift_status_id     = 1;
         $newTicket->user_advisor_id     = AdvisorController::selectAdvisor($specialityId);
+        $newTicket->sex_client          = $sex;
+        $newTicket->number_client       = $clientNumber;
         $newTicket->has_incident        = 0;
         $newTicket->is_active           = 1;
         $newTicket->save();
 
-        $idTicket = $newTicket->id;
-        $idUser = $newTicket->user_advisor_id;
-
-        event(new MenuGeneratorMsg($channel, $idTicket, $idUser));
+        event(new MenuGeneratorMsg($channel, $newTicket->id, $newTicket->user_advisor_id));
 
         return ['id' => $newTicket->id];
     }

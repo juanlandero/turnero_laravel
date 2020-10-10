@@ -19,7 +19,12 @@ class PublicDisplayController extends Controller
     public function getDataOffice(){
         $officeId = session()->get('NUM_OFFICE');
 
-        $channel = Office::select('menu_channel')->where('id', $officeId)->first();
+        $channel = Office::select('menu_channel')
+                            ->where([
+                                ['id', $officeId],
+                                ['is_active', 1],
+                            ])
+                            ->first();
 
         return $channel;
     }
@@ -39,7 +44,7 @@ class PublicDisplayController extends Controller
                             ->join('user_offices', 'users.id', '=', 'user_offices.user_id')
                             ->join('boxes', 'user_offices.box_id', 'boxes.id')
                             ->where([
-                                ['shifts.shift_status_id', 1],
+                                ['shifts.shift_status_id', '<', 3],
                                 ['shifts.is_active', 1],
                                 ['shifts.created_at', 'like', session()->get('DATE').'%']
                             ])
