@@ -137,15 +137,28 @@ var appPanel = new Vue({
                     'panel_channel': _that.panelChannel
                 })
                 .then(function (response) {
-                    _that.attending.shift = _that.shiftList[0].shift
-                    _that.attending.speciality = _that.shiftList[0].speciality
-                    _that.attending.type = _that.shiftList[0].shift_type
-                    _that.attending.time = _that.shiftList[0].time.substring(11, 19)
-                    _that.attending.client = _that.shiftList[0].name_client
-                    _that.attending.number = _that.shiftList[0].number_client
-                    _that.attending.sex = _that.shiftList[0].sex_client
-    
-                    _that.shiftList.splice(0, 1)
+
+                    if (response.data.state == true) {
+                        _that.attending.shift = _that.shiftList[0].shift
+                        _that.attending.speciality = _that.shiftList[0].speciality
+                        _that.attending.type = _that.shiftList[0].shift_type
+                        _that.attending.time = _that.shiftList[0].time.substring(11, 19)
+                        _that.attending.client = _that.shiftList[0].name_client
+                        _that.attending.number = _that.shiftList[0].number_client
+                        _that.attending.sex = _that.shiftList[0].sex_client
+        
+                        _that.shiftList.splice(0, 1)
+                    }
+
+                    $.notify({
+                        title: "",
+                        message: response.data.text,
+                        icon: response.data.icon 
+                    },{
+                        newest_on_top: true,
+                        type: response.data.type
+                    })
+                    
                 })
                 .catch(function (error) {
                     console.log(error);

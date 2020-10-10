@@ -82,13 +82,34 @@ class ShiftController extends Controller
     }
 
     public function nextShift(Request $request){
-
+        $return = null;
         $shiftId = $request->input('shiftId');
         $panelChannel = $request->input('panel_channel');
 
-        event(new AdminPanelMsg($panelChannel, $shiftId));
+        $newStateShift = Shift::where('id', $shiftId)->first();
+        $newStateShift->start_shift = now();
+        $newStateShift->save();
 
-        return true;
+        
+        if ($newStateShift->start_shift != null) {
+            event(new AdminPanelMsg($panelChannel, $shiftId));
+            $return = [
+                        'state' => true,
+                        'text' => 'Iniciando el turno: '.$newStateShift->shift.' - '.substr($newStateShift->start_shift, 11, 19),
+                        'type' => 'info',
+                        'icon' => 'fa fa-info-circle'
+                    ];
+        } else {
+            $return = [
+                        'state' => false,
+                        'text' => 'No se pudo iniciar el turno. Recargue la pagina',
+                        'type' => 'danger',
+                        'icon' => 'fa fa-times-circle'
+                    ];
+        }
+
+
+        return $return;
     }
 
     public function changeStatusShift(Request $request){
