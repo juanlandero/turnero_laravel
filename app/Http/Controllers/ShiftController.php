@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\SpecialityType;
 use App\Client;
+use App\Incident;
 use App\Shift;
 use App\Events\MenuGeneratorMsg;
 use App\Events\AdminPanelMsg;
@@ -95,7 +96,7 @@ class ShiftController extends Controller
             event(new AdminPanelMsg($panelChannel, $shiftId));
             $return = [
                         'state' => true,
-                        'text' => 'Iniciando el turno: '.$newStateShift->shift.' - '.substr($newStateShift->start_shift, 11, 19),
+                        'text' => 'Turno iniciado - '.substr($newStateShift->start_shift, 11, 19),
                         'type' => 'info',
                         'icon' => 'fa fa-info-circle'
                     ];
@@ -112,19 +113,70 @@ class ShiftController extends Controller
         return $return;
     }
 
+    public function reassignmentShift(Request $request  ){
+
+        $shiftId = $request->input('shift_id');
+        $reciveId = $request->input('recive_id');
+        $sendId = $request->input('send_id');
+        $channel = $request->input('menu_channel');
+
+        // CAMBIO DE USUARIO
+        $reassignment = Shift::where('id', $shiftId)->first();
+        $reassignment->shift_status_id = 2;
+        $reassignment->user_advisor_id = $reciveId;
+        $reassignment->has_incident = 1;
+        $reassignment->save();
+
+        // REGISTRO DEL INCIDENTE CON EL USUARIO QUE ESTA HACIENDO LA REASIGNACIÓN
+        $objIncident = new Incident();
+        $objIncident->shift_id = $shiftId;
+        $objIncident->incident_type_id =  1;
+        $objIncident->user_reassigned_id = $sendId;        
+        $objIncident->is_active = 1;   
+        $objIncident->save();
+
+        event(new MenuGeneratorMsg($channel, $objIncident->shift_id, $reassignment->user_advisor_id));
+        
+        $return = [
+            'state' => true,
+            'text' => 'Haz reasignado un turno',
+            'type' => 'warning',
+            'icon' => 'fa fa-info-circle'
+        ];
+
+        return $return;
+    }
+
     public function changeStatusShift(Request $request){
 
         $shiftId = $request->input('shiftId');
         $statusId = $request->input('typeStatus');
+        $shiftText = '<b>Error.</b> No se pudo realizar la acción';
+        $shiftIcon = 'fa fa-times-circle';
+        $shiftType = 'danger';
 
         $status = Shift::where('id', $shiftId)->first();
         
         if ($status->count() > 0) {
             
             $status->shift_status_id = $statusId;
+            $status->end_shift = now();
             $status->save();
+
+            if ($statusId == 3) {
+                $shiftText = "Turno <b>finalizado</b>";
+                $shiftIcon = 'fa fa-exclamation-triangle';
+                $shiftType = "warning";
+            } elseif ($statusId == 4) {
+                $shiftText = "Turno <b>abandonado</b>";
+                $shiftIcon = "fas fa-walking";
+            }
         }
 
-        return $status;
+        return [
+            'text' => $shiftText,
+            'type' => $shiftType,
+            'icon' => $shiftIcon
+        ];
     }
 }

@@ -33,7 +33,8 @@ var appPanel = new Vue({
             client: '-',
             number: '-',
         },
-        shiftList:[]
+        shiftList:[],
+        advisors: []
     },
 
     methods: {
@@ -46,11 +47,28 @@ var appPanel = new Vue({
             })
             .then(function (response) {
                 _that.shiftList = response.data
-                // console.log(response.data)
             })
             .catch(function (error) {
-                console.log(error);
+                console.log(error)
             })
+        },
+
+        getListAdvisors () {
+            var _that = this
+
+            if (this.attending.id != 0) {
+
+                axios.get('shift/get-advisors')
+                .then(function (response) {
+                    _that.advisors = response.data
+                    $('#reassignment-modal').modal('show')
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })   
+            } else {
+                _that.notify('warning', ' No tiene un turno en proceso', 'fa fa-exclamation-triangle')
+            }
         },
 
         setServiceOn () {
@@ -60,17 +78,7 @@ var appPanel = new Vue({
             .then(function (response) {
 
                 if (response.data['channel'] == null) {
-                    $.notify({
-                        title: "  ",
-                        message: " Necesita ser vinculado con una oficina.",
-                        icon: 'fa fa-exclamation-circle' 
-                    },{
-                        allow_dismiss: false,
-                        newest_on_top: true,
-                        z_index: 10310,
-                        type: "warning"
-                    })
-                    // alert('Necesita ser vinculado con una oficina')
+                    _that.notify('info', 'No estas vinculado a una oficiona', 'fa fa-info-circle')
                 }else{
                     _that.menuChannel = response.data['channel'].menu_channel
                     _that.panelChannel = response.data['channel'].panel_channel
@@ -81,19 +89,19 @@ var appPanel = new Vue({
 
             })
             .catch(function (error) {
-                console.log(error);
+                console.log(error)
             })
         },
         
         pusher () {        
             // Enable pusher logging - don't include this in production
-            Pusher.logToConsole = true;
+            Pusher.logToConsole = true
     
             var _that = this
             var pusher = new Pusher('56423364aba2e84b5180', {
                 cluster: 'us2'
             })
-            var menuChannelPusher = pusher.subscribe(this.menuChannel);
+            var menuChannelPusher = pusher.subscribe(this.menuChannel)
 
             menuChannelPusher.bind('toPublicPanel', function(data) {
                 if (data != null) {
@@ -103,10 +111,11 @@ var appPanel = new Vue({
 
             this.isActive = true
         },
-
+        //revisar la llamada que hace
         addShift (dataChannel) {
             var _that = this
             var shift_id = dataChannel.idTicket
+            var bk = false
 
             if (dataChannel.idUser == this.user) {
                             
@@ -115,12 +124,30 @@ var appPanel = new Vue({
                     shiftId: shift_id
                 })
                 .then(function (response) {
-                    _that.shiftList.push (
-                        response.data[0]
-                    )
+                    if (response.data[0].status == 1) {
+                        _that.shiftList.push (
+                            response.data[0]
+                        )
+                    } else {
+                        if (_that.shiftList.length == 0) {
+                            _that.shiftList.push (
+                                response.data[0]
+                            )
+                        } else {
+                            _that.shiftList.forEach(function (shift, index){
+                                if (shift.id > response.data[0].id && bk == false) {
+                                    _that.shiftList.splice(index, 0, response.data[0])
+                                    bk = true
+                                }
+                                console.log(shift.id+ "<=>"+ response.data[0].id)
+                            });
+                            
+                        }
+
+                    }
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    console.log(error)
                 })
             }
         },
@@ -150,18 +177,10 @@ var appPanel = new Vue({
                         _that.shiftList.splice(0, 1)
                     }
 
-                    $.notify({
-                        title: "",
-                        message: response.data.text,
-                        icon: response.data.icon 
-                    },{
-                        newest_on_top: true,
-                        type: response.data.type
-                    })
-                    
+                    _that.notify(response.data.type, response.data.text, response.data.icon)
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    console.log(error)
                 })               
 
             } else {
@@ -177,30 +196,52 @@ var appPanel = new Vue({
             }
         },
 
+        reassignmentShift () {
+            var data_form = $('#form-advisor').serializeArray()
+            var _that = this
+
+            if (data_form[2].value != 0) {
+                
+                axios.post('shift/reassignment',{
+                    shift_id: _that.attending.id,
+                    send_id: data_form[1].value,
+                    recive_id: data_form[2].value,
+                    menu_channel: _that.menuChannel
+                })
+                .then(function (response) {
+                    $('#reassignment-modal').modal('hide')
+                    _that.notify(response.data.type, response.data.text, response.data.icon)
+                })
+                .catch(function (error) {
+                    console.log(error)
+                }) 
+            } else {
+                _that.notify('info', 'Debe elegir un nuevo asesor.', 'fa fa-info-circle')
+            }
+        },
+
         changeStatusShift (status) {
+            var _that = this
+
             if (this.attending.id != 0) {
-                console.log('No vacia')
 
                 axios.post('status-shift', {
                     shiftId: this.attending.id,
                     typeStatus: status
                 })
                 .then(function (response) {
-                    console.log(response.data)
+                    _that.notify(response.data.type, response.data.text, response.data.icon)
+                    setTimeout(function() {
+                        _that.setNotShiftAttending()
+                    }, 3000)
+
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    console.log(error)
                 })
 
             } else {
-                $.notify({
-                    title: "  ",
-                    message: " Pase un turno para atenderlo.",
-                    icon: 'fa fa-info-circle' 
-                },{
-                    newest_on_top: true,
-                    type: "info"
-                })
+                this.notify('warning', ' No tiene un turno en proceso', 'fa fa-exclamation-triangle')
             }
         },
 
@@ -212,6 +253,18 @@ var appPanel = new Vue({
             this.attending.client = '-'
             this.attending.number = '-'
             this.attending.sex = '-'
+        },
+
+        notify (type, message, icon) { 
+            $.notify({
+                title: "",
+                message: message,
+                icon: icon 
+            },{
+                newest_on_top: true,
+                type: type,
+                z_index: 1100,
+            })
         }
     }
 })

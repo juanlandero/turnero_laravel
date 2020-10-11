@@ -11696,13 +11696,13 @@ body.stop-scrolling {
   background-color: #28a745;
 }
 .notify-alert.alert-info {
-  background-color: #138496;
+  background-color: #17a2b8;
 }
 .notify-alert.alert-warning {
-  background-color: #ffc107;
+  background-color: #ffce3a;
 }
 .notify-alert.alert-danger {
-  background-color: #dc3545;
+  background-color: #e04b59;
 }
 .notify-alert button[data-notify=dismiss] {
   margin-left: 5px;
@@ -14281,7 +14281,6 @@ be a descendant of the grid when it is being dragged.
 .btn .fa {
   font-size: 14px;
   margin-right: 5px;
-  vertical-align: middle;
 }
 
 .app-title {

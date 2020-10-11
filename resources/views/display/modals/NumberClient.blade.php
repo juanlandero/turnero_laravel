@@ -1,5 +1,5 @@
 <div class="modal fade" id="client-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document" style="margin-top: 20%">
+    <div class="modal-dialog" role="document" style="margin-top: 17%">
         <div class="modal-content" v-if="ticket.has_number">
             
             <div class="modal-header">
@@ -20,8 +20,6 @@
             <div class="modal-footer" style="margin: auto">
                 <button class="btn btn-secondary" type="button" data-toggle="modal" data-target="#sex-moal" v-on:click="ticket.has_number=false">NO. Continuar</button>
             </div>
-
-
         </div>
 
         <div class="modal-content" v-else>

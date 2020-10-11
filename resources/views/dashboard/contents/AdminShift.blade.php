@@ -138,8 +138,7 @@
 		<div class="row" v-if="isActive">
 			<!-- Panel izquierdo -->
 			<div class="col-md-4">
-				{{-- <a class="mb-2 btn btn-primary btn-block" href="">Siguiente turno</a> --}}
-				<div class="tile p-0" style="height: 400px; overflow-y: scroll;">
+				<div class="tile p-0 mb-0" style="height: 417px; overflow-y: scroll;">
 					<h4 class="tile-title folder-head text-center">En espera</h4>
 					<div class="tile-body">
 						<div class="row text-center my-2">
@@ -161,61 +160,61 @@
 
 			<!-- Panel derecho -->
 			<div class="col-md-8">
-				<div class="tile">
+				<div class="tile mb-0">
 					<div class="tile-title-w-btn">
 						<h3 class="title">Turno actual</h3>
 						<p>
-							<a class="btn btn-info icon-btn" href="#" v-on:click="nextShift()">
-								<i class="fa fa-check"></i> Siguiente turno
-							</a>
+							<button class="btn btn-info icon-btn" v-on:click="nextShift()">
+								<i class="fa fa-step-forward"></i> Siguiente turno
+							</button>
 						</p>
 					</div>
 
-					<div class="row text-center my-2">
-						<div class="col-3">
-							<h3><i class="fa fa-dashboard"></i>${ attending.shift }</h3>
+					<div class="row text-center my-3">
+						<div class="col-4">
+							<h3>${ attending.shift }</h3>
 							<p>TURNO</p>
 						</div>
-						<div class="col-3">
+						<div class="col-4">
 							<h3>${ attending.type }</h3>
 							<p>TIPO</p>
 						</div>
-						<div class="col-3">
+						<div class="col-4">
 							<h3>${ attending.speciality }</h3>
 							<p>ESPECIALIDAD</p>
-						</div>
-						<div class="col-3">
-							<h3>${ attending.time }</h3>
-							<p>GENERADO</p>
 						</div>
 					</div>
 
 					<div class="row line-head"></div>
 
-					<div class="row text-center my-2">
-						<div class="col-4">
-							<h3><i class="fa fa-dashboard"></i>${ attending.number }</h3>
-							<p>NÚMERO</p>
-						</div>
-						<div class="col-8">
-							<h3><i class="fa fa-dashboard"></i>${ attending.client }</h3>
+					<div class="row text-center my-3">
+						<div class="col-12">
+							<h3>${ attending.client }</h3>
 							<p>CLIENTE</p>
+						</div>
+						<div class="col-4">
+							<h3>${ attending.number }</h3>
+							<p>NÚMERO</p>
 						</div>
 						<div class="col-4">
 							<h3>${ attending.sex }</h3>
 							<p>SEXO</p>
 						</div>
+						<div class="col-4">
+							<h3>${ attending.time }</h3>
+							<p>GENERADO</p>
+						</div>
 					</div>
 
-					<div class="row">
+					<div class="row ">
 						<div class="col-4">
-							<button class="btn btn-danger btn-block" type="button" v-on:click="changeStatusShift(4)">Abandonado</button>
+							<button class="btn btn-outline-danger btn-block btn-lg" type="button" v-on:click="changeStatusShift(4)"><i class="fas fa-running"></i> Abandonado</button>
 						</div>
 						<div class="col-4">
-							<button class="btn btn-success btn-block" type="button" v-on:click="changeStatusShift(3)">Atender</button>
+							<button class="btn btn-outline-warning btn-block btn-lg" type="button" v-on:click="changeStatusShift(3)"><i class="fa fa-thumbs-up"></i> Finalizar</button>
 						</div>
 						<div class="col-4">
-							<button class="btn btn-success btn-block" type="button" v-on:click="changeStatusShift(3)">Atender</button>
+							<button class="btn btn-outline-secondary btn-block btn-lg" type="button" v-on:click="getListAdvisors()"><i class="fa fa-people-arrows"></i> Reasignar</button>
 						</div>
 					</div>
 				</div>
@@ -228,13 +227,14 @@
 				<button class="btn btn-primary btn-lg btn-block" type="button" v-on:click="setServiceOn()">Iniciar servicio</button>
 			</div>
 		</div>
+
+		@include('dashboard.modals.ReassignmentShift')
 	</main>
 
 	<script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
 	<script src="{{ asset('js/popper.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
 	<script src="{{ asset('js/main.js') }}"></script>
-	{{-- <script src="{{ asset('js/plugins/pace.min.js') }}"></script> --}}
 	<script src="{{ asset('js/plugins/bootstrap-notify.min.js') }}"></script>
 	
 	<script src="{{ asset('js/axios.js') }}"></script>
