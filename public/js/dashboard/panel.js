@@ -34,7 +34,13 @@ var appPanel = new Vue({
             number: '-',
         },
         shiftList:[],
-        advisors: []
+        advisors: [],
+        disabledButtons: {
+            buttonNext: false,
+            buttonAbandoned: true,
+            buttonFinalized: true,
+            buttonReassigned: true
+        }
     },
 
     methods: {
@@ -124,26 +130,19 @@ var appPanel = new Vue({
                     shiftId: shift_id
                 })
                 .then(function (response) {
-                    if (response.data[0].status == 1) {
+                    if (response.data[0].status == 1 || _that.shiftList.length == 0) {
                         _that.shiftList.push (
                             response.data[0]
                         )
                     } else {
-                        if (_that.shiftList.length == 0) {
-                            _that.shiftList.push (
-                                response.data[0]
-                            )
-                        } else {
-                            _that.shiftList.forEach(function (shift, index){
-                                if (shift.id > response.data[0].id && bk == false) {
-                                    _that.shiftList.splice(index, 0, response.data[0])
-                                    bk = true
-                                }
-                                console.log(shift.id+ "<=>"+ response.data[0].id)
-                            });
-                            
-                        }
-
+                        
+                        _that.shiftList.forEach(function (shift, index){
+                            if (shift.id > response.data[0].id && bk == false) {
+                                _that.shiftList.splice(index, 0, response.data[0])
+                                bk = true
+                            }
+                        });
+                        
                     }
                 })
                 .catch(function (error) {
@@ -175,6 +174,13 @@ var appPanel = new Vue({
                         _that.attending.sex = _that.shiftList[0].sex_client
         
                         _that.shiftList.splice(0, 1)
+                    }
+
+                    if (_that.attending.id != 0) {
+                        _that.disabledButtons.buttonNext = true
+                        _that.disabledButtons.buttonAbandoned = false
+                        _that.disabledButtons.buttonFinalized = false
+                        _that.disabledButtons.buttonReassigned = false
                     }
 
                     _that.notify(response.data.type, response.data.text, response.data.icon)
@@ -211,6 +217,9 @@ var appPanel = new Vue({
                 .then(function (response) {
                     $('#reassignment-modal').modal('hide')
                     _that.notify(response.data.type, response.data.text, response.data.icon)
+                    // setTimeout(function() {
+                        _that.setNotShiftAttending()
+                    // }, 2000)
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -231,9 +240,9 @@ var appPanel = new Vue({
                 })
                 .then(function (response) {
                     _that.notify(response.data.type, response.data.text, response.data.icon)
-                    setTimeout(function() {
+                    // setTimeout(function() {
                         _that.setNotShiftAttending()
-                    }, 3000)
+                    // }, 2000)
 
                 })
                 .catch(function (error) {
@@ -253,6 +262,11 @@ var appPanel = new Vue({
             this.attending.client = '-'
             this.attending.number = '-'
             this.attending.sex = '-'
+
+            this.disabledButtons.buttonNext = false
+            this.disabledButtons.buttonAbandoned = true
+            this.disabledButtons.buttonFinalized = true
+            this.disabledButtons.buttonReassigned = true
         },
 
         notify (type, message, icon) { 

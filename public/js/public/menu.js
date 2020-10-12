@@ -127,8 +127,8 @@ var appMenu = new Vue({
 
             axios.post('new-ticket', _that.ticket)
             .then(function (response) {
-                _that.clearTicketData()
                 $('#client-modal').modal('hide')
+                _that.clearTicketData()
             })
             .catch(function (error) {
                 console.log(error);

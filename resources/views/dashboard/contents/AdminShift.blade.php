@@ -164,7 +164,7 @@
 					<div class="tile-title-w-btn">
 						<h3 class="title">Turno actual</h3>
 						<p>
-							<button class="btn btn-info icon-btn" v-on:click="nextShift()">
+							<button class="btn btn-info icon-btn" v-on:click="nextShift()" v-bind:disabled="disabledButtons.buttonNext">
 								<i class="fa fa-step-forward"></i> Siguiente turno
 							</button>
 						</p>
@@ -208,13 +208,19 @@
 
 					<div class="row ">
 						<div class="col-4">
-							<button class="btn btn-outline-danger btn-block btn-lg" type="button" v-on:click="changeStatusShift(4)"><i class="fas fa-running"></i> Abandonado</button>
+							<button class="btn btn-outline-danger btn-block btn-lg" type="button" v-on:click="changeStatusShift(4)" v-bind:disabled="disabledButtons.buttonAbandoned">
+								<i class="fas fa-running"></i> Abandonado
+							</button>
 						</div>
 						<div class="col-4">
-							<button class="btn btn-outline-warning btn-block btn-lg" type="button" v-on:click="changeStatusShift(3)"><i class="fa fa-thumbs-up"></i> Finalizar</button>
+							<button class="btn btn-outline-warning btn-block btn-lg" type="button" v-on:click="changeStatusShift(3)" v-bind:disabled="disabledButtons.buttonFinalized">
+								<i class="fa fa-thumbs-up"></i> Finalizar
+							</button>
 						</div>
 						<div class="col-4">
-							<button class="btn btn-outline-secondary btn-block btn-lg" type="button" v-on:click="getListAdvisors()"><i class="fa fa-people-arrows"></i> Reasignar</button>
+							<button class="btn btn-outline-secondary btn-block btn-lg" type="button" v-on:click="getListAdvisors()" v-bind:disabled="disabledButtons.buttonReassigned">
+								<i class="fa fa-people-arrows"></i> Reasignar
+							</button>
 						</div>
 					</div>
 				</div>

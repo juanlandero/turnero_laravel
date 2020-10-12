@@ -140,8 +140,8 @@ class ShiftController extends Controller
         $return = [
             'state' => true,
             'text' => 'Haz reasignado un turno',
-            'type' => 'warning',
-            'icon' => 'fa fa-info-circle'
+            'type' => 'success',
+            'icon' => 'fa fa-exchange-alt'
         ];
 
         return $return;
