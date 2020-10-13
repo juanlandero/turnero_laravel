@@ -19,15 +19,18 @@ Route::post('/access', 'PublicDisplay\PublicDisplayController@verifyAccess');
 Route::prefix('public')->group(function () {
     Route::get('/', 'PublicDisplay\PublicDisplayController@publicMenu');
 
-    Route::get('/shift', 'PublicDisplay\PublicDisplayController@shiftSelector')->name('shift.generator');
-    Route::get('/shift/get-data', 'PublicDisplay\SpecialityController@getSpeciality');
-    Route::post('/shift/get-client', 'PublicDisplay\ClientController@verifyClient');
-    Route::post('/shift/new', 'Dashboard\ShiftController@create');
-    
+    Route::prefix('shift')->group(function () {
+        Route::get('/', 'PublicDisplay\PublicDisplayController@shiftSelector')->name('shift.generator');
+        Route::get('/get-data', 'PublicDisplay\SpecialityController@getSpeciality');
+        Route::post('/get-client', 'PublicDisplay\ClientController@verifyClient');
+        Route::post('/new', 'Dashboard\ShiftController@create');
+    });
 
-    Route::get('/display', 'PublicDisplay\PublicDisplayController@numberDisplay')->name('shift.list');
-    Route::get('/display/list', 'PublicDisplay\PublicDisplayController@getListShifts');
-    Route::post('/display/get', 'PublicDisplay\PublicDisplayController@getShift');
+    Route::prefix('display')->group(function () {
+        Route::get('/', 'PublicDisplay\PublicDisplayController@numberDisplay')->name('shift.list');
+        Route::get('/list', 'PublicDisplay\PublicDisplayController@getListShifts');
+        Route::post('/get', 'PublicDisplay\PublicDisplayController@getShift');
+    });   
 });
 
 
