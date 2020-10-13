@@ -47,7 +47,7 @@ var appPanel = new Vue({
         getListShift (dataChannel) {
             var _that = this
                             
-            axios.post('get-shift-advisor', {
+            axios.post('shift/get', {
                 type: 1,
                 userId: this.user
             })
@@ -80,11 +80,11 @@ var appPanel = new Vue({
         setServiceOn () {
             var _that = this
 
-            axios.post('get-user')
+            axios.post('shift/get-data')
             .then(function (response) {
 
                 if (response.data['channel'] == null) {
-                    _that.notify('info', 'No estas vinculado a una oficiona', 'fa fa-info-circle')
+                    _that.notify('warning', 'No estás vinculado a una oficina', 'fa fa-exclamation-triangle')
                 }else{
                     _that.menuChannel = response.data['channel'].menu_channel
                     _that.panelChannel = response.data['channel'].panel_channel
@@ -117,7 +117,7 @@ var appPanel = new Vue({
 
             this.isActive = true
         },
-        //revisar la llamada que hace
+
         addShift (dataChannel) {
             var _that = this
             var shift_id = dataChannel.idTicket
@@ -125,15 +125,13 @@ var appPanel = new Vue({
 
             if (dataChannel.idUser == this.user) {
                             
-                axios.post('get-shift-advisor', {
+                axios.post('shift/get', {
                     type: 2,
                     shiftId: shift_id
                 })
                 .then(function (response) {
                     if (response.data[0].status == 1 || _that.shiftList.length == 0) {
-                        _that.shiftList.push (
-                            response.data[0]
-                        )
+                        _that.shiftList.push (response.data[0])
                     } else {
                         
                         _that.shiftList.forEach(function (shift, index){
@@ -141,7 +139,7 @@ var appPanel = new Vue({
                                 _that.shiftList.splice(index, 0, response.data[0])
                                 bk = true
                             }
-                        });
+                        })
                         
                     }
                 })
@@ -155,10 +153,9 @@ var appPanel = new Vue({
             var _that = this
 
             if (this.shiftList.length > 0) {
-                // console.log('No vacia')
                 this.attending.id = this.shiftList[0].id
 
-                axios.post('next-shift', {
+                axios.post('shift/next', {
                     'shiftId': _that.attending.id,
                     'panel_channel': _that.panelChannel
                 })
@@ -190,14 +187,7 @@ var appPanel = new Vue({
                 })               
 
             } else {
-                $.notify({
-                    title: "  ",
-                    message: " No hay turnos por el momento.",
-                    icon: 'fa fa-info-circle' 
-                },{
-                    newest_on_top: true,
-                    type: "info"
-                })
+                this.notify("info", "No hay turnos por el momento.", "fa fa-info-circle")
                 this.setNotShiftAttending()
             }
         },
@@ -216,10 +206,8 @@ var appPanel = new Vue({
                 })
                 .then(function (response) {
                     $('#reassignment-modal').modal('hide')
+                    _that.setNotShiftAttending()
                     _that.notify(response.data.type, response.data.text, response.data.icon)
-                    // setTimeout(function() {
-                        _that.setNotShiftAttending()
-                    // }, 2000)
                 })
                 .catch(function (error) {
                     console.log(error)
@@ -234,16 +222,13 @@ var appPanel = new Vue({
 
             if (this.attending.id != 0) {
 
-                axios.post('status-shift', {
+                axios.post('shift/status', {
                     shiftId: this.attending.id,
                     typeStatus: status
                 })
                 .then(function (response) {
+                    _that.setNotShiftAttending()
                     _that.notify(response.data.type, response.data.text, response.data.icon)
-                    // setTimeout(function() {
-                        _that.setNotShiftAttending()
-                    // }, 2000)
-
                 })
                 .catch(function (error) {
                     console.log(error)

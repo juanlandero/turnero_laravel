@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\PublicDisplay;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Shift;
 use App\Office;
@@ -12,25 +13,34 @@ class PublicDisplayController extends Controller
         return view('Index');
     }
 
-    public function shiftSelector(){
-        return view('display/ShiftSelector');
+    public function publicMenu() {
+        return view('public.PublicMenu');
     }
 
-    public function getDataOffice(){
-        $officeId = session()->get('NUM_OFFICE');
+    public function verifyAccess(Request $request){
+        $numberOffice = $request->input('office');
 
-        $channel = Office::select('menu_channel')
-                            ->where([
-                                ['id', $officeId],
-                                ['is_active', 1],
-                            ])
-                            ->first();
+        $result = Office::where([
+                                ['office_key', $numberOffice],
+                                ['is_active', 1]
+                            ])->first();
 
-        return $channel;
+        if ($result != null) {
+            session()->put('NUM_OFFICE', $result->id);
+            session()->put('DATE', \App\Http\Controllers\OfficeController::setDate());
+
+            return ['success' => 'true', 'text' => 'public'];
+        } else {
+            return ['success' => 'false', 'text' => '¡Error! Código incorrecto'];
+        }
+    }
+
+    public function shiftSelector(){
+        return view('public/ShiftSelector');
     }
 
     public function numberDisplay(){
-        return view('display/NumberDisplay');
+        return view('public/NumberDisplay');
     }
 
     public function getListShifts(){
@@ -70,7 +80,7 @@ class PublicDisplayController extends Controller
                             ->join('user_offices', 'users.id', '=', 'user_offices.user_id')
                             ->join('boxes', 'user_offices.box_id', 'boxes.id')
                             ->where([
-                                ['shifts.shift_status_id', 1],
+                                ['shifts.shift_status_id', '<', 3],
                                 ['shifts.is_active', 1],
                                 ['shifts.created_at', 'like', session()->get('DATE').'%'],
                                 ['shifts.id', $shiftId]

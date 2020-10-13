@@ -35,7 +35,7 @@ var appDisplay = new Vue({
         getListTickets () {
             var _that = this
 
-            axios.get('list-shift')
+            axios.get('display/list')
             .then(function (response) {
                 _that.shiftList = response.data['listShift']
                 _that.menuChannel = response.data['channel'].menu_channel
@@ -70,7 +70,6 @@ var appDisplay = new Vue({
             })
 
             panelChannelPusher.bind('toPublicPanel', function(data) {
-                // console.log(data)
                 _that.atenddingShift (data.idTicket)
             })
 
@@ -83,7 +82,7 @@ var appDisplay = new Vue({
 
             if (shift_id != null) {
                             
-                axios.post('get-shift', {
+                axios.post('display/get', {
                     shiftId: shift_id
                 })
                 .then(function (response) {
@@ -102,10 +101,8 @@ var appDisplay = new Vue({
         atenddingShift (shiftId) {
             var _that = this
             if (this.shiftList.length > 0) {
-                // console.log('No vacia')
 
                 this.shiftList.forEach(function (shift, index, arr) {
-
                     if (shift.id == shiftId) {
                         _that.attending.id = shift.id
                         _that.attending.shift = shift.shift
@@ -116,7 +113,6 @@ var appDisplay = new Vue({
                 });
                 
             } else {
-                alert('No hay turnos por el momento')
                 this.setNotShiftAttending()
             }
         },

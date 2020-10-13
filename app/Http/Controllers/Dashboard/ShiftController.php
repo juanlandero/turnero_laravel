@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\SpecialityType;
 use App\Client;
@@ -49,7 +50,7 @@ class ShiftController extends Controller
 
         $specialityId = $request->input('speciality');
         $clientNumber = $request->input('client_number');
-        $sex = $request->input('sex');
+        $clientSex = $request->input('sex');
         $channel = $request->input('channel');
         $typeTicket = 1;
 
@@ -59,7 +60,7 @@ class ShiftController extends Controller
                                         ['is_active', 1]
                                 ])->first();
             
-            $sex = $dataClient->sex;
+            $clientSex = $dataClient->sex;
             $typeTicket = 2;
         }
 
@@ -70,8 +71,8 @@ class ShiftController extends Controller
         $newTicket->speciality_type_id  = $specialityId;
         $newTicket->office_id           = session()->get('NUM_OFFICE');
         $newTicket->shift_status_id     = 1;
-        $newTicket->user_advisor_id     = AdvisorController::selectAdvisor($specialityId);
-        $newTicket->sex_client          = $sex;
+        $newTicket->user_advisor_id     = \App\Http\Controllers\AdvisorController::selectAdvisor($specialityId);
+        $newTicket->sex_client          = $clientSex;
         $newTicket->number_client       = $clientNumber;
         $newTicket->has_incident        = 0;
         $newTicket->is_active           = 1;
@@ -139,7 +140,7 @@ class ShiftController extends Controller
         
         $return = [
             'state' => true,
-            'text' => 'Haz reasignado un turno',
+            'text' => 'EL turno <b>'.$reassignment->shift.'</b> ha sido reasignado',
             'type' => 'success',
             'icon' => 'fa fa-exchange-alt'
         ];
@@ -153,7 +154,7 @@ class ShiftController extends Controller
         $statusId = $request->input('typeStatus');
         $shiftText = '<b>Error.</b> No se pudo realizar la acción';
         $shiftIcon = 'fa fa-times-circle';
-        $shiftType = 'danger';
+        $shiftType = 'warning';
 
         $status = Shift::where('id', $shiftId)->first();
         
@@ -166,7 +167,7 @@ class ShiftController extends Controller
             if ($statusId == 3) {
                 $shiftText = "Turno <b>finalizado</b>";
                 $shiftIcon = 'fa fa-exclamation-triangle';
-                $shiftType = "warning";
+                // $shiftType = "warning";
             } elseif ($statusId == 4) {
                 $shiftText = "Turno <b>abandonado</b>";
                 $shiftIcon = "fas fa-walking";

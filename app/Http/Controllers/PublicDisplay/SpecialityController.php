@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\PublicDisplay;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -19,6 +19,14 @@ class SpecialityController extends Controller
     public function getSpeciality(){
         $arrSpecialities = array();
         $officeId = session()->get('NUM_OFFICE');
+
+        //BUSCAMOS EL CANAL DE ESTA PÁGINA
+        $objChannel = Office::select('menu_channel')
+                ->where([
+                    ['id', $officeId],
+                    ['is_active', 1],
+                ])
+                ->first();
 
         // BUSCAMOS LOS USARIOS DE SUCURSAL
         $objUserOffices = UserOffice::select('user_id', 'office_id')
@@ -61,6 +69,9 @@ class SpecialityController extends Controller
             }            
         }
 
-        return $arrSpecialities;
+        return [
+            'specialities'  => $arrSpecialities,
+            'channel'       => $objChannel->menu_channel
+        ];
     }
 }

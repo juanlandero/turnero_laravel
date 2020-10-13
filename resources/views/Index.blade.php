@@ -18,7 +18,7 @@
                 <h1>Madero</h1>
             </div> --}}
             <div class="login-box" id="app-login">
-                <form class="login-form" v-on:submit.prevent="verifyOfficeNumber">
+                <form class="login-form" v-on:submit.prevent="verifyPublicAccess">
                     @csrf
                     <h3 class="login-head"></i>Bienvenido</h3>
                     <div class="form-group mt-5">
@@ -47,10 +47,10 @@ var appLogin = new Vue({
         text_result: null
     },
     methods: {
-        verifyOfficeNumber (){
+        verifyPublicAccess (){
             var _that = this
         
-            axios.post('verify', {
+            axios.post('access', {
                 office: this.office
             })
             .then(function (response) {

@@ -13,21 +13,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'PublicDisplayController@index');
-Route::post('/verify', 'OfficeController@verifyOffice');
+Route::get('/', 'PublicDisplay\PublicDisplayController@index');
+Route::post('/access', 'PublicDisplay\PublicDisplayController@verifyAccess');
 
 Route::prefix('public')->group(function () {
-    Route::get('shift', 'PublicDisplayController@shiftSelector')->name('select.speciality');
-    Route::post('shift/get-speciality', 'SpecialityController@getSpeciality');
-    Route::post('shift/get-channel', 'PublicDisplayController@getDataOffice');
+    Route::get('/', 'PublicDisplay\PublicDisplayController@publicMenu');
+
+    Route::get('/shift', 'PublicDisplay\PublicDisplayController@shiftSelector')->name('shift.generator');
+    Route::get('/shift/get-data', 'PublicDisplay\SpecialityController@getSpeciality');
+    Route::post('/shift/get-client', 'PublicDisplay\ClientController@verifyClient');
+    Route::post('/shift/new', 'Dashboard\ShiftController@create');
     
-    Route::post('verify-client', 'ClientController@verifyClient');
-    Route::post('new-ticket', 'ShiftController@create');
 
-
-    Route::get('display', 'PublicDisplayController@numberDisplay');
-    Route::get('list-shift', 'PublicDisplayController@getListShifts');
-    Route::post('get-shift', 'PublicDisplayController@getShift');
+    Route::get('/display', 'PublicDisplay\PublicDisplayController@numberDisplay')->name('shift.list');
+    Route::get('/display/list', 'PublicDisplay\PublicDisplayController@getListShifts');
+    Route::post('/display/get', 'PublicDisplay\PublicDisplayController@getShift');
 });
 
 
@@ -68,15 +68,16 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::post('/create', ['as' => 'specialty-store', 'uses' => 'Dashboard\SpecialtiesController@store']);
     });
 
-    Route::get('shift', 'DashboardController@adminShift');
-    Route::post('get-user', 'DashboardController@getUser');
-    Route::post('get-shift-advisor', 'DashboardController@getShiftAdvisor');
-    Route::post('status-shift', 'ShiftController@changeStatusShift');
-    Route::post('next-shift', 'ShiftController@nextShift');
 
     Route::group(['prefix' => 'shift'], function () {
-        Route::get('/get-advisors', 'DashboardController@getAdvisors');
-        Route::post('/reassignment', 'ShiftController@reassignmentShift');
+        Route::get('/', 'Dashboard\DashboardController@adminShift');
+        Route::post('/get', 'Dashboard\DashboardController@getShiftAdvisor');
+        Route::post('/get-data', 'Dashboard\DashboardController@getDataPanel');
+        Route::get('/get-advisors', 'Dashboard\DashboardController@getAdvisors');
+        
+        Route::post('/next', 'Dashboard\ShiftController@nextShift');
+        Route::post('/status', 'Dashboard\ShiftController@changeStatusShift');
+        Route::post('/reassignment', 'Dashboard\ShiftController@reassignmentShift');
     });
 });
 

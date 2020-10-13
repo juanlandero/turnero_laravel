@@ -28,29 +28,17 @@ var appMenu = new Vue({
         }
     },
     mounted: function(){
-        this.getSpecialities()
-        this.getChannel()
+        this.gatData()
     },
     methods: {
 
-        getChannel(){
+        gatData () {
             var _that = this
 
-            axios.post('shift/get-channel')
+            axios.get('shift/get-data')
             .then(function (response) {
-                _that.ticket.channel = response.data.menu_channel
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
-        },
-
-        getSpecialities () {
-            var _that = this
-
-            axios.post('shift/get-speciality')
-            .then(function (response) {
-                _that.menu = response.data
+                _that.menu = response.data.specialities
+                _that.ticket.channel = response.data.channel
             })
             .catch(function (error) {
                 console.log(error);
@@ -80,52 +68,29 @@ var appMenu = new Vue({
             }
 
             if (this.ticket.client_number != null) {
-                axios.post('verify-client', {
+                axios.post('shift/get-client', {
                     client: this.ticket.client_number
                 })
                 .then(function (response) {
-                    // console.log(response.data)
-
                     if (response.data.success == 'true') {
                         _that.ticket.sex = response.data['client'].sex
                         _that.createTicket()
                     } else{
-                        $.notify({
-                            title: "  ",
-                            message: " Número de cliente incorrecto.",
-                            icon: 'fa fa-times-circle' 
-                        },{
-                            allow_dismiss: false,
-                            newest_on_top: true,
-                            z_index: 10310,
-                            type: "danger"
-                        })
-                        // alert('No existe su numero de cliente')
+                        _that.notify("danger", "Número de cliente incorrecto.", "fa fa-times-circle")
                     }
                 })
                 .catch(function (error) {
                     console.log(error);
                 })
             } else {
-               
-                $.notify({
-                    title: "  ",
-                    message: " Inserte su número de cliente.",
-                    icon: 'fa fa-exclamation-circle' 
-                },{
-                    allow_dismiss: false,
-                    newest_on_top: true,
-	                z_index: 10310,
-                    type: "warning"
-                })
-
+                this.notify("warning", "Inserte su número de cliente.", "fa fa-exclamation-circle")
             }
         },
 
         createTicket () {
             var _that = this
 
-            axios.post('new-ticket', _that.ticket)
+            axios.post('shift/new', _that.ticket)
             .then(function (response) {
                 $('#client-modal').modal('hide')
                 _that.clearTicketData()
@@ -153,5 +118,17 @@ var appMenu = new Vue({
             this.ticket.has_number = true
             this.ticket.sex = null
         },
+
+        notify (type, message, icon) { 
+            $.notify({
+                title: "",
+                message: message,
+                icon: icon 
+            },{
+                newest_on_top: true,
+                type: type,
+                z_index: 1100,
+            })
+        }
     }
 })

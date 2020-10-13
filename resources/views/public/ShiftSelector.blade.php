@@ -34,7 +34,7 @@
                 </div>
             </div>
 
-            @include('display.modals.NumberClient')
+            @include('public.modals.NumberClient')
 		</main>     
     </div>
 
