@@ -10,7 +10,14 @@
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-		
+
+
+		<style>
+			crr {
+				max-width: 100%;
+				height: auto;
+			}
+		</style>
 </head>
 <body>
 	
@@ -43,7 +50,7 @@
                         </div>
 					</div> 
 
-					<div class="rdow tile" style="height: 70%">
+					<div class="tile" style="height: 360px; overflow-y: hidden">
                         <item-shift v-for="shift in shiftList"
                             v-bind:key = "shift.id"
                             :id = "shift.id"
@@ -66,9 +73,12 @@
 							<h1>${ attending.box }</h1>
 							<p>Caja</p>
 						</div>
-
+					</div>
+					<div class="row justify-content-center">
 						<!-- CARRUSEL -->
-						{{-- @include('display.components.Carousel') --}}
+						<div class="col-11">
+							@include('public.components.Carousel')
+						</div>
 					</div>
 				</div>
 			</div>
@@ -76,7 +86,7 @@
 		</main>
 
 
-		<div class="row align-items-center justify-content-center" v-else style="height: 300px">
+		<div class="row align-items-center justify-content-center" v-else style="height: 450px">
 			<div class="col-5 ">
 				<button class="btn btn-primary btn-lg btn-block" type="button"  v-on:click="pusher()">Iniciar servicio</button>
 			</div>
@@ -86,17 +96,13 @@
 	{{-- Scripts --}}
 	<script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
 	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
-	{{-- <script src="{{ asset('js/main.js') }}"></script>
-	<script src="{{ asset('js/popper.min.js') }}"></script> --}}
 	
 	<script src="{{ asset('js/axios.js') }}"></script>
 	<script src="{{ asset('js/vue.js') }}"></script>
 	<script src="{{ asset('js/public/display.js') }}"></script>
 
 	<script>
-
 		$('.carousel').carousel()
-
 	</script>
 </body>
 </html>

@@ -6,7 +6,7 @@ Vue.component('item-shift', {
     ],
     template: `
         <div class="row text-center my-1">
-            <div class="col-12 line-head text-success"><h1>{{ shift }}</h1></div>
+            <div class="col-12 line-head text-info"><h1>{{ shift }}</h1></div>
         </div>
     `,
 })
