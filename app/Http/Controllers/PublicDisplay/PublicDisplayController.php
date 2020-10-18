@@ -4,8 +4,9 @@ namespace App\Http\Controllers\PublicDisplay;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Shift;
 use App\Office;
+use App\Shift;
+use App\Ad;
 
 class PublicDisplayController extends Controller
 {
@@ -40,7 +41,16 @@ class PublicDisplayController extends Controller
     }
 
     public function numberDisplay(){
-        return view('public/NumberDisplay');
+
+        $officeId = session()->get('NUM_OFFICE');
+
+        $objAds = Ad::where([
+                        ['office_id', $officeId],
+                        ['is_active', 1]
+                    ])
+                    ->get();
+
+        return view('public/NumberDisplay', ['ads' => $objAds]);
     }
 
     public function getListShifts(){

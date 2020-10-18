@@ -5,8 +5,8 @@ Vue.component('item-shift', {
         'box',
     ],
     template: `
-        <div class="row text-center my-1">
-            <div class="col-12 line-head text-info"><h1>{{ shift }}</h1></div>
+        <div class="row text-center ">
+            <div class="col-12 line-head text-info mt-2"><h1 class="mb-0">{{ shift }}</h1></div>
         </div>
     `,
 })
