@@ -21,12 +21,15 @@ class SpecialityController extends Controller
         $officeId = session()->get('NUM_OFFICE');
 
         //BUSCAMOS EL CANAL DE ESTA PÁGINA
-        $objChannel = Office::select('menu_channel')
-                ->where([
-                    ['id', $officeId],
-                    ['is_active', 1],
-                ])
-                ->first();
+        $objChannel = Office::select(
+                                'menu_channel',
+                                'address'
+                            )
+                            ->where([
+                                ['id', $officeId],
+                                ['is_active', 1],
+                            ])
+                            ->first();
 
         // BUSCAMOS LOS USARIOS DE SUCURSAL
         $objUserOffices = UserOffice::select('user_id', 'office_id')
@@ -71,7 +74,8 @@ class SpecialityController extends Controller
 
         return [
             'specialities'  => $arrSpecialities,
-            'channel'       => $objChannel->menu_channel
+            'channel'       => $objChannel->menu_channel,
+            'address'       => $objChannel->address
         ];
     }
 }

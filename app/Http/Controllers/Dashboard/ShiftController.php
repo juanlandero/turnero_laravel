@@ -80,7 +80,22 @@ class ShiftController extends Controller
 
         event(new MenuGeneratorMsg($channel, $newTicket->id, $newTicket->user_advisor_id));
 
-        return ['id' => $newTicket->id];
+        $ticket = Shift::join('shift_types', 'shifts.shift_type_id', '=', 'shift_types.id')
+                        // ->join('speciality_types', 'shifts.speciality_type_id', '=', 'speciality_types.id')
+                        ->join('user_offices', 'shifts.user_advisor_id', '=', 'user_offices.user_id')
+                        ->join('boxes', 'user_offices.box_id', '=', 'boxes.id')
+                        ->select(
+                            'shifts.shift',
+                            // 'shift_types.shift_type as type',
+                            // 'speciality_types.name as speciality',
+                            'boxes.box_name as box',
+                            // 'shifts.sex_client',
+                            'shifts.created_at as hora'
+                        )
+                        ->where('shifts.id', $newTicket->id)
+                        ->first();
+
+        return ['ticket' => $ticket];
     }
 
     public function nextShift(Request $request){

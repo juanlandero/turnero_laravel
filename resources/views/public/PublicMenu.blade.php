@@ -33,30 +33,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tile-footer">
+                    {{-- <div class="tile-footer">
                         <p>Cuando presiones el botón, esta pantalla se cerrará automaticamente.</p>
-                    </div>
+                    </div> --}}
                 </div>
                     
             </div>
         </section>
-
-
-        {{-- <script src="{{ asset('js/vue.js') }}"></script>
-
-    <script>
-        var appLogin = new Vue({
-            el: '#app-login'
-            methods: {
-                openGenerator () {
-                    window.open("https://www.w3schools.com", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400"); 
-                },
-
-                openList () {
-
-                }
-            }
-        })
-    </script> --}}
     </body>
 </html>
