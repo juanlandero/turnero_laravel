@@ -33,7 +33,10 @@ class SpecialityController extends Controller
 
         // BUSCAMOS LOS USARIOS DE SUCURSAL
         $objUserOffices = UserOffice::select('user_id', 'office_id')
-                                        ->where('office_id', $officeId)
+                                        ->where([
+                                            ['office_id', $officeId],
+                                            ['is_active', 1]
+                                        ])
                                         ->get();
 
         // BUSCAMOS LAS ESPECIALIDADES DE CADA USUARIO 

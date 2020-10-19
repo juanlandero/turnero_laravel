@@ -81,6 +81,8 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::post('/next', 'Dashboard\ShiftController@nextShift');
         Route::post('/status', 'Dashboard\ShiftController@changeStatusShift');
         Route::post('/reassignment', 'Dashboard\ShiftController@reassignmentShift');
+
+        Route::post('/break', 'AdvisorController@break');
     });
 });
 

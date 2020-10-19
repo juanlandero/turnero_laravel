@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Events\UserOnlineMsg;
 use App\SpecialityTypeUser;
 use App\UserOffice;
 use App\Shift;
@@ -106,6 +108,74 @@ class AdvisorController extends Controller
             $return = $objAdvisorCount[0]->id;
         }
         
+        return $return;
+    }
+
+    public function break(Request $request){
+
+        $case = $request->input('case');
+        $userId = Auth::id();
+        $officeId = session()->get('NUM_OFFICE');
+        $return = null;
+
+        $changeStatus = UserOffice::where([
+                                        ['office_id', 1],
+                                        ['user_id', 1]
+                                    ])
+                                    // ->select('is_active')
+                                    ->first();
+
+        switch ($case) {
+            case 1:
+                // DESDE INICIO DEL SERVICIO, SOLO SE COMPRUEBA EL ESTADO DEL USUARIO
+                $return = [
+                    'case' => 1,
+                    'state' => $changeStatus->is_active,
+                    'btnText' => (($changeStatus->is_active == 1)? 'Cerrar caja':'Abrir caja'),
+                    'btnType' => (($changeStatus->is_active == 1)? 'btn-danger':'btn-success')
+                ];
+                break;
+
+            case 2:
+                //DESDE EL BOTÓN, SOLO CAMBIAMOS EL ESTADO DEL USUARIO
+                if ($changeStatus->is_active == true) {
+
+                    $changeStatus->is_active = 0;
+                    $changeStatus->save();
+        
+                    $return = [
+                        'case' => 2,
+                        'state' => $changeStatus->is_active,
+                        'text' => 'Fuera de línea',
+                        'type' => 'danger',
+                        'icon' => 'far fa-times-circle',
+                        'btnText' => 'Abrir caja',
+                        'btnType' => 'btn-success'
+                    ];
+                } else {
+                    $changeStatus->is_active = 1;
+                    $changeStatus->save();
+        
+                    $return = [
+                        'case' => 2,
+                        'state' => $changeStatus->is_active,
+                        'text' => 'En línea',
+                        'type' => 'success',
+                        'icon' => 'far fa-check-circle',
+                        'btnText' => 'Cerrar caja',
+                        'btnType' => 'btn-danger'
+        
+                    ];
+                }
+
+                event(new UserOnlineMsg("centro-0129-as", 12));
+
+                break;
+            
+            default:
+                # code...
+                break;
+        }
         return $return;
     }
 }

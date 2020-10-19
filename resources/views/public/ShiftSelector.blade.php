@@ -9,6 +9,8 @@
     <link href="{{ asset('css/all.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/print.css') }}" rel="stylesheet">
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    
 </head>
 <body>
 	<div class="full-display">

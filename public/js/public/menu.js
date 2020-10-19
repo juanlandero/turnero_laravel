@@ -41,11 +41,11 @@ var appMenu = new Vue({
         // }
     },
     mounted: function(){
-        this.gatData()
+        this.getData()
     },
     methods: {
 
-        gatData () {
+        getData () {
             var _that = this
             const fecha = new Date();
             const meses = [
@@ -68,11 +68,33 @@ var appMenu = new Vue({
             axios.get('shift/get-data')
             .then(function (response) {
                 _that.menu = response.data.specialities
-                _that.office.channel = response.data.channel
-                _that.office.address = response.data.address
+
+                // if (_that.office.channel != null) {
+                    _that.office.channel = response.data.channel
+                    _that.office.address = response.data.address
+                // }
             })
             .catch(function (error) {
                 console.log(error)
+            })
+
+            setTimeout(function(){ _that.pusher() }, 3000);
+        },
+
+        pusher () {        
+            // Enable pusher logging - don't include this in production
+            Pusher.logToConsole = true
+    
+            var _that = this
+            var pusher = new Pusher('56423364aba2e84b5180', {
+                cluster: 'us2'
+            })
+            var menuChannelPusher = pusher.subscribe(this.office.channel)
+
+            menuChannelPusher.bind('toMenu', function(data) {
+                if (_that.menu != null) {
+                    _that.getData()
+                }
             })
         },
 

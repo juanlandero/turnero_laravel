@@ -138,7 +138,14 @@
 		<div class="row" v-if="isActive">
 			<!-- Panel izquierdo -->
 			<div class="col-md-4">
-				<div class="tile p-0 mb-0" style="height: 417px; overflow-y: scroll;">
+				{{-- <div class="toggle-flip">
+					<label>
+					  <input type="checkbox"><span class="flip-indecator" data-toggle-on="ON" data-toggle-off="OFF"></span>
+					</label>
+				</div> --}}
+				<button class="btn btn-lg btn-block mb-2" :class="userStatus.btnType" type="button" v-on:click="userBreak(2)">${ userStatus.text }</button>
+
+				<div class="tile p-0 mb-0" style="height: 380px; overflow-y: scroll;">
 					<h4 class="tile-title folder-head text-center">En espera</h4>
 					<div class="tile-body">
 						<div class="row text-center my-2">

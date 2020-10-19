@@ -138,8 +138,8 @@ class DashboardController extends Controller
         $objAdvisors = UserOffice::join('users', 'user_offices.user_id', '=', 'users.id')
                                     ->where([
                                         ['user_offices.office_id', $office->office_id],
-                                        ['user_offices.is_active', 1],
                                         ['user_offices.user_id', '<>', Auth::id()],
+                                        ['user_offices.is_active', 1],
                                         ['users.user_type_id', 2]
                                     ])
                                     ->select(

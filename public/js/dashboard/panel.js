@@ -40,6 +40,10 @@ var appPanel = new Vue({
             buttonAbandoned: true,
             buttonFinalized: true,
             buttonReassigned: true
+        },
+        userStatus: {
+            text: 'Loading...',
+            btnType: 'btn-LIGHT'
         }
     },
 
@@ -90,6 +94,7 @@ var appPanel = new Vue({
                     _that.panelChannel = response.data['channel'].panel_channel
                     _that.user = response.data['idUser']
                     _that.pusher()
+                    _that.userBreak(1)
                     _that.getListShift()
                 }
 
@@ -252,6 +257,26 @@ var appPanel = new Vue({
             this.disabledButtons.buttonAbandoned = true
             this.disabledButtons.buttonFinalized = true
             this.disabledButtons.buttonReassigned = true
+        },
+
+        userBreak (check) {
+            var _that = this
+                            
+            axios.post('shift/break', {
+                case: check
+            })
+            .then(function (response) {
+                _that.userStatus.text = response.data.btnText
+                _that.userStatus.btnType = response.data.btnType
+
+                if (response.data.case == 2) {
+                    _that.notify(response.data.type, response.data.text, response.data.icon)
+                }   
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+
         },
 
         notify (type, message, icon) { 
