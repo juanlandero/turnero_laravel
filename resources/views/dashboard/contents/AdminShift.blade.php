@@ -13,6 +13,15 @@
     <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
 	<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
+	<style>
+		.area{
+			background-color: #eaa3a3;
+			color: white;
+			border-radius: 30px;
+		    padding: 6px;
+		}
+	</style>
+
 </head>
 <body class="app sidebar-mini">
 	<!-- Navbar-->
@@ -138,12 +147,10 @@
 		<div class="row" v-if="isActive">
 			<!-- Panel izquierdo -->
 			<div class="col-md-4">
-				{{-- <div class="toggle-flip">
-					<label>
-					  <input type="checkbox"><span class="flip-indecator" data-toggle-on="ON" data-toggle-off="OFF"></span>
-					</label>
-				</div> --}}
-				<button class="btn btn-lg btn-block mb-2" :class="userStatus.btnType" type="button" v-on:click="userBreak(2)">${ userStatus.text }</button>
+				<button class="btn btn-block mb-2" :class="userStatus.btnType" type="button" v-on:click="userBreak(2)">
+					<i class="fas fa-circle" style="margin-right: 5px;"></i>
+					${ userStatus.text }
+				</button>
 
 				<div class="tile p-0 mb-0" style="height: 380px; overflow-y: scroll;">
 					<h4 class="tile-title folder-head text-center">En espera</h4>
@@ -215,17 +222,17 @@
 
 					<div class="row ">
 						<div class="col-4">
-							<button class="btn btn-outline-danger btn-block btn-lg" type="button" v-on:click="changeStatusShift(4)" v-bind:disabled="disabledButtons.buttonAbandoned">
+							<button class="btn btn-outline-danger btn-block" type="button" v-on:click="changeStatusShift(4)" v-bind:disabled="disabledButtons.buttonAbandoned">
 								<i class="fas fa-running"></i> Abandonado
 							</button>
 						</div>
 						<div class="col-4">
-							<button class="btn btn-outline-warning btn-block btn-lg" type="button" v-on:click="changeStatusShift(3)" v-bind:disabled="disabledButtons.buttonFinalized">
+							<button class="btn btn-outline-warning btn-block" type="button" v-on:click="changeStatusShift(3)" v-bind:disabled="disabledButtons.buttonFinalized">
 								<i class="fa fa-thumbs-up"></i> Finalizar
 							</button>
 						</div>
 						<div class="col-4">
-							<button class="btn btn-outline-secondary btn-block btn-lg" type="button" v-on:click="getListAdvisors()" v-bind:disabled="disabledButtons.buttonReassigned">
+							<button class="btn btn-outline-secondary btn-block" type="button" v-on:click="getListAdvisors()" v-bind:disabled="disabledButtons.buttonReassigned">
 								<i class="fa fa-people-arrows"></i> Reasignar
 							</button>
 						</div>

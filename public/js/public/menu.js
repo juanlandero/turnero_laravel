@@ -162,10 +162,10 @@ var appMenu = new Vue({
                 $('#box').html('CAJA: '+response.data.ticket.box)
                 $('#hours').html(response.data.ticket.hora.substring(11, 19))
 
-                printJS({
-                    printable:'ticket',
-                    type:'html'
-                })
+                // printJS({
+                //     printable:'ticket',
+                //     type:'html'
+                // })
 
                 _that.clearTicketData()
             })

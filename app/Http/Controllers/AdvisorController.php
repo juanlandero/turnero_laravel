@@ -119,10 +119,10 @@ class AdvisorController extends Controller
         $return = null;
 
         $changeStatus = UserOffice::where([
-                                        ['office_id', 1],
-                                        ['user_id', 1]
+                                        ['office_id', $officeId],
+                                        ['user_id', $userId]
                                     ])
-                                    // ->select('is_active')
+                                    // ->select('is_active')º
                                     ->first();
 
         switch ($case) {
@@ -131,8 +131,8 @@ class AdvisorController extends Controller
                 $return = [
                     'case' => 1,
                     'state' => $changeStatus->is_active,
-                    'btnText' => (($changeStatus->is_active == 1)? 'Cerrar caja':'Abrir caja'),
-                    'btnType' => (($changeStatus->is_active == 1)? 'btn-danger':'btn-success')
+                    'btnText' => (($changeStatus->is_active == 1)? 'Desconectar':'Conectar'),
+                    'btnType' => (($changeStatus->is_active == 1)? 'btn-outline-danger':'btn-outline-success')
                 ];
                 break;
 
@@ -146,11 +146,11 @@ class AdvisorController extends Controller
                     $return = [
                         'case' => 2,
                         'state' => $changeStatus->is_active,
-                        'text' => 'Fuera de línea',
-                        'type' => 'danger',
+                        'text' => '<b>Desconectado</b>: No recibo turnos',
+                        'type' => 'info',
                         'icon' => 'far fa-times-circle',
-                        'btnText' => 'Abrir caja',
-                        'btnType' => 'btn-success'
+                        'btnText' => 'Conectar',
+                        'btnType' => 'btn-outline-success'
                     ];
                 } else {
                     $changeStatus->is_active = 1;
@@ -159,11 +159,11 @@ class AdvisorController extends Controller
                     $return = [
                         'case' => 2,
                         'state' => $changeStatus->is_active,
-                        'text' => 'En línea',
-                        'type' => 'success',
+                        'text' => '<b>Conectado</b>: Disponible para atender',
+                        'type' => 'info',
                         'icon' => 'far fa-check-circle',
-                        'btnText' => 'Cerrar caja',
-                        'btnType' => 'btn-danger'
+                        'btnText' => 'Desconectar',
+                        'btnType' => 'btn-outline-danger'
         
                     ];
                 }
