@@ -84,6 +84,11 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
 
         Route::post('/break', 'AdvisorController@break');
     });
+
+    Route::group(['prefix' => 'report'], function () {
+        Route::get('/', 'Dashboard\ReportsController@index');
+        Route::get('/general', 'Dashboard\ReportsController@generalReport')->name('general.report');
+    });
 });
 
 

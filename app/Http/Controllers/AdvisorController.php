@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Events\UserOnlineMsg;
 use App\SpecialityTypeUser;
 use App\UserOffice;
+use App\Office;
 use App\Shift;
 use App\User;
 
@@ -115,11 +116,18 @@ class AdvisorController extends Controller
 
         $case = $request->input('case');
         $userId = Auth::id();
-        $officeId = session()->get('NUM_OFFICE');
         $return = null;
 
+        $channel = Office::join('user_offices', 'offices.id', '=', 'user_offices.office_id')
+                                    ->where('user_offices.user_id', $userId)
+                                    ->select(
+                                        'offices.user_channel',
+                                        'offices.id as office'
+                                    )
+                                    ->first();
+
         $changeStatus = UserOffice::where([
-                                        ['office_id', $officeId],
+                                        ['office_id', $channel->office],
                                         ['user_id', $userId]
                                     ])
                                     // ->select('is_active')º
@@ -137,6 +145,9 @@ class AdvisorController extends Controller
                 break;
 
             case 2:
+
+                
+
                 //DESDE EL BOTÓN, SOLO CAMBIAMOS EL ESTADO DEL USUARIO
                 if ($changeStatus->is_active == true) {
 
@@ -168,7 +179,7 @@ class AdvisorController extends Controller
                     ];
                 }
 
-                event(new UserOnlineMsg("centro-0129-as", 12));
+                event(new UserOnlineMsg($channel->user_channel, 12));
 
                 break;
             

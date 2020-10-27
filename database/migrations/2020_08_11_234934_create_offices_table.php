@@ -20,6 +20,7 @@ class CreateOfficesTable extends Migration
             $table->string('phone', 15)->nullable();
             $table->string('menu_channel', 45);
             $table->string('panel_channel', 45);
+            $table->string('user_channel', 45);
             $table->string('office_key', 15);
 
             $table->foreignId('municipality_id')->constrained('municipalities');

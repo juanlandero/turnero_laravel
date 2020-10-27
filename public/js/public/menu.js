@@ -20,7 +20,8 @@ var appMenu = new Vue({
     data: {
         menu: [],
         office:{
-            channel: null,
+            menuchannel: null,
+            userChannel: null,
             address: null,
             date: null
         },
@@ -70,7 +71,8 @@ var appMenu = new Vue({
                 _that.menu = response.data.specialities
 
                 // if (_that.office.channel != null) {
-                    _that.office.channel = response.data.channel
+                    _that.office.menuchannel = response.data.menu_channel
+                    _that.office.userChannel = response.data.user_channel
                     _that.office.address = response.data.address
                 // }
             })
@@ -89,7 +91,7 @@ var appMenu = new Vue({
             var pusher = new Pusher('56423364aba2e84b5180', {
                 cluster: 'us2'
             })
-            var menuChannelPusher = pusher.subscribe(this.office.channel)
+            var menuChannelPusher = pusher.subscribe(this.office.userChannel)
 
             menuChannelPusher.bind('toMenu', function(data) {
                 if (_that.menu != null) {

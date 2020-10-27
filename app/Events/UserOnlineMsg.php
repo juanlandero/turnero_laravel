@@ -15,17 +15,16 @@ class UserOnlineMsg implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $channel;
-    public $idTicket;
-    public $idUser;
+    public $message;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($channel, $ban)
+    public function __construct($channel, $msg)
     {
         $this->channel = $channel;
-        $this->idTicket = $ban;
+        $this->message = $msg;
     }
 
     /**

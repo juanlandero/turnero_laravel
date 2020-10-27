@@ -23,6 +23,7 @@ class SpecialityController extends Controller
         //BUSCAMOS EL CANAL DE ESTA PÁGINA
         $objChannel = Office::select(
                                 'menu_channel',
+                                'user_channel',
                                 'address'
                             )
                             ->where([
@@ -77,7 +78,8 @@ class SpecialityController extends Controller
 
         return [
             'specialities'  => $arrSpecialities,
-            'channel'       => $objChannel->menu_channel,
+            'user_channel'  => $objChannel->user_channel,
+            'menu_channel'  => $objChannel->menu_channel,
             'address'       => $objChannel->address
         ];
     }
