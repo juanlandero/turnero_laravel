@@ -33,7 +33,7 @@
         <div class="tile">
             <div class="tile-title-w-btn">
                 <h3 class="title">Reporte general</h3>
-                <p><a class="btn btn-primary icon-btn" href="{{ route('general.report') }}"><i class="fa fa-plus"></i>Generar</a></p>
+                <p><a class="btn btn-primary icon-btn" href="{{ route('general.report') }}"><i class="fa fa-file"></i>Generar</a></p>
             </div>
             <div class="tile-body">
                 Genere un reporte con los todos los datos de su sucursal.
@@ -41,53 +41,17 @@
         </div>
     </div>
 
-    {{-- <div class="col-md-12">
+    <div class="col-md-6">
         <div class="tile">
-            <div class="tile-title">
-                <div class="row">
-                    <div class="col-md-12 text-right">
-                        <a href="/dashboard/specialties/create" class="btn btn-primary" role="button">Nueva especialidad</a>
-                    </div>
-                </div>
+            <div class="tile-title-w-btn">
+                <h3 class="title">Reporte de turnos</h3>
+                <p><a class="btn btn-primary icon-btn" href="{{ route('shift.report') }}"><i class="fa fa-file"></i>Generar</a></p>
             </div>
             <div class="tile-body">
-
-                <div class="table-responsive">
-                    <table class="table table-hover table-bordered" id="dataTable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Descripción</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($lstSpecialties as $item)
-                                <tr>
-                                    <td>{{ $item->id }}</td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->description }}</td>
-                                    <td>
-                                        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                                            <button class="btn btn-primary" type="button"><i class="fa fa-cogs fa-lg"></i></button>
-                                            <div class="btn-group" role="group">
-                                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="/dashboard/specialties/edit/{{ $item->id }}">Editar</a>
-                                                    <a class="dropdown-item" href="#">Eliminar</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                Genere un reporte con los turnos generados durante el día.
             </div>
         </div>
-    </div> --}}
+    </div>
 </div>
 @endsection
 

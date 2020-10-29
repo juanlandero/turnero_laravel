@@ -88,6 +88,7 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
     Route::group(['prefix' => 'report'], function () {
         Route::get('/', 'Dashboard\ReportsController@index');
         Route::get('/general', 'Dashboard\ReportsController@generalReport')->name('general.report');
+        Route::get('/shift', 'Dashboard\ReportsController@shiftReport')->name('shift.report');
     });
 });
 
