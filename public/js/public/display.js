@@ -15,6 +15,7 @@ var appDisplay = new Vue({
     delimiters: ['${', '}'],
     el: '#app-public-display',
     data: {
+        audio: new Audio("/audio/chime.mp3"),   
         serviceOn: false,
         menuChannel: null,
         panelChannel: null,
@@ -60,8 +61,8 @@ var appDisplay = new Vue({
             var pusher = new Pusher('56423364aba2e84b5180', {
                 cluster: 'us2'
             })
-            var menuChannelPusher = pusher.subscribe(this.menuChannel);
-            var panelChannelPusher = pusher.subscribe(this.panelChannel);
+            var menuChannelPusher = pusher.subscribe(this.menuChannel)
+            var panelChannelPusher = pusher.subscribe(this.panelChannel)
 
             menuChannelPusher.bind('toPublicPanel', function(data) {
                 if (data != null) {
@@ -71,6 +72,7 @@ var appDisplay = new Vue({
 
             panelChannelPusher.bind('toPublicPanel', function(data) {
                 _that.atenddingShift (data.idTicket)
+                _that.audio.play()
             })
 
             this.serviceOn = true
@@ -110,7 +112,7 @@ var appDisplay = new Vue({
 
                         _that.shiftList.splice(index, 1)
                     } 
-                });
+                })
                 
             } else {
                 this.setNotShiftAttending()
