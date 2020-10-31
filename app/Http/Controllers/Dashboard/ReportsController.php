@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\SpecialityType;
 use App\UserOffice;
 use App\ShiftStatus;
+use App\Incident;
 use App\Office;
 use App\Shift;
 use PDF;
@@ -16,7 +17,23 @@ use PDF;
 class ReportsController extends Controller
 {
     public function index(){
-        return view('dashboard.contents.reports.Index');
+
+        $officeId = UserOffice::where('user_id', Auth::id())->select('office_id')->first();
+
+        $objAdvisor = UserOffice::join('users', 'user_offices.user_id', 'users.id')
+                                ->where([
+                                    ['office_id', $officeId->office_id],
+                                    ['users.user_type_id', 2]
+                                ])
+                                ->select(
+                                    'users.id',
+                                    'users.name',
+                                    'users.first_name',
+                                    'users.second_name'
+                                )
+                                ->get();
+
+        return view('dashboard.contents.reports.Index', ['advisors' => $objAdvisor]);
     }
 
     public function generalReport(){
@@ -116,9 +133,6 @@ class ReportsController extends Controller
                                         )
                                         ->get();
 
-
-                                        // return $objUserOffices;
-
         foreach ($objUserOffices as $index => $userOffice) {
             $shiftsUserOffice = Shift::where([
                                             ['shifts.user_advisor_id', $objUserOffices[$index]->user_id],
@@ -144,7 +158,6 @@ class ReportsController extends Controller
                                                                             ]);
         $pdf->setPaper('A4');
         $return = $pdf->stream();
-
 
         return $return;
     }
@@ -189,8 +202,87 @@ class ReportsController extends Controller
                             ->get();
 
         $pdf = PDF::loadView('dashboard.contents.reports.pdf.ShiftReport', [
+                                                                                'office'    => $objOffice,
+                                                                                'shifts'    => $objShifts,
+                                                                            ]);
+        $pdf->setPaper('A4');
+        $return = $pdf->stream();
+
+        return $return;
+    }
+
+    public function advisorReport(Request $request){
+        $userAdvisorId = $request->input('advisor');
+        $today = \App\Http\Controllers\OfficeController::setDate();
+
+        $objOffice = Office::join('user_offices', 'offices.id', 'user_offices.office_id')
+                            ->join('users', 'user_offices.user_id', 'users.id')
+                            ->where('user_offices.user_id', $userAdvisorId)
+                            ->select(
+                                'offices.id',
+                                'offices.name',
+                                'offices.address',
+                                'offices.phone',
+                                'users.name as advisor',
+                                'users.first_name',
+                                'users.second_name',
+                                'users.email'
+                            )
+                            ->first();
+        $officeId = $objOffice->id;
+        
+        $objShifts = Shift::join('shift_types', 'shifts.shift_type_id', 'shift_types.id')
+                            ->join('shift_status', 'shifts.shift_status_id', 'shift_status.id')
+                            ->join('speciality_types', 'shifts.speciality_type_id', 'speciality_types.id')
+                            ->join('users', 'shifts.user_advisor_id', 'users.id')
+                            ->where([
+                                ['shifts.office_id', $officeId],
+                                ['shifts.created_at', 'like', $today."%"],
+                                ['shifts.is_active', 1],
+                                ['shifts.user_advisor_id', $userAdvisorId]
+                            ])
+                            ->select(
+                                'shifts.id',
+                                'shifts.shift_status_id',
+                                'shifts.shift',
+                                'shift_types.shift_type',
+                                'speciality_types.name as speciality',
+                                'shifts.created_at',
+                                'shifts.start_shift',
+                                'shifts.end_shift',
+                                DB::raw('TIMESTAMPDIFF(SECOND,shifts.start_shift,shifts.end_shift) as minute'),
+                                DB::raw('TIMESTAMPDIFF(SECOND,shifts.created_at,shifts.start_shift) as wait')
+                            )
+                            ->get();
+
+        $objReassignedShifts = Incident::join('shifts', 'incidents.shift_id', 'shifts.id')
+                                        ->join('users', 'shifts.user_advisor_id', 'users.id')
+                                        ->join('shift_types', 'shifts.shift_type_id', 'shift_types.id')
+                                        ->join('speciality_types', 'shifts.speciality_type_id', 'speciality_types.id')
+                                        ->where([
+                                            ['incidents.created_at', 'like', $today.'%'],
+                                            ['user_reassigned_id', $userAdvisorId],
+                                            ['incidents.is_active', 1]
+                                        ])
+                                        ->select(
+                                            'shifts.id',
+                                            'shifts.shift',
+                                            'users.email',
+                                            'shift_types.shift_type',
+                                            'speciality_types.name as speciality',
+                                            'shifts.created_at',
+                                            'shifts.start_shift',
+                                            'shifts.end_shift',
+                                            DB::raw('TIMESTAMPDIFF(SECOND,shifts.start_shift,shifts.end_shift) as minute')
+                                            // DB::raw('TIMESTAMPDIFF(SECOND,shifts.created_at,shifts.start_shift) as wait')
+                                        )
+                                        ->get();
+
+
+        $pdf = PDF::loadView('dashboard.contents.reports.pdf.AdvisorReport', [
                                                                                 'office'        => $objOffice,
                                                                                 'shifts'        => $objShifts,
+                                                                                'reassigned'    => $objReassignedShifts
                                                                             ]);
         $pdf->setPaper('A4');
         $return = $pdf->stream();

@@ -89,6 +89,7 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::get('/', 'Dashboard\ReportsController@index');
         Route::get('/general', 'Dashboard\ReportsController@generalReport')->name('general.report');
         Route::get('/shift', 'Dashboard\ReportsController@shiftReport')->name('shift.report');
+        Route::post('/advisor', 'Dashboard\ReportsController@advisorReport')->name('advisor.report');
     });
 });
 

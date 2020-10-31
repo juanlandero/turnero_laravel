@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Reporte Detallado de Ventas</title>
+    <title>Reporte General</title>
     <link rel="stylesheet" type="text/css" href="css/pdf.css" media="screen">
     <style>
         .page-break {

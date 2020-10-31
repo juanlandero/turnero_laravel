@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Reporte de Turnos</title>
+    <title>Reporte De Supervisores</title>
     <link rel="stylesheet" type="text/css" href="css/pdf.css" media="screen">
     <style>
         .page-break {
@@ -12,7 +12,6 @@
 </head>
 <body>
     @php
-    //sdd($datos);
     function fechaCastellano ($fecha) {
         $fecha = substr($fecha, 0, 10);
         $numeroDia = date('d', strtotime($fecha));
@@ -43,6 +42,14 @@
         <!-- DATOS DE LA SUCURSAL -->
         <table style="margin: 40px">
             <tr>
+                <th class="info-titulo1">Asesor</th>
+                <td class="info-titulo">{{ $office->advisor." ".$office->first_name." ".$office->second_name }}</td>
+            </tr>
+            <tr>
+                <th class="info-titulo1">E-mail</th>
+                <td class="info-titulo">{{ $office->email }}</td>
+            </tr>
+            <tr>
                 <th class="info-titulo1">Sucursal</th>
                 <td class="info-titulo">{{ $office->name }}</td>
             </tr>
@@ -65,7 +72,6 @@
                 <th>Turno</th>
                 <th>Tipo</th>
                 <th>Especialidad</th>
-                <th>Usuario</th>
                 <th>Generado</th>
             </tr>
             @foreach ($shifts as $shift)
@@ -74,7 +80,6 @@
                         <td>{{ $shift['shift'] }}</td>
                         <td>{{ $shift['shift_type'] }}</td>
                         <td>{{ $shift['speciality'] }}</td>
-                        <td>{{ $shift['email'] }}</td>
                         <td>{{ substr($shift['created_at'], 11) }}</td>
                     </tr>
                 @endif
@@ -124,31 +129,6 @@
             @endforeach
         </table>
 
-         <!-- TABLA DE ABANDONADOS -->
-         <div class="barra">
-            <p class="seccion">TURNOS REASIGNADOS</p>
-        </div>
-        <table class="tabla" style="margin-bottom: 40px;">
-            <tr class="titulo-tabla" >
-                <th>Turno</th>
-                <th>Tipo</th>
-                <th>Especialidad</th>
-                <th>Generado</th>
-                <th>Inicio</th>
-            </tr>
-            @foreach ($shifts as $shift)
-                @if ($shift['shift_status_id'] == 2 || $shift['has_incident'] == 1) 
-                    <tr>
-                        <td>{{ $shift['shift'] }}</td>
-                        <td>{{ $shift['shift_type'] }}</td>
-                        <td>{{ $shift['speciality'] }}</td>
-                        <td>{{ substr($shift['created_at'], 11) }}</td>
-                        <td>{{ $shift['start_shift'] }}</td>
-                    @endif
-                </tr>
-            @endforeach
-        </table>
-
          <!-- TABLA DE REASIGNADOS -->
          <div class="barra">
             <p class="seccion">TURNOS ABANDONADOS</p>
@@ -187,6 +167,50 @@
                         @endphp
                     </tr>
                 @endif
+            @endforeach
+        </table>
+
+
+          <!-- TABLA DE ABANDONADOS -->
+          <div class="barra">
+            <p class="seccion">TURNOS REASIGNADOS</p>
+        </div>
+        <table class="tabla" style="margin-bottom: 40px;">
+            <tr class="titulo-tabla" >
+                <th>Turno</th>
+                <th>Tipo</th>
+                <th>Especialidad</th>
+                <th>Reasignado</th>
+                <th>Generado</th>
+                <th>Inicio</th>
+                <th>Fin</th>
+                <th>Tiempo</th>
+            </tr>
+            @foreach ($reassigned as $shift)
+                <tr>
+                    <td>{{ $shift['shift'] }}</td>
+                    <td>{{ $shift['shift_type'] }}</td>
+                    <td>{{ $shift['speciality'] }}</td>
+                    <td>{{ $shift['email'] }}</td>
+                    <td>{{ substr($shift['created_at'], 11) }}</td>
+                    <td>{{ $shift['start_shift'] }}</td>
+                    <td>{{ $shift['end_shift'] }}</td>
+                    @php
+                        $minute = round($shift['minute']/60);
+                        $seconds = $shift['minute']%60;
+
+                        if ($shift['start_shift'] != null && $shift['end_shift'] != null) {
+                            
+                            if (strlen($minute) == 1) {
+                                $minute = "0".$minute;
+                            }
+                            if (strlen($seconds) == 1) {
+                                $seconds = "0".$seconds;
+                            }
+                            echo '<td>'.$minute.":".$seconds.'</td>';
+                        }
+                    @endphp
+                </tr>
             @endforeach
         </table>
 	</div>

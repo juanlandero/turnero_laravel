@@ -52,6 +52,29 @@
             </div>
         </div>
     </div>
+
+    <div class="col-md-6">
+        <div class="tile">
+            <form method="POST" action="{{ route('advisor.report') }}">
+                @csrf
+                <div class="tile-title-w-btn">
+                    <h3 class="title">Reporte de asesor</h3>
+                    <p><button class="btn btn-primary icon-btn" type="submit"><i class="fa fa-file"></i>Generar</button></p>
+                </div>
+                <div class="tile-body">
+                    Genere un reporte con los turnos atendidos por un asesor.
+                    <div class="form-group">
+                        <label for="exampleSelect1">Selecciones un asesor</label>
+                        <select class="form-control" id="exampleSelect1" name="advisor">
+                            @foreach ($advisors as $advisor)
+                                <option value="{{ $advisor->id }}">{{ $advisor->name." ".$advisor->first_name." ".$advisor->second_name }}</option>    
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 @endsection
 

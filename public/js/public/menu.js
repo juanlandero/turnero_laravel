@@ -20,7 +20,7 @@ var appMenu = new Vue({
     data: {
         menu: [],
         office:{
-            menuchannel: null,
+            menuChannel: null,
             userChannel: null,
             address: null,
             date: null
@@ -71,7 +71,7 @@ var appMenu = new Vue({
                 _that.menu = response.data.specialities
 
                 // if (_that.office.channel != null) {
-                    _that.office.menuchannel = response.data.menu_channel
+                    _that.office.menuChannel = response.data.menu_channel
                     _that.office.userChannel = response.data.user_channel
                     _that.office.address = response.data.address
                 // }
@@ -150,7 +150,7 @@ var appMenu = new Vue({
                 has_number: _that.ticket.has_number,
                 client_number: _that.ticket.client_number,
                 sex: _that.ticket.sex,
-                channel: _that.office.channel
+                channel: _that.office.menuChannel
             })
             .then(function (response) {
                 $('#client-modal').modal('hide')
