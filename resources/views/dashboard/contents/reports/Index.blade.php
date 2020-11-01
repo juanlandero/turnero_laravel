@@ -3,12 +3,12 @@
 @section('content')
 <div class="app-title">
     <div>
-        <h1><i class="fa fa-line-chart"></i> Reportes</h1>
+        <h1><i class="fas fa-chart-line"></i> Reportes</h1>
         <p>Listado de reportes</p>
     </div>
 
     <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+        <li class="breadcrumb-item"><i class="fas fa-home fa-lg"></i></li>
         <li class="breadcrumb-item"><a href="#">Reportes</a></li>
         <li class="breadcrumb-item active"><a href="#">Listado</a></li>
     </ul>

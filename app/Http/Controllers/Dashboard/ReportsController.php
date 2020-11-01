@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Controllers\OfficeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use App\SpecialityType;
 use App\UserOffice;
 use App\ShiftStatus;
@@ -17,9 +18,7 @@ use PDF;
 class ReportsController extends Controller
 {
     public function index(){
-
         $officeId = UserOffice::where('user_id', Auth::id())->select('office_id')->first();
-
         $objAdvisor = UserOffice::join('users', 'user_offices.user_id', 'users.id')
                                 ->where([
                                     ['office_id', $officeId->office_id],
@@ -41,8 +40,6 @@ class ReportsController extends Controller
         $arrShift = array();
         $arrSpeciality = array();
         $arrUserOffices = array();
-        $today = \App\Http\Controllers\OfficeController::setDate();
-
 
        $objOffice = Office::join('user_offices', 'offices.id', 'user_offices.office_id')
                             ->where('user_offices.user_id', Auth::id())
@@ -63,7 +60,7 @@ class ReportsController extends Controller
                                     ['shifts.office_id', $officeId],
                                     ['shifts.is_active', 1],
                                     ['shifts.shift_status_id', $status->id],
-                                    ['shifts.created_at', 'like', $today."%"]
+                                    ['shifts.created_at', 'like', OfficeController::setDate()."%"]
                                 ])
                                 ->count();
 
@@ -88,7 +85,7 @@ class ReportsController extends Controller
                                                             FROM shifts
                                                             JOIN shift_status ON shifts.shift_status_id = shift_status.id
                                                             WHERE shifts.shift_status_id = '.$id.'
-                                                                AND shifts.created_at like "'.$today.'%"
+                                                                AND shifts.created_at like "'.OfficeController::setDate().'%"
                                                                 AND shifts.office_id = '.$officeId.'
                                                                 AND shifts.is_active = 1
                                                                 AND shifts.speciality_type_id = '.$speciality->id)));
@@ -137,7 +134,7 @@ class ReportsController extends Controller
             $shiftsUserOffice = Shift::where([
                                             ['shifts.user_advisor_id', $objUserOffices[$index]->user_id],
                                             ['shifts.is_active', 1],
-                                            ['shifts.created_at', 'like', $today."%"]
+                                            ['shifts.created_at', 'like', OfficeController::setDate()."%"]
 
                                         ])
                                         ->count();
@@ -163,8 +160,6 @@ class ReportsController extends Controller
     }
 
     public function shiftReport(){
-        $today = \App\Http\Controllers\OfficeController::setDate();
-
         $objOffice = Office::join('user_offices', 'offices.id', 'user_offices.office_id')
                             ->where('user_offices.user_id', Auth::id())
                             ->select(
@@ -181,9 +176,9 @@ class ReportsController extends Controller
                             ->join('speciality_types', 'shifts.speciality_type_id', 'speciality_types.id')
                             ->join('users', 'shifts.user_advisor_id', 'users.id')
                             ->where([
-                                ['shifts.office_id', $officeId],
-                                ['shifts.created_at', 'like', $today."%"],
                                 ['shifts.is_active', 1],
+                                ['shifts.office_id', $officeId],
+                                ['shifts.created_at', 'like', OfficeController::setDate()."%"]
                             ])
                             ->select(
                                 'shifts.id',
@@ -213,7 +208,6 @@ class ReportsController extends Controller
 
     public function advisorReport(Request $request){
         $userAdvisorId = $request->input('advisor');
-        $today = \App\Http\Controllers\OfficeController::setDate();
 
         $objOffice = Office::join('user_offices', 'offices.id', 'user_offices.office_id')
                             ->join('users', 'user_offices.user_id', 'users.id')
@@ -236,10 +230,10 @@ class ReportsController extends Controller
                             ->join('speciality_types', 'shifts.speciality_type_id', 'speciality_types.id')
                             ->join('users', 'shifts.user_advisor_id', 'users.id')
                             ->where([
-                                ['shifts.office_id', $officeId],
-                                ['shifts.created_at', 'like', $today."%"],
                                 ['shifts.is_active', 1],
-                                ['shifts.user_advisor_id', $userAdvisorId]
+                                ['shifts.office_id', $officeId],
+                                ['shifts.user_advisor_id', $userAdvisorId],
+                                ['shifts.created_at', 'like', OfficeController::setDate()."%"]
                             ])
                             ->select(
                                 'shifts.id',
@@ -260,7 +254,7 @@ class ReportsController extends Controller
                                         ->join('shift_types', 'shifts.shift_type_id', 'shift_types.id')
                                         ->join('speciality_types', 'shifts.speciality_type_id', 'speciality_types.id')
                                         ->where([
-                                            ['incidents.created_at', 'like', $today.'%'],
+                                            ['incidents.created_at', 'like', OfficeController::setDate().'%'],
                                             ['user_reassigned_id', $userAdvisorId],
                                             ['incidents.is_active', 1]
                                         ])

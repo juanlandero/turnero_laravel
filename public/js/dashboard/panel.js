@@ -39,7 +39,8 @@ var appPanel = new Vue({
             buttonNext: false,
             buttonAbandoned: true,
             buttonFinalized: true,
-            buttonReassigned: true
+            buttonReassigned: true,
+            buttonConnect: true
         },
         userStatus: {
             text: 'Loading...',
@@ -261,6 +262,7 @@ var appPanel = new Vue({
 
         userBreak (check) {
             var _that = this
+            this.disabledButtons.buttonConnect = true
                             
             axios.post('shift/break', {
                 case: check
@@ -268,6 +270,10 @@ var appPanel = new Vue({
             .then(function (response) {
                 _that.userStatus.text = response.data.btnText
                 _that.userStatus.btnType = response.data.btnType
+
+                setTimeout(() => {
+                    _that.disabledButtons.buttonConnect = false
+                }, 5000);
 
                 if (response.data.case == 2) {
                     _that.notify(response.data.type, response.data.text, response.data.icon)

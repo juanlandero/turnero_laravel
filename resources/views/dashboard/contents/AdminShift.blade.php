@@ -138,7 +138,7 @@
 				<p>Administración de turnos</p>
 			</div>
 			<ul class="app-breadcrumb breadcrumb">
-				<li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+				<li class="breadcrumb-item"><i class="fas fa-home fa-lg"></i></li>
 				<li class="breadcrumb-item"><a href="#">Turnos</a></li>
 			</ul>
 		</div>
@@ -147,7 +147,7 @@
 		<div class="row" v-if="isActive">
 			<!-- Panel izquierdo -->
 			<div class="col-md-4">
-				<button class="btn btn-block mb-2" :class="userStatus.btnType" type="button" v-on:click="userBreak(2)">
+				<button class="btn btn-block mb-2" :class="userStatus.btnType" type="button" v-on:click="userBreak(2)" v-bind:disabled="disabledButtons.buttonConnect">
 					<i class="fas fa-circle" style="margin-right: 5px;"></i>
 					${ userStatus.text }
 				</button>

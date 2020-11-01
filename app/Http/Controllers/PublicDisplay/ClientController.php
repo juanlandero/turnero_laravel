@@ -8,8 +8,8 @@ use App\Client;
 
 class ClientController extends Controller
 {
-    public function verifyClient(Request $r){
-        $clientNumber = $r['client'];
+    public function verifyClient(Request $request){
+        $clientNumber = $request->input('client');
 
         $client = Client::where([
                                 ['client_number', $clientNumber],

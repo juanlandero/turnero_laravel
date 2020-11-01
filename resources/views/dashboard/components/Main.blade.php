@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         @yield('dashboard.components.Stylesheets')
+        @yield('stylesheets')
     </head>
     <body class="app sidebar-mini">
         @yield('dashboard.components.Navbar')

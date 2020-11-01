@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Controllers\OfficeController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use App\UserOffice;
 use App\Client;
 use App\Shift;
@@ -14,12 +15,10 @@ use App\User;
 class DashboardController extends Controller
 {
     public function adminShift(){
-        return view('dashboard.contents.AdminShift', ['id' => Auth::id()]);
+        return view('dashboard.contents.shifts.Index', ['id' => Auth::id()]);
     }
 
-    // Verificado
     public function getDataPanel(){
-
         $channel = UserOffice::join('offices', 'user_offices.office_id', '=', 'offices.id')
                             ->where('user_offices.user_id', Auth::id())
                             ->select(
@@ -47,7 +46,7 @@ class DashboardController extends Controller
                                 ->where([
                                     ['shifts.user_advisor_id', $idUser],
                                     ['shifts.shift_status_id', '<', 3],
-                                    ['shifts.created_at', 'like', session()->get('DATE').'%'],
+                                    ['shifts.created_at', 'like', OfficeController::setDate().'%'],
                                     ['shifts.is_active', 1]
                                 ])
                                 ->select(
@@ -132,7 +131,6 @@ class DashboardController extends Controller
     }
 
     public function getAdvisors () {
-
         $office = UserOffice::where('user_id', Auth::id())->first();
 
         $objAdvisors = UserOffice::join('users', 'user_offices.user_id', '=', 'users.id')

@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\OfficeController;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request;
-use App\SpecialityType;
-use App\Client;
-use App\Incident;
-use App\Shift;
 use App\Events\MenuGeneratorMsg;
 use App\Events\AdminPanelMsg;
-
+use App\SpecialityType;
+use App\Incident;
+use App\Client;
+use App\Shift;
 
 class ShiftController extends Controller
 {
@@ -21,8 +22,8 @@ class ShiftController extends Controller
         $letter = substr($objSpeciality->name, 0, -(strlen($objSpeciality->name)-1));
 
         $number = (Shift::where([
-                                    ['office_id', session()->get('NUM_OFFICE')],
-                                    ['created_at', 'like', session()->get('DATE').'%']
+                                    ['office_id', Cookie::get('OFFICE')],
+                                    ['created_at', 'like', OfficeController::setDate().'%']
                                 ])->count())+1;
 
         switch (strlen($number)) {
@@ -69,7 +70,7 @@ class ShiftController extends Controller
         $newTicket->shift               = ShiftController::generateTicketNumber($specialityId);
         $newTicket->shift_type_id       = $typeTicket;
         $newTicket->speciality_type_id  = $specialityId;
-        $newTicket->office_id           = session()->get('NUM_OFFICE');
+        $newTicket->office_id           = Cookie::get('OFFICE');
         $newTicket->shift_status_id     = 1;
         $newTicket->user_advisor_id     = \App\Http\Controllers\AdvisorController::selectAdvisor($specialityId);
         $newTicket->sex_client          = $clientSex;
@@ -81,15 +82,11 @@ class ShiftController extends Controller
         event(new MenuGeneratorMsg($channel, $newTicket->id, $newTicket->user_advisor_id));
 
         $ticket = Shift::join('shift_types', 'shifts.shift_type_id', '=', 'shift_types.id')
-                        // ->join('speciality_types', 'shifts.speciality_type_id', '=', 'speciality_types.id')
                         ->join('user_offices', 'shifts.user_advisor_id', '=', 'user_offices.user_id')
                         ->join('boxes', 'user_offices.box_id', '=', 'boxes.id')
                         ->select(
                             'shifts.shift',
-                            // 'shift_types.shift_type as type',
-                            // 'speciality_types.name as speciality',
                             'boxes.box_name as box',
-                            // 'shifts.sex_client',
                             'shifts.created_at as hora'
                         )
                         ->where('shifts.id', $newTicket->id)
@@ -131,10 +128,10 @@ class ShiftController extends Controller
 
     public function reassignmentShift(Request $request  ){
 
-        $shiftId = $request->input('shift_id');
-        $reciveId = $request->input('recive_id');
-        $sendId = $request->input('send_id');
-        $channel = $request->input('menu_channel');
+        $shiftId    = $request->input('shift_id');
+        $reciveId   = $request->input('recive_id');
+        $sendId     = $request->input('send_id');
+        $channel    = $request->input('menu_channel');
 
         // CAMBIO DE USUARIO
         $reassignment = Shift::where('id', $shiftId)->first();
@@ -182,7 +179,6 @@ class ShiftController extends Controller
             if ($statusId == 3) {
                 $shiftText = "Turno <b>finalizado</b>";
                 $shiftIcon = 'fa fa-exclamation-triangle';
-                // $shiftType = "warning";
             } elseif ($statusId == 4) {
                 $shiftText = "Turno <b>abandonado</b>";
                 $shiftIcon = "fas fa-walking";

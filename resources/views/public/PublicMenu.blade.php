@@ -33,9 +33,7 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <div class="tile-footer">
-                        <p>Cuando presiones el botón, esta pantalla se cerrará automaticamente.</p>
-                    </div> --}}
+                    
                 </div>
                     
             </div>

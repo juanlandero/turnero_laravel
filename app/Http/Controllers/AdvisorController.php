@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
+use App\Http\Controllers\OfficeController;
 use App\Events\UserOnlineMsg;
 use App\SpecialityTypeUser;
 use App\UserOffice;
@@ -15,7 +17,7 @@ use App\User;
 class AdvisorController extends Controller
 {
     static function selectAdvisor($specialityId){
-        $officeId = session()->get('NUM_OFFICE');
+        $officeId = Cookie::get('OFFICE');
         $arrayAdvisor = array();
         
         // OBTENIENDO EL NÚMERO TOTAL DE ASESORES QUE TIENE LA SUCURSAL
@@ -43,7 +45,7 @@ class AdvisorController extends Controller
                                 ->where([
                                     ['user_offices.office_id', $officeId],
                                     ['shifts.speciality_type_id', $specialityId],
-                                    ['shifts.created_at', 'like', session()->get('DATE').'%']
+                                    ['shifts.created_at', 'like', OfficeController::setDate().'%']
                                 ])
                                 ->select(
                                     'shifts.id',
@@ -113,7 +115,6 @@ class AdvisorController extends Controller
     }
 
     public function break(Request $request){
-
         $case = $request->input('case');
         $userId = Auth::id();
         $return = null;
@@ -130,7 +131,6 @@ class AdvisorController extends Controller
                                         ['office_id', $channel->office],
                                         ['user_id', $userId]
                                     ])
-                                    // ->select('is_active')º
                                     ->first();
 
         switch ($case) {

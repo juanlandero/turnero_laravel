@@ -4,8 +4,8 @@ namespace App\Http\Controllers\PublicDisplay;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
-
 use App\SpecialityTypeUser;
 use App\SpecialityType;
 use App\UserOffice;
@@ -18,7 +18,7 @@ class SpecialityController extends Controller
 {
     public function getSpeciality(){
         $arrSpecialities = array();
-        $officeId = session()->get('NUM_OFFICE');
+        $officeId = Cookie::get('OFFICE');
 
         //BUSCAMOS EL CANAL DE ESTA PÁGINA
         $objChannel = Office::select(

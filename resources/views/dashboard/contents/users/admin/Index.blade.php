@@ -3,12 +3,12 @@
 @section('content')
 <div class="app-title">
     <div>
-        <h1><i class="fa fa-globe"></i> Usuarios</h1>
+        <h1><i class="fas fa-user-alt"></i> Usuarios</h1>
         <p>Listado de administradores</p>
     </div>
 
     <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+        <li class="breadcrumb-item"><i class="fas fa-home fa-lg"></i></li>
         <li class="breadcrumb-item"><a href="#">Usuarios</a></li>
         <li class="breadcrumb-item active"><a href="#">Listado de administradores</a></li>
     </ul>

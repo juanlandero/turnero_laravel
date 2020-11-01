@@ -13,20 +13,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'PublicDisplay\PublicDisplayController@index');
+Route::get('/', 'PublicDisplay\PublicDisplayController@index')->name('public.index');
 Route::post('/access', 'PublicDisplay\PublicDisplayController@verifyAccess');
 
-Route::prefix('public')->group(function () {
-    Route::get('/', 'PublicDisplay\PublicDisplayController@publicMenu');
+Route::group(['prefix' => 'public', 'middleware' => 'public'], function () {
+    Route::get('/', 'PublicDisplay\PublicDisplayController@publicMenu')->name('public.menu');
 
-    Route::prefix('shift')->group(function () {
+    Route::group(['prefix' => 'shift'], function () {
         Route::get('/', 'PublicDisplay\PublicDisplayController@shiftSelector')->name('shift.generator');
         Route::get('/get-data', 'PublicDisplay\SpecialityController@getSpeciality');
         Route::post('/get-client', 'PublicDisplay\ClientController@verifyClient');
         Route::post('/new', 'Dashboard\ShiftController@create');
     });
 
-    Route::prefix('display')->group(function () {
+    Route::group(['prefix' => 'display'], function () {
         Route::get('/', 'PublicDisplay\PublicDisplayController@numberDisplay')->name('shift.list');
         Route::get('/list', 'PublicDisplay\PublicDisplayController@getListShifts');
         Route::post('/get', 'PublicDisplay\PublicDisplayController@getShift');
@@ -71,7 +71,6 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::post('/create', ['as' => 'specialty-store', 'uses' => 'Dashboard\SpecialtiesController@store']);
     });
 
-
     Route::group(['prefix' => 'shift'], function () {
         Route::get('/', 'Dashboard\DashboardController@adminShift');
         Route::post('/get', 'Dashboard\DashboardController@getShiftAdvisor');
@@ -96,4 +95,4 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
 
 
 
-Route::get('prueba/{specialityId}', 'AdvisorController@selectAdvisor');
+Route::get('prueba', 'PublicDisplay\PublicDisplayController@test');

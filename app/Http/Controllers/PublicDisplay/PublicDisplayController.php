@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\PublicDisplay;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\OfficeController;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request;
 use App\Office;
 use App\Shift;
@@ -11,7 +13,7 @@ use App\Ad;
 class PublicDisplayController extends Controller
 {
     public function index(){
-        return view('Index');
+        return response()->view('Index')->withCookie(Cookie::forget('OFFICE'));
     }
 
     public function publicMenu() {
@@ -27,10 +29,7 @@ class PublicDisplayController extends Controller
                             ])->first();
 
         if ($result != null) {
-            session()->put('NUM_OFFICE', $result->id);
-            session()->put('DATE', \App\Http\Controllers\OfficeController::setDate());
-
-            return ['success' => 'true', 'text' => 'public'];
+            return response()->json(['success' => 'true', 'text' => 'public'])->cookie('OFFICE', $result->id, 600);
         } else {
             return ['success' => 'false', 'text' => '¡Error! Código incorrecto'];
         }
@@ -41,8 +40,7 @@ class PublicDisplayController extends Controller
     }
 
     public function numberDisplay(){
-
-        $officeId = session()->get('NUM_OFFICE');
+        $officeId = Cookie::get('OFFICE');
 
         $objAds = Ad::where([
                         ['office_id', $officeId],
@@ -54,19 +52,20 @@ class PublicDisplayController extends Controller
     }
 
     public function getListShifts(){
-        
         $channel = Office::select(
                                 'menu_channel',
                                 'panel_channel'
-                        )->where('id', session()->get('NUM_OFFICE'))->first();
+                        )
+                        ->where('id', Cookie::get('OFFICE'))
+                        ->first();
 
         $listShift = Shift::join('users', 'shifts.user_advisor_id', '=', 'users.id')
                             ->join('user_offices', 'users.id', '=', 'user_offices.user_id')
                             ->join('boxes', 'user_offices.box_id', 'boxes.id')
                             ->where([
-                                ['shifts.shift_status_id', '<', 3],
                                 ['shifts.is_active', 1],
-                                ['shifts.created_at', 'like', session()->get('DATE').'%']
+                                ['shifts.shift_status_id', '<', 3],
+                                ['shifts.created_at', 'like', OfficeController::setDate().'%']
                             ])
                             ->select(
                                 'shifts.id',
@@ -82,9 +81,8 @@ class PublicDisplayController extends Controller
         return ['listShift' => $listShift, 'channel' => $channel];
     }
 
-    public function getShift(Request $r){
-
-        $shiftId = $r->input('shiftId');
+    public function getShift(Request $request){
+        $shiftId = $request->input('shiftId');
 
         $listShift = Shift::join('users', 'shifts.user_advisor_id', '=', 'users.id')
                             ->join('user_offices', 'users.id', '=', 'user_offices.user_id')
@@ -92,7 +90,7 @@ class PublicDisplayController extends Controller
                             ->where([
                                 ['shifts.shift_status_id', '<', 3],
                                 ['shifts.is_active', 1],
-                                ['shifts.created_at', 'like', session()->get('DATE').'%'],
+                                ['shifts.created_at', 'like', OfficeController::setDate().'%'],
                                 ['shifts.id', $shiftId]
                             ])
                             ->select(
