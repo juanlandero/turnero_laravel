@@ -46,6 +46,7 @@ class PublicDisplayController extends Controller
                         ['office_id', $officeId],
                         ['is_active', 1]
                     ])
+                    ->orderBy('order', 'asc')
                     ->get();
 
         return view('public/NumberDisplay', ['ads' => $objAds]);

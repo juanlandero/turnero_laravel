@@ -90,6 +90,13 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::get('/shift', 'Dashboard\ReportsController@shiftReport')->name('shift.report');
         Route::post('/advisor', 'Dashboard\ReportsController@advisorReport')->name('advisor.report');
     });
+
+    Route::group(['prefix' => 'carousel'], function () {
+        Route::get('/', 'Dashboard\AdsController@index')->name('ad.index');
+        Route::get('/create', 'Dashboard\AdsController@create')->name('ad.create');
+        Route::post('/store', 'Dashboard\AdsController@store')->name('ad.store');
+        Route::get('/delete/{id}', 'Dashboard\AdsController@delete')->name('ad.delete');
+    });
 });
 
 

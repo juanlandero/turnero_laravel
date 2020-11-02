@@ -1,7 +1,6 @@
-@section('title', 'Reportes')
+@section('title', 'Turnos')
 
 @section('stylesheets')
-    {{-- <link href="{{ asset('css/all.css') }}" rel="stylesheet"> --}}
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
     <script src="{{ asset('js/plugins/pusher7.min.js') }}"></script>

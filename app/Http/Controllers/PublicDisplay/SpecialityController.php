@@ -13,7 +13,6 @@ use App\Office;
 use App\User;
 
 
-
 class SpecialityController extends Controller
 {
     public function getSpeciality(){
