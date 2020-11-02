@@ -15295,6 +15295,7 @@ div.full-display {
   top: 10px;
   left: 10px;
   min-height: 200px;
+  max-height: 300px;
   width: 300px;
 }
 
