@@ -22,7 +22,7 @@ class ShiftController extends Controller
         $letter = substr($objSpeciality->name, 0, -(strlen($objSpeciality->name)-1));
 
         $number = (Shift::where([
-                                    ['office_id', Cookie::get('OFFICE')],
+                                    ['office_id', session('OFFICE')],
                                     ['created_at', 'like', OfficeController::setDate().'%']
                                 ])->count())+1;
 
@@ -70,7 +70,7 @@ class ShiftController extends Controller
         $newTicket->shift               = ShiftController::generateTicketNumber($specialityId);
         $newTicket->shift_type_id       = $typeTicket;
         $newTicket->speciality_type_id  = $specialityId;
-        $newTicket->office_id           = Cookie::get('OFFICE');
+        $newTicket->office_id           = session('OFFICE');
         $newTicket->shift_status_id     = 1;
         $newTicket->user_advisor_id     = \App\Http\Controllers\AdvisorController::selectAdvisor($specialityId);
         $newTicket->sex_client          = $clientSex;

@@ -17,7 +17,7 @@ use App\User;
 class AdvisorController extends Controller
 {
     static function selectAdvisor($specialityId){
-        $officeId = Cookie::get('OFFICE');
+        $officeId = session('OFFICE');
         $arrayAdvisor = array();
         
         // OBTENIENDO EL NÚMERO TOTAL DE ASESORES QUE TIENE LA SUCURSAL

@@ -29,7 +29,8 @@ class PublicDisplayController extends Controller
                             ])->first();
 
         if ($result != null) {
-            return response()->json(['success' => 'true', 'text' => 'public'])->cookie('OFFICE', $result->id, 600);
+            session()->put('OFFICE', $result->id);
+            return ['success' => 'true', 'text' => 'public'];
         } else {
             return ['success' => 'false', 'text' => '¡Error! Código incorrecto'];
         }
@@ -40,7 +41,7 @@ class PublicDisplayController extends Controller
     }
 
     public function numberDisplay(){
-        $officeId = Cookie::get('OFFICE');
+        $officeId = session('OFFICE');
 
         $objAds = Ad::where([
                         ['office_id', $officeId],
@@ -57,7 +58,7 @@ class PublicDisplayController extends Controller
                                 'menu_channel',
                                 'panel_channel'
                         )
-                        ->where('id', Cookie::get('OFFICE'))
+                        ->where('id', session('OFFICE'))
                         ->first();
 
         $listShift = Shift::join('users', 'shifts.user_advisor_id', '=', 'users.id')

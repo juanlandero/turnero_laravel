@@ -17,7 +17,7 @@ class SpecialityController extends Controller
 {
     public function getSpeciality(){
         $arrSpecialities = array();
-        $officeId = Cookie::get('OFFICE');
+        $officeId = session('OFFICE');
 
         //BUSCAMOS EL CANAL DE ESTA PÁGINA
         $objChannel = Office::select(

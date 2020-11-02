@@ -17,10 +17,9 @@ class CheckPublicAccess
      */
     public function handle($request, Closure $next)
     {
-        $e = 1;
-        if (Cookie::get('OFFICE') != 1) {
-            return redirect()->route('public.index');
+        if (session()->has('OFFICE')) {
+            return $next($request);
         }
-        return $next($request);
+        return redirect()->route('public.index');
     }
 }
