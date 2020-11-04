@@ -1,4 +1,9 @@
 @section('title', 'Turnos')
+@section('subtitle', 'Panel de Turnos')
+@section('icon', 'fa fa-ticket-alt')
+@section('breadcrumb')
+    <li class="breadcrumb-item active"><a href="#">Turnos</a></li>
+@endsection
 
 @section('stylesheets')
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
@@ -7,17 +12,6 @@
 @endsection
 
 @section('content')
-<div class="app-title">
-    <div>
-        <h1><i class="fas fa-ticket-alt"></i> Turnos</h1>
-        <p>Panel de turnos</p>
-    </div>
-
-    <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="fas fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="#">Turnos</a></li>
-    </ul>
-</div>
 
 @if(Session::has('success_message'))
 <div class="row">

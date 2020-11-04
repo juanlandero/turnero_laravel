@@ -15,6 +15,18 @@
         @yield('dashboard.components.Sidebar')
 
         <main class="app-content">
+            <div class="app-title">
+                <div>
+                    <h1><i class="@yield('icon')"></i> @yield('title', '*** TITLE ***')</h1>
+                    <p>@yield('subtitle', '*** SUBTITLE ***')</p>
+                </div>
+            
+                <ul class="app-breadcrumb breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}"><i class="fa fa-home fa-lg"></i></a></li>
+                    @section('breadcrumb')
+                    @show
+                </ul>
+            </div>
             @yield('content', '*** CONTENT ***')
         </main>
 

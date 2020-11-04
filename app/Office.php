@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Office extends Model
 {
     protected $table    = "offices";
-    protected $fillable = ['name', 'address', 'phone', 'channel', 'office_key', 'municipality_id', 'is_active'];
+    protected $fillable = ['name', 'address', 'phone', 'menu_channel', 'panel_channel', 'user_channel', 'office_key', 'municipality_id', 'is_active'];
 
     /* RELATIONSHIPS - INICIO */
     public function municipality() {

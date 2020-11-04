@@ -1,19 +1,11 @@
 @section('title', 'Anuncios')
-
+@section('subtitle', 'Lista de Anuncios')
+@section('icon', 'fas fa-photo-video')
+@section('breadcrumb')
+    <li class="breadcrumb-item active"><a href="#">Anuncios</a></li>
+@endsection
+    
 @section('content')
-<div class="app-title">
-    <div>
-        <h1><i class="fas fa-photo-video"></i> Anuncios</h1>
-        <p>Carrusel de anuncios</p>
-    </div>
-
-    <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="#">Anuncios</a></li>
-        <li class="breadcrumb-item active"><a href="#">Listado</a></li>
-    </ul>
-</div>
-
 <div class="row">
     <div class="col-10">
         <div class="tile">

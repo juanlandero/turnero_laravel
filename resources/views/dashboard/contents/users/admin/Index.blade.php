@@ -1,18 +1,11 @@
-@section('title', 'Usuarios Administradores')
+@section('title', 'Administradores')
+@section('subtitle', 'Listado de Administradores')
+@section('icon', 'fas fa-user-tie')
+@section('breadcrumb')
+    <li class="breadcrumb-item active"><a href="#">Administradores</a></li>
+@endsection
 
 @section('content')
-<div class="app-title">
-    <div>
-        <h1><i class="fas fa-user-alt"></i> Usuarios</h1>
-        <p>Listado de administradores</p>
-    </div>
-
-    <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="fas fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="#">Usuarios</a></li>
-        <li class="breadcrumb-item active"><a href="#">Listado de administradores</a></li>
-    </ul>
-</div>
 
 @if(Session::has('success_message'))
 <div class="row">

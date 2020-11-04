@@ -1,18 +1,12 @@
-@section('title', 'Usuarios Supervisores')
+@section('title', 'Supervisores')
+@section('subtitle', 'Nuevo Supervisor')
+@section('icon', 'fas fa-user-check')
+@section('breadcrumb')
+    <li class="breadcrumb-item "><a href="{{ route('user-supervisors.index') }}">Supervisores</a></li>
+    <li class="breadcrumb-item active"><a href="#">Crear supervisor</a></li>
+@endsection
 
 @section('content')
-<div class="app-title">
-    <div>
-        <h1><i class="fa fa-globe"></i> Usuario</h1>
-        <p>Nuevo supervisor</p>
-    </div>
-
-    <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="fas fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="#">Usuarios</a></li>
-        <li class="breadcrumb-item active"><a href="#">Crear supervisor</a></li>
-    </ul>
-</div>
 
 @if(Session::has('error_message'))
 <div class="row">

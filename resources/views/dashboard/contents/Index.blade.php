@@ -1,4 +1,6 @@
 @section('title', 'Inicio')
+@section('subtitle', 'Dashboard')
+@section('icon', 'fa fa-tachometer-alt')
 
 @section('content')
 
