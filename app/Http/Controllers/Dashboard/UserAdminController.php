@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Library\Returns\ActionReturn;
 use App\Library\Errors;
 use App\Library\Messages;
+use App\UserPrivilege;
 use App\User;
 
 class UserAdminController extends Controller
@@ -44,6 +45,19 @@ class UserAdminController extends Controller
 
         try {
             if($objUser->save()) {
+                $privileges = array();
+                  
+                  for($i = 1; $i < 25; $i++) {
+                      if($i != 22) {
+                          array_push($privileges, array(
+                            'user_id'         => $objUser->id,
+                            'privilege_id'    => $i,
+                          ));
+                      }
+                  }
+
+                  UserPrivilege::create($privileges);
+
                 $objReturn->setResult(true, Messages::USER_ADMIN_CREATE_TITLE, Messages::USER_ADMIN_CREATE_MESSAGE);
             } else {
                 $objReturn->setResult(false, Errors::USER_CREATE_01_TITLE, Errors::USER_CREATE_01_MESSAGE);

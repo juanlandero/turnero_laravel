@@ -9,6 +9,7 @@ use App\Library\Errors;
 use App\Library\Messages;
 use App\User;
 use App\UserOffice;
+use App\UserPrivilege;
 use App\Office;
 use DB;
 
@@ -56,6 +57,35 @@ class UserSupervisorController extends Controller
                 $objUserOffice->box_id      = 1;
                 $objUserOffice->is_active   = true;
                 $objUserOffice->save();
+
+                $privileges = [
+                    [
+                      'user_id'         => $objUser->id,
+                      'privilege_id'    => 9,
+                    ],
+                    [
+                        'user_id'         => $objUser->id,
+                        'privilege_id'    => 10,
+                    ],
+                    [
+                        'user_id'         => $objUser->id,
+                        'privilege_id'    => 11,
+                    ],
+                    [
+                        'user_id'         => $objUser->id,
+                        'privilege_id'    => 12,
+                    ],
+                    [
+                        'user_id'         => $objUser->id,
+                        'privilege_id'    => 21,
+                    ],
+                    [
+                        'user_id'         => $objUser->id,
+                        'privilege_id'    => 22,
+                    ]
+                  ];
+        
+                  UserPrivilege::create($privileges);
 
                 $objReturn->setResult(true, Messages::USER_SUPERVISOR_CREATE_TITLE, Messages::USER_SUPERVISOR_CREATE_MESSAGE);
                 DB::commit();
