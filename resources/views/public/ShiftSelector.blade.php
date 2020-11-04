@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            @include('public.modals.NumberClient')
+            @include('public.modals.ConfirmTicket')
             @include('public.components.Ticket')
 		</main>     
     </div>

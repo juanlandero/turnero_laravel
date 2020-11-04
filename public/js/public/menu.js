@@ -23,7 +23,9 @@ var appMenu = new Vue({
             menuChannel: null,
             userChannel: null,
             address: null,
-            date: null
+            date: null,
+            twoModal: false,
+            changeModal:false
         },
         ticket:{
             speciality: 0,
@@ -33,13 +35,6 @@ var appMenu = new Vue({
             type: 'Visitante',
             date: null
         }
-        // print: {
-        //     shift: null,
-        //     speciality: null,
-        //     box: null,
-        //     type: null,
-        //     date: null
-        // }
     },
     mounted: function(){
         this.getData()
@@ -128,8 +123,7 @@ var appMenu = new Vue({
                 })
                 .then(function (response) {
                     if (response.data.success == 'true') {
-                        _that.ticket.sex = response.data['client'].sex
-                        _that.createTicket()
+                        _that.setSex(response.data['client'].sex)
                     } else{
                         _that.notify("danger", "Número de cliente incorrecto.", "fa fa-times-circle")
                     }
@@ -153,13 +147,6 @@ var appMenu = new Vue({
                 channel: _that.office.menuChannel
             })
             .then(function (response) {
-                $('#client-modal').modal('hide')
-                // _that.print.shift = response.data.ticket.shift
-                // _that.print.speciality = response.data.ticket.speciality
-                // _that.print.box = response.data.ticket.box
-                // _that.print.type = response.data.ticket.type
-                // _that.print.date = response.data.ticket.hora.substring(11, 19)
-
                 $('#shift').html(response.data.ticket.shift)
                 $('#box').html('CAJA: '+response.data.ticket.box)
                 $('#hours').html(response.data.ticket.hora.substring(11, 19))
@@ -181,9 +168,13 @@ var appMenu = new Vue({
             this.ticket.sex = sex
             $('#client-modal').modal('hide')
             this.createTicket()
+            
+            if (this.office.twoModal == true) {
+                this.office.changeModal = false
+            }
         },
 
-        clearTicketData (){
+        clearTicketData () {
             this.ticket.speciality = 0
             this.ticket.client_number = null
             this.ticket.has_number = true
@@ -200,6 +191,32 @@ var appMenu = new Vue({
                 type: type,
                 z_index: 1100,
             })
+        },
+
+        actionModal (action) {
+            var _that = this
+
+            if (this.office.twoModal) {
+                // DOS MODALES: Código y Sexo
+                if (action == 1) {
+                    this.verifyClientNumber()
+                }
+
+                if (action == 2) {
+                    this.office.changeModal = true
+                }
+            } else {
+                // UN SOLO MODAL: Código
+                if (action == 1) {
+                    this.verifyClientNumber()
+                }
+
+                if (action == 2) {
+                    this.setSex('N/A')
+                }
+            }
+            
+           
         }
     }
 })
