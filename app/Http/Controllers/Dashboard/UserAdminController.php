@@ -49,14 +49,12 @@ class UserAdminController extends Controller
                   
                   for($i = 1; $i < 25; $i++) {
                       if($i != 22) {
-                          array_push($privileges, array(
-                            'user_id'         => $objUser->id,
-                            'privilege_id'    => $i,
-                          ));
+                        $objPriv = new UserPrivilege();
+                        $objPriv->user_id       = $objUser->id;
+                        $objPriv->privilege_id  = $i;
+                        $objPriv->save();
                       }
                   }
-
-                  UserPrivilege::create($privileges);
 
                 $objReturn->setResult(true, Messages::USER_ADMIN_CREATE_TITLE, Messages::USER_ADMIN_CREATE_MESSAGE);
             } else {

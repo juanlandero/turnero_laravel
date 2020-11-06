@@ -40,15 +40,21 @@ class AdsController extends Controller
         //     'txtOfficeKey.unique'   => 'Este código de sucursal no está disponible.'
         // ]);
 
-        $file = $request->imgAd;
+        /* $file = $request->imgAd;
+        $path = $file->store('carousel'); */
 
-        $path = $file->store('carousel');
+        $file       = $request->file('imgAd');
+        $extension  = $file->getClientOriginalExtension();
+        $fileName   = time() . '_image_carousel.' . $extension;
+        $url        = '/carousel/' . $fileName;
+
+        $request->imgAd->storeAs('carousel', $fileName);
 
         $officeId = UserOffice::where('user_id', Auth::id())->select('office_id')->first();
 
         $objAd = new Ad();
         $objAd->name        = $request->txtName;
-        $objAd->path        = $path;
+        $objAd->path        = $url;
         $objAd->order       = $request->intOrder;
         $objAd->is_first    = (($request->intOrder == 1)? "active":"");
         $objAd->duration    = ($request->intDuration*1000);

@@ -33,7 +33,7 @@
                             @foreach ($ads as $ad)
                                 <tr>
                                     <td>{{ $ad->id }}</td>
-                                    <td><img src="{{ asset('img/carousel/'.$ad->path) }}" width="40%"></td>
+                                    <td><img src="{{Storage::url($ad->path)}}" width="40%"></td>
                                     <td>{{ $ad->order }}</td>
                                     <td>{{ $ad->duration/1000 }}</td>
                                     <td class="text-center">

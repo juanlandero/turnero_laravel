@@ -58,34 +58,13 @@ class UserSupervisorController extends Controller
                 $objUserOffice->is_active   = true;
                 $objUserOffice->save();
 
-                $privileges = [
-                    [
-                      'user_id'         => $objUser->id,
-                      'privilege_id'    => 9,
-                    ],
-                    [
-                        'user_id'         => $objUser->id,
-                        'privilege_id'    => 10,
-                    ],
-                    [
-                        'user_id'         => $objUser->id,
-                        'privilege_id'    => 11,
-                    ],
-                    [
-                        'user_id'         => $objUser->id,
-                        'privilege_id'    => 12,
-                    ],
-                    [
-                        'user_id'         => $objUser->id,
-                        'privilege_id'    => 21,
-                    ],
-                    [
-                        'user_id'         => $objUser->id,
-                        'privilege_id'    => 22,
-                    ]
-                  ];
-        
-                  UserPrivilege::create($privileges);
+                $privileges = [9, 10, 11, 12, 21, 22];
+                foreach ($privileges as $key => $value) {
+                    $objPriv = new UserPrivilege();
+                    $objPriv->user_id       = $objUser->id;
+                    $objPriv->privilege_id  = $value;
+                    $objPriv->save();
+                }
 
                 $objReturn->setResult(true, Messages::USER_SUPERVISOR_CREATE_TITLE, Messages::USER_SUPERVISOR_CREATE_MESSAGE);
                 DB::commit();
