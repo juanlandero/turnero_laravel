@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\PublicDisplay;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
-
 use App\SpecialityTypeUser;
 use App\SpecialityType;
 use App\UserOffice;
@@ -13,16 +13,30 @@ use App\Office;
 use App\User;
 
 
-
 class SpecialityController extends Controller
 {
     public function getSpeciality(){
         $arrSpecialities = array();
-        $officeId = session()->get('NUM_OFFICE');
+        $officeId = session('OFFICE');
+
+        //BUSCAMOS EL CANAL DE ESTA PÁGINA
+        $objChannel = Office::select(
+                                'menu_channel',
+                                'user_channel',
+                                'address'
+                            )
+                            ->where([
+                                ['id', $officeId],
+                                ['is_active', 1],
+                            ])
+                            ->first();
 
         // BUSCAMOS LOS USARIOS DE SUCURSAL
         $objUserOffices = UserOffice::select('user_id', 'office_id')
-                                        ->where('office_id', $officeId)
+                                        ->where([
+                                            ['office_id', $officeId],
+                                            ['is_active', 1]
+                                        ])
                                         ->get();
 
         // BUSCAMOS LAS ESPECIALIDADES DE CADA USUARIO 
@@ -61,6 +75,11 @@ class SpecialityController extends Controller
             }            
         }
 
-        return $arrSpecialities;
+        return [
+            'specialities'  => $arrSpecialities,
+            'user_channel'  => $objChannel->user_channel,
+            'menu_channel'  => $objChannel->menu_channel,
+            'address'       => $objChannel->address
+        ];
     }
 }

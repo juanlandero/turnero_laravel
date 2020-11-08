@@ -1,24 +1,13 @@
 @section('title', 'Inicio')
+@section('subtitle', 'Dashboard')
+@section('icon', 'fa fa-tachometer-alt')
 
 @section('content')
-<div class="app-title">
-    <div>
-        <h1><i class="fa fa-dashboard"></i> Inicio</h1>
-        <p>Panel inicial del dashboard</p>
-    </div>
 
-    <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-    </ul>
-</div>
+@endsection
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="tile">
-            <div class="tile-body">Información de tickets</div>
-        </div>
-    </div>
-</div>
+@section('scripts')
+
 @endsection
 
 @include('dashboard.components.Navbar')

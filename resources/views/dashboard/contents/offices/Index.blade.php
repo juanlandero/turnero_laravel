@@ -1,18 +1,13 @@
 @section('title', 'Sucursales')
+@section('subtitle', 'Listado de sucursales')
+@section('icon', 'fas fa-map-marker-alt')
+@section('breadcrumb')
+    <li class="breadcrumb-item active"><a href="#">Sucursales</a></li>
+@endsection
 
 @section('content')
-<div class="app-title">
-    <div>
-        <h1><i class="fa fa-globe"></i> Sucursales</h1>
-        <p>Listado de sucursales</p>
-    </div>
 
-    <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="#">Sucursales</a></li>
-        <li class="breadcrumb-item active"><a href="#">Listado</a></li>
-    </ul>
-</div>
+@section('content')
 
 @if(Session::has('success_message'))
 <div class="row">

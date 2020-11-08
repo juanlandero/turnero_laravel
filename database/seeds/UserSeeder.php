@@ -60,13 +60,14 @@ class UserSeeder extends Seeder
             id, privilege_category, menu_order, icon
         )
         VALUES
-            (1, 'Tickets', 1, 'fa fa-ticket'),
+            (1, 'Turnos', 1, 'fa fa-ticket'),
             (2, 'Reportes', 2, 'fa fa-line-chart'),
             (3, 'Especialidades', 3, 'fa fa-rocket'),
-            (4, 'Administradores', 4, 'fa fa-user'),
-            (5, 'Supervisores', 5, 'fa fa-user'),
+            (4, 'Administradores', 4, 'fa fa-user-tie'),
+            (5, 'Supervisores', 5, 'fa fa-user-check'),
             (6, 'Asesores', 6, 'fa fa-user'),
-            (7, 'Sucursales', 7, 'fa fa-globe')");
+            (7, 'Sucursales', 7, 'fas fa-map-marker-alt'),
+            (8, 'Anuncios', 7, 'fas fa-photo-video')");
 
         //PRIVILEGES
         DB::statement("INSERT INTO

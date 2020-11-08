@@ -1,18 +1,12 @@
-@section('title', 'Usuarios Administradores')
+@section('title', 'Administradores')
+@section('subtitle', 'Nuevo Usuario Administrador')
+@section('icon', 'fas fa-user-tie')
+@section('breadcrumb')
+    <li class="breadcrumb-item "><a href="{{ route('user-admins.index') }}">Administradores</a></li>
+    <li class="breadcrumb-item active"><a href="#">Crear Administrador</a></li>
+@endsection
 
 @section('content')
-<div class="app-title">
-    <div>
-        <h1><i class="fa fa-globe"></i> Usuario</h1>
-        <p>Nuevo administrador</p>
-    </div>
-
-    <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="#">Usuarios</a></li>
-        <li class="breadcrumb-item active"><a href="#">Crear administrador</a></li>
-    </ul>
-</div>
 
 @if(Session::has('error_message'))
 <div class="row">

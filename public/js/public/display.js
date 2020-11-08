@@ -5,8 +5,8 @@ Vue.component('item-shift', {
         'box',
     ],
     template: `
-        <div class="row text-center my-1">
-            <div class="col-12 line-head text-success"><h1>{{ shift }}</h1></div>
+        <div class="row text-center ">
+            <div class="col-12 line-head text-info mt-2"><h1 class="mb-0">{{ shift }}</h1></div>
         </div>
     `,
 })
@@ -15,6 +15,7 @@ var appDisplay = new Vue({
     delimiters: ['${', '}'],
     el: '#app-public-display',
     data: {
+        audio: new Audio("/audio/chime.mp3"),   
         serviceOn: false,
         menuChannel: null,
         panelChannel: null,
@@ -35,9 +36,7 @@ var appDisplay = new Vue({
         getListTickets () {
             var _that = this
 
-            axios.get('list-shift', {
-                client: this.ticketList
-            })
+            axios.get('display/list')
             .then(function (response) {
                 _that.shiftList = response.data['listShift']
                 _that.menuChannel = response.data['channel'].menu_channel
@@ -62,8 +61,8 @@ var appDisplay = new Vue({
             var pusher = new Pusher('56423364aba2e84b5180', {
                 cluster: 'us2'
             })
-            var menuChannelPusher = pusher.subscribe(this.menuChannel);
-            var panelChannelPusher = pusher.subscribe(this.panelChannel);
+            var menuChannelPusher = pusher.subscribe(this.menuChannel)
+            var panelChannelPusher = pusher.subscribe(this.panelChannel)
 
             menuChannelPusher.bind('toPublicPanel', function(data) {
                 if (data != null) {
@@ -72,8 +71,8 @@ var appDisplay = new Vue({
             })
 
             panelChannelPusher.bind('toPublicPanel', function(data) {
-                console.log(data)
-                _that.atenddingShift (data.channel, data.idTicket)
+                _that.atenddingShift (data.idTicket)
+                _that.audio.play()
             })
 
             this.serviceOn = true
@@ -85,7 +84,7 @@ var appDisplay = new Vue({
 
             if (shift_id != null) {
                             
-                axios.post('get-shift', {
+                axios.post('display/get', {
                     shiftId: shift_id
                 })
                 .then(function (response) {
@@ -101,34 +100,29 @@ var appDisplay = new Vue({
             
         },
 
-        atenddingShift (channel, shiftId) {
+        atenddingShift (shiftId) {
             var _that = this
             if (this.shiftList.length > 0) {
-                console.log('No vacia')
 
                 this.shiftList.forEach(function (shift, index, arr) {
-
-                    console.log(index)
-                    console.log('*******')
-
                     if (shift.id == shiftId) {
-                        console.log('-------')
-                        console.log(shift, index)
                         _that.attending.id = shift.id
                         _that.attending.shift = shift.shift
                         _that.attending.box = shift.box_name
 
                         _that.shiftList.splice(index, 1)
-
                     } 
-                });
-
+                })
                 
-                //falta modificar la bd y jalar si es un usuario premium
             } else {
-                alert('No hay turnos por el momento')
                 this.setNotShiftAttending()
             }
+        },
+
+        setNotShiftAttending () {
+            _that.attending.id = 0
+            _that.attending.shift = '-'
+            _that.attending.box = '-'
         },
     }
 })

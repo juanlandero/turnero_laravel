@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Http\Request\OfficeValidator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Library\Returns\ActionReturn;
 use App\Library\Errors;
 use App\Library\Messages;
@@ -35,7 +36,7 @@ class OfficeController extends Controller
             'txtName'           => 'required|string|max:255',
             'txtPhone'          => 'nullable|string|max:50',
             'txtAddress'        => 'required|string',
-            'txtChannel'        => 'required|string|unique:offices,channel|max:80',
+            'txtChannel'        => 'required|string|unique:offices,menu_channel|max:80',
             'txtOfficeKey'      => 'required|string|unique:offices,office_key|max:20',
             'cmbMunicipality'   => 'required|integer|exists:municipalities,id'
         ],[
@@ -49,7 +50,9 @@ class OfficeController extends Controller
         $objOffice->name            = $request->txtName;
         $objOffice->address         = $request->txtAddress;
         $objOffice->phone           = $request->txtPhone;
-        $objOffice->channel         = $request->txtChannel;
+        $objOffice->menu_channel    = "menu-".trim($request->txtChannel)."-".Str::random(4);
+        $objOffice->panel_channel   = Str::random(4).":".trim($request->txtChannel)."-panel";
+        $objOffice->user_channel    = "user@".trim($request->txtChannel)."-".Str::random(4);
         $objOffice->office_key      = $request->txtOfficeKey;
         $objOffice->municipality_id = $request->cmbMunicipality;
         $objOffice->is_active       = true;

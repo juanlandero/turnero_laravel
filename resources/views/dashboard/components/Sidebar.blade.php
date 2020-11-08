@@ -16,7 +16,7 @@
                     @if(Request::path() == 'dashboard') {!!'class="app-menu__item active"' !!} @else {!!'class="app-menu__item"' !!} @endif
                     href="{{URL::to('dashboard')}}"
                 >
-                    <i class="app-menu__icon fa fa-dashboard"></i>
+                    <i class="app-menu__icon fas fa-tachometer-alt"></i>
                     <span class="app-menu__label">Dashboard</span>
                 </a>
             </li>

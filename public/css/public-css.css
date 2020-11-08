@@ -14281,7 +14281,6 @@ be a descendant of the grid when it is being dragged.
 .btn .fa {
   font-size: 14px;
   margin-right: 5px;
-  vertical-align: middle;
 }
 
 .app-title {
@@ -15288,6 +15287,27 @@ div.full-display {
 
 .height-content {
   height: calc(100vh - 20vh);
+}
+
+.ticket {
+  z-index: -10000 !important;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  min-height: 200px;
+  max-height: 300px;
+  width: 300px;
+}
+
+.ticket-content {
+  width: 90%;
+  background-color: white;
+  margin: auto;
+}
+
+.logo-madero {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 /*# sourceMappingURL=public-css.css.map */

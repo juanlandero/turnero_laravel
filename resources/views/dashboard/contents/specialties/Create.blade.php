@@ -1,18 +1,12 @@
 @section('title', 'Especialidades')
+@section('subtitle', 'Nueva Especialidad')
+@section('icon', 'fa fa-rocket')
+@section('breadcrumb')
+    <li class="breadcrumb-item "><a href="{{ route('specialities.index') }}">Especialidades</a></li>
+    <li class="breadcrumb-item active"><a href="#">Crear</a></li>
+@endsection
 
 @section('content')
-<div class="app-title">
-    <div>
-        <h1><i class="fa fa-globe"></i> Especialidades</h1>
-        <p>Nueva especialidad</p>
-    </div>
-
-    <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="#">Especialidades</a></li>
-        <li class="breadcrumb-item active"><a href="#">Crear</a></li>
-    </ul>
-</div>
 
 @if(Session::has('error_message'))
 <div class="row">

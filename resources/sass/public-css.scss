@@ -75,3 +75,26 @@ $buttom-tile: 0px;
 
 
 @import '5-my-styles/public-styles.scss';
+
+
+.ticket{
+    z-index: -10000 !important;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    // background-color: sandybrown;
+    min-height: 290px;
+    width: 300px;
+}
+
+.ticket-content{
+    width: 90%;
+    background-color: white;
+    margin: auto;
+    height: 300px;
+}
+
+.logo-madero{ 
+    margin-top: 15px;
+    margin-bottom: 15px;
+}

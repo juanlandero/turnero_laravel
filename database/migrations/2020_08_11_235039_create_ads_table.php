@@ -15,8 +15,11 @@ class CreateAdsTable extends Migration
     {
         Schema::create('ads', function (Blueprint $table) {
             $table->id();
-            $table->string('file_name', 20);
-            $table->string('file_url', 45);
+            $table->string('name', 20);
+            $table->string('path', 100);
+            $table->tinyInteger('order');
+            $table->string('is_first');
+            $table->double('duration');
 
             $table->foreignId('office_id')->constrained();
 

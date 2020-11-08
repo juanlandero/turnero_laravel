@@ -1,18 +1,11 @@
-@section('title', 'Sucursales')
+@section('title', 'Especialidades')
+@section('subtitle', 'Listado de Especialidades')
+@section('icon', 'fa fa-rocket')
+@section('breadcrumb')
+    <li class="breadcrumb-item active"><a href="#">Especialidades</a></li>
+@endsection
 
 @section('content')
-<div class="app-title">
-    <div>
-        <h1><i class="fa fa-rocket"></i> Especialidades</h1>
-        <p>Listado de especialidades</p>
-    </div>
-
-    <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
-        <li class="breadcrumb-item"><a href="#">Especialidades</a></li>
-        <li class="breadcrumb-item active"><a href="#">Listado</a></li>
-    </ul>
-</div>
 
 @if(Session::has('success_message'))
 <div class="row">

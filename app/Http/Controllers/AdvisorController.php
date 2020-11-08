@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
+use App\Http\Controllers\OfficeController;
+use App\Events\UserOnlineMsg;
 use App\SpecialityTypeUser;
 use App\UserOffice;
+use App\Office;
 use App\Shift;
 use App\User;
 
@@ -12,7 +17,7 @@ use App\User;
 class AdvisorController extends Controller
 {
     static function selectAdvisor($specialityId){
-        $officeId = session()->get('NUM_OFFICE');
+        $officeId = session('OFFICE');
         $arrayAdvisor = array();
         
         // OBTENIENDO EL NÚMERO TOTAL DE ASESORES QUE TIENE LA SUCURSAL
@@ -40,7 +45,7 @@ class AdvisorController extends Controller
                                 ->where([
                                     ['user_offices.office_id', $officeId],
                                     ['shifts.speciality_type_id', $specialityId],
-                                    ['shifts.created_at', 'like', session()->get('DATE').'%']
+                                    ['shifts.created_at', 'like', OfficeController::setDate().'%']
                                 ])
                                 ->select(
                                     'shifts.id',
@@ -106,6 +111,82 @@ class AdvisorController extends Controller
             $return = $objAdvisorCount[0]->id;
         }
         
+        return $return;
+    }
+
+    public function break(Request $request){
+        $case = $request->input('case');
+        $userId = Auth::id();
+        $return = null;
+
+        $channel = Office::join('user_offices', 'offices.id', '=', 'user_offices.office_id')
+                                    ->where('user_offices.user_id', $userId)
+                                    ->select(
+                                        'offices.user_channel',
+                                        'offices.id as office'
+                                    )
+                                    ->first();
+
+        $changeStatus = UserOffice::where([
+                                        ['office_id', $channel->office],
+                                        ['user_id', $userId]
+                                    ])
+                                    ->first();
+
+        switch ($case) {
+            case 1:
+                // DESDE INICIO DEL SERVICIO, SOLO SE COMPRUEBA EL ESTADO DEL USUARIO
+                $return = [
+                    'case' => 1,
+                    'state' => $changeStatus->is_active,
+                    'btnText' => (($changeStatus->is_active == 1)? 'Desconectar':'Conectar'),
+                    'btnType' => (($changeStatus->is_active == 1)? 'btn-outline-danger':'btn-outline-success')
+                ];
+                break;
+
+            case 2:
+
+                
+
+                //DESDE EL BOTÓN, SOLO CAMBIAMOS EL ESTADO DEL USUARIO
+                if ($changeStatus->is_active == true) {
+
+                    $changeStatus->is_active = 0;
+                    $changeStatus->save();
+        
+                    $return = [
+                        'case' => 2,
+                        'state' => $changeStatus->is_active,
+                        'text' => '<b>Desconectado</b>: No recibo turnos',
+                        'type' => 'info',
+                        'icon' => 'far fa-times-circle',
+                        'btnText' => 'Conectar',
+                        'btnType' => 'btn-outline-success'
+                    ];
+                } else {
+                    $changeStatus->is_active = 1;
+                    $changeStatus->save();
+        
+                    $return = [
+                        'case' => 2,
+                        'state' => $changeStatus->is_active,
+                        'text' => '<b>Conectado</b>: Disponible para atender',
+                        'type' => 'info',
+                        'icon' => 'far fa-check-circle',
+                        'btnText' => 'Desconectar',
+                        'btnType' => 'btn-outline-danger'
+        
+                    ];
+                }
+
+                event(new UserOnlineMsg($channel->user_channel, 12));
+
+                break;
+            
+            default:
+                # code...
+                break;
+        }
         return $return;
     }
 }
