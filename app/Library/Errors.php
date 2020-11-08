@@ -38,6 +38,13 @@ class Errors {
     const USER_CREATE_01_TITLE = "Usuario";
     const USER_CREATE_01_MESSAGE = "Ocurrió un problema al crear al usuario, vuelve a intentar más tarde.";
 
+    const USER_EDIT_01_ID = "3_0002";
+    const USER_EDIT_01_TITLE = "Usuario";
+    const USER_EDIT_01_MESSAGE = "El usuario que intenta modificar no existe.";
+    const USER_EDIT_02_ID = "3_0003";
+    const USER_EDIT_02_TITLE = "Usuario";
+    const USER_EDIT_02_MESSAGE = "Ocurrió un problema al modificar al usuario, vuelve a intentar más tarde.";
+
     //SPECIALTIES
     const SPECIALTY_CREATE_01_ID = "4_0001";
     const SPECIALTY_CREATE_01_TITLE = "Especialidad";

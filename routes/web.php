@@ -51,6 +51,8 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::get('/', 'Dashboard\UserAdminController@index')->name('user-admins.index');
         Route::get('/create', 'Dashboard\UserAdminController@create');
         Route::post('/create', ['as' => 'user-admin-store', 'uses' => 'Dashboard\UserAdminController@store']);
+        Route::get('/edit/{id}', 'Dashboard\UserAdminController@edit');
+        Route::put('/update', ['as' => 'user-admin-update', 'uses' => 'Dashboard\UserAdminController@update']);
     });
 
     Route::group(['prefix' => 'users-supervisors'], function () {
