@@ -96,7 +96,7 @@
                 <th>Tiempo</th>
             </tr>
             @foreach ($shifts as $shift)
-                @if ($shift['shift_status_id'] == 3)
+                @if ($shift['shift_status_id'] == 2)
                     <tr>
                         <td>{{ $shift['shift'] }}</td>
                         <td>{{ $shift['shift_type'] }}</td>
@@ -137,7 +137,7 @@
                 <th>Inicio</th>
             </tr>
             @foreach ($shifts as $shift)
-                @if ($shift['shift_status_id'] == 2 || $shift['has_incident'] == 1) 
+                @if ($shift['shift_status_id'] == 3) 
                     <tr>
                         <td>{{ $shift['shift'] }}</td>
                         <td>{{ $shift['shift_type'] }}</td>
@@ -163,7 +163,7 @@
                 <th>Esperó</th>
             </tr>
             @foreach ($shifts as $shift)
-                @if ($shift['shift_status_id'] == 4)
+                @if ($shift['is_reassigned'] == true)
                     <tr>
                         <td>{{ $shift['shift'] }}</td>
                         <td>{{ $shift['shift_type'] }}</td>

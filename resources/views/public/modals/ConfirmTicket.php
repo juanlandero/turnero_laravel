@@ -35,7 +35,7 @@
             <div class="modal-body">
                 <div class="row justify-content-center">
                     <div class="col-9">
-                        <input class="form-control form-control-lg text-center" id="client" type="text" v-model="ticket.client_number">
+                        <input class="form-control form-control-lg text-center" id="client" type="text" v-model="ticket.client_number" autocomplete="off">
                     </div>   
                 </div>
             </div>

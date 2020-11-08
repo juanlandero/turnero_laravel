@@ -46,7 +46,7 @@
                 @csrf
                 <div class="form-group">
                     <label class="control-label">Nombre</label>
-                    <input class="form-control" name="txtName" type="text" placeholder="Ingresa el nombre del archivo" required />
+                    <input class="form-control" name="txtName" type="text" placeholder="Ingresa el nombre del archivo" required autocomplete="off"/>
                 </div>
 
                 <div class="form-group">
@@ -69,7 +69,7 @@
                     <button class="btn btn-primary" type="submit">
                         <i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar
                     </button>&nbsp;&nbsp;&nbsp;
-                    <a class="btn btn-secondary" href="/dashboard/offices">
+                    <a class="btn btn-secondary" href="{{ route('ads.index') }}">
                         <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar
                     </a>
                 </div>

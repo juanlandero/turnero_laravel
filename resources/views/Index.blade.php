@@ -22,7 +22,7 @@
                     @csrf
                     <h3 class="login-head"></i>Bienvenido</h3>
                     <div class="form-group mt-5">
-                        <input class="form-control text-center form-control-lg" type="text" v-model="office" v-on:click="text_result=null" placeholder="Ingresa la clave de acceso" autofocus>
+                        <input class="form-control text-center form-control-lg" type="text" v-model="office" v-on:click="text_result=null" placeholder="Ingresa la clave de acceso" autofocus autocomplete="off">
                     </div>
                     <div class="form-group btn-container mt-4">
                         <button class="btn btn-primary btn-block">Entrar</button>

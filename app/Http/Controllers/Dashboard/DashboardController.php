@@ -20,7 +20,11 @@ class DashboardController extends Controller
 
     public function getDataPanel(){
         $channel = UserOffice::join('offices', 'user_offices.office_id', '=', 'offices.id')
-                            ->where('user_offices.user_id', Auth::id())
+                            ->join('users', 'user_offices.user_id', 'users.id')
+                            ->where([
+                                ['user_offices.user_id', Auth::id()],
+                                ['users.user_type_id', 3]
+                            ])
                             ->select(
                                 'offices.menu_channel',
                                 'offices.panel_channel'
@@ -45,7 +49,7 @@ class DashboardController extends Controller
                                 ->join('speciality_types', 'shifts.speciality_type_id', '=', 'speciality_types.id')
                                 ->where([
                                     ['shifts.user_advisor_id', $idUser],
-                                    ['shifts.shift_status_id', '<', 3],
+                                    ['shifts.shift_status_id', 1],
                                     ['shifts.created_at', 'like', OfficeController::setDate().'%'],
                                     ['shifts.is_active', 1]
                                 ])
@@ -138,7 +142,7 @@ class DashboardController extends Controller
                                         ['user_offices.office_id', $office->office_id],
                                         ['user_offices.user_id', '<>', Auth::id()],
                                         ['user_offices.is_active', 1],
-                                        ['users.user_type_id', 2]
+                                        ['users.user_type_id', 3]
                                     ])
                                     ->select(
                                         'user_offices.id as user_office',

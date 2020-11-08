@@ -61,15 +61,12 @@ var appMenu = new Vue({
 
             this.office.date = fecha.getDate() +"/"+ meses[fecha.getMonth()] +"/"+fecha.getFullYear()
 
-            axios.get('shift/get-data')
+            axios.get('shifts/get-data')
             .then(function (response) {
                 _that.menu = response.data.specialities
-
-                // if (_that.office.channel != null) {
-                    _that.office.menuChannel = response.data.menu_channel
-                    _that.office.userChannel = response.data.user_channel
-                    _that.office.address = response.data.address
-                // }
+                _that.office.menuChannel = response.data.menu_channel
+                _that.office.userChannel = response.data.user_channel
+                _that.office.address = response.data.address
             })
             .catch(function (error) {
                 console.log(error)
@@ -96,7 +93,6 @@ var appMenu = new Vue({
         },
 
         setSpecialityTicket (speciality) {
-
             if (this.ticket.speciality != 0) {
                 this.clearTicketData()
             }
@@ -118,7 +114,7 @@ var appMenu = new Vue({
             }
 
             if (this.ticket.client_number != null) {
-                axios.post('shift/get-client', {
+                axios.post('shifts/get-client', {
                     client: this.ticket.client_number
                 })
                 .then(function (response) {
@@ -139,29 +135,33 @@ var appMenu = new Vue({
         createTicket () {
             var _that = this
 
-            axios.post('shift/new', {
-                speciality: _that.ticket.speciality,
-                has_number: _that.ticket.has_number,
-                client_number: _that.ticket.client_number,
-                sex: _that.ticket.sex,
-                channel: _that.office.menuChannel
-            })
-            .then(function (response) {
-                $('#shift').html(response.data.ticket.shift)
-                $('#box').html('CAJA: '+response.data.ticket.box)
-                $('#hours').html(response.data.ticket.hora.substring(11, 19))
+            if (_that.ticket.speciality != 0) {
+                axios.post('shifts/new', {
+                    speciality: _that.ticket.speciality,
+                    has_number: _that.ticket.has_number,
+                    client_number: _that.ticket.client_number,
+                    sex: _that.ticket.sex,
+                    channel: _that.office.menuChannel
+                })
+                .then(function (response) {
+                    $('#shift').html(response.data.ticket.shift)
+                    $('#box').html('CAJA: '+response.data.ticket.box)
+                    $('#hours').html(response.data.ticket.hora.substring(11, 19))
 
-                // printJS({
-                //     printable:'ticket',
-                //     type:'html'
-                // })
+                    // printJS({
+                    //     printable:'ticket',
+                    //     type:'html'
+                    // })
 
-                _that.clearTicketData()
-            })
-            .catch(function (error) {
-                console.log(error)
-                _that.clearTicketData()
-            })
+                    _that.clearTicketData()
+                })
+                .catch(function (error) {
+                    console.log(error)
+                    _that.clearTicketData()
+                })
+            } else {
+
+            }
         },
 
         setSex (sex) {

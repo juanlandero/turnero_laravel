@@ -13,7 +13,7 @@ use App\Ad;
 class PublicDisplayController extends Controller
 {
     public function index(){
-        return response()->view('Index')->withCookie(Cookie::forget('OFFICE'));
+        return view('Index');
     }
 
     public function publicMenu() {
@@ -37,7 +37,7 @@ class PublicDisplayController extends Controller
     }
 
     public function shiftSelector(){
-        return view('public/ShiftSelector');
+        return view('public.ShiftSelector');
     }
 
     public function numberDisplay(){
@@ -50,7 +50,7 @@ class PublicDisplayController extends Controller
                     ->orderBy('order', 'asc')
                     ->get();
 
-        return view('public/NumberDisplay', ['ads' => $objAds]);
+        return view('public.NumberDisplay', ['ads' => $objAds]);
     }
 
     public function getListShifts(){
@@ -66,7 +66,7 @@ class PublicDisplayController extends Controller
                             ->join('boxes', 'user_offices.box_id', 'boxes.id')
                             ->where([
                                 ['shifts.is_active', 1],
-                                ['shifts.shift_status_id', '<', 3],
+                                ['shifts.shift_status_id', 1],
                                 ['shifts.created_at', 'like', OfficeController::setDate().'%']
                             ])
                             ->select(
@@ -90,7 +90,7 @@ class PublicDisplayController extends Controller
                             ->join('user_offices', 'users.id', '=', 'user_offices.user_id')
                             ->join('boxes', 'user_offices.box_id', 'boxes.id')
                             ->where([
-                                ['shifts.shift_status_id', '<', 3],
+                                ['shifts.shift_status_id', 1],
                                 ['shifts.is_active', 1],
                                 ['shifts.created_at', 'like', OfficeController::setDate().'%'],
                                 ['shifts.id', $shiftId]

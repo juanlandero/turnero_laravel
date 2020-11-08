@@ -32,10 +32,15 @@ class SpecialityController extends Controller
                             ->first();
 
         // BUSCAMOS LOS USARIOS DE SUCURSAL
-        $objUserOffices = UserOffice::select('user_id', 'office_id')
+        $objUserOffices = UserOffice::join('users', 'user_offices.user_id', 'users.id')
+                                        ->select(
+                                            'user_offices.user_id',
+                                            'user_offices.office_id'
+                                        )
                                         ->where([
-                                            ['office_id', $officeId],
-                                            ['is_active', 1]
+                                            ['user_offices.office_id', $officeId],
+                                            ['user_offices.is_active', 1],
+                                            ['users.user_type_id', 3]
                                         ])
                                         ->get();
 

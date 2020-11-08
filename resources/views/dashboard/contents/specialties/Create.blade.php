@@ -45,15 +45,15 @@
                 <div class="tile-body">
                     <div class="form-group">
                         <label class="control-label">Nombre</label>
-                        <input class="form-control" name="txtName" type="text" placeholder="Ingresa el nombre de la especialidad" required />
+                        <input class="form-control" name="txtName" type="text" placeholder="Ingresa el nombre de la especialidad" required autocomplete="off"/>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Descripción</label>
-                        <textarea class="form-control" name="txtDescription" rows="2" placeholder="Ingresa una descripción de la especialidad" required></textarea>
+                        <textarea class="form-control" name="txtDescription" rows="2" placeholder="Ingresa una descripción de la especialidad" required autocomplete="off"></textarea>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Icono</label>
-                        <input class="form-control" name="txtIcon" type="text" placeholder="fa fa-ejemplo" required/>
+                        <input class="form-control" name="txtIcon" type="text" placeholder="fa fa-ejemplo" required autocomplete="off"/>
                         <small class="form-text text-muted">Para consultar el listado de iconos disponibles entra a <a href="https://fontawesome.com/icons">Font Awesome</a></small>
                     </div>
                     </div>
@@ -62,7 +62,7 @@
                     <button class="btn btn-primary" type="submit">
                         <i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar
                     </button>&nbsp;&nbsp;&nbsp;
-                    <a class="btn btn-secondary" href="/dashboard/offices">
+                    <a class="btn btn-secondary" href="{{ route('specialities.index') }}">
                         <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar
                     </a>
                 </div>

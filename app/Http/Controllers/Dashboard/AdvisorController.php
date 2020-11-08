@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\OfficeController;
 use App\Events\UserOnlineMsg;
 use App\SpecialityTypeUser;
@@ -33,7 +34,8 @@ class AdvisorController extends Controller
                                 ->where([
                                     ['user_offices.office_id', $officeId],
                                     ['speciality_type_users.speciality_type_id', $specialityId],
-                                    ['user_offices.is_active', 1]
+                                    ['user_offices.is_active', 1],
+                                    ['users.user_type_id', 3]
                                 ])
                                 ->get();
 
@@ -120,12 +122,12 @@ class AdvisorController extends Controller
         $return = null;
 
         $channel = Office::join('user_offices', 'offices.id', '=', 'user_offices.office_id')
-                                    ->where('user_offices.user_id', $userId)
-                                    ->select(
-                                        'offices.user_channel',
-                                        'offices.id as office'
-                                    )
-                                    ->first();
+                            ->where('user_offices.user_id', $userId)
+                            ->select(
+                                'offices.user_channel',
+                                'offices.id as office'
+                            )
+                            ->first();
 
         $changeStatus = UserOffice::where([
                                         ['office_id', $channel->office],
@@ -145,9 +147,6 @@ class AdvisorController extends Controller
                 break;
 
             case 2:
-
-                
-
                 //DESDE EL BOTÓN, SOLO CAMBIAMOS EL ESTADO DEL USUARIO
                 if ($changeStatus->is_active == true) {
 
@@ -157,7 +156,7 @@ class AdvisorController extends Controller
                     $return = [
                         'case' => 2,
                         'state' => $changeStatus->is_active,
-                        'text' => '<b>Desconectado</b>: No recibo turnos',
+                        'text' => '<b>Desconectado</b>: No se reciben turnos',
                         'type' => 'info',
                         'icon' => 'far fa-times-circle',
                         'btnText' => 'Conectar',
@@ -179,12 +178,11 @@ class AdvisorController extends Controller
                     ];
                 }
 
-                event(new UserOnlineMsg($channel->user_channel, 12));
+                event(new UserOnlineMsg($channel->user_channel, 1));
 
                 break;
             
             default:
-                # code...
                 break;
         }
         return $return;
