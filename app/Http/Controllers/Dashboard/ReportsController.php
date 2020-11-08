@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\OfficeController;
+use App\Http\Controllers\PublicDisplay\SpecialityController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\SpecialityType;
+use App\SpecialityTypeUser;
 use App\UserOffice;
 use App\ShiftStatus;
 use App\Incident;
@@ -22,7 +24,7 @@ class ReportsController extends Controller
         $objAdvisor = UserOffice::join('users', 'user_offices.user_id', 'users.id')
                                 ->where([
                                     ['office_id', $officeId->office_id],
-                                    ['users.user_type_id', 2]
+                                    ['users.user_type_id', 3]
                                 ])
                                 ->select(
                                     'users.id',
@@ -39,7 +41,25 @@ class ReportsController extends Controller
         $return = null;
         $arrShift = array();
         $arrSpeciality = array();
+        $arrSpecialities = array();
         $arrUserOffices = array();
+        $objStatus = array(
+            array(
+                'id'              => 1,
+                'shift_status'    => 'En Espera'
+            ),
+            array(
+                'id'              => 2,
+                'shift_status'    => 'Atendido'
+            ),
+            array(
+                'id'              => 3,
+                'shift_status'    => 'Abandonado'
+            ),
+            array(
+                'id'              => 4,
+                'shift_status'    => 'Reasignado'
+        ));
 
        $objOffice = Office::join('user_offices', 'offices.id', 'user_offices.office_id')
                             ->where('user_offices.user_id', Auth::id())
@@ -53,27 +73,85 @@ class ReportsController extends Controller
 
         $officeId = $objOffice->id;
 
-        // PRIMERA TABLA
-        $objStatus = ShiftStatus::all();
+        // PRIMERA TABLA                            
         foreach ($objStatus as $status) {
             $countShitf = Shift::where([
                                     ['shifts.office_id', $officeId],
                                     ['shifts.is_active', 1],
-                                    ['shifts.shift_status_id', $status->id],
                                     ['shifts.created_at', 'like', OfficeController::setDate()."%"]
-                                ])
-                                ->count();
+                                ])//Espera
+                                ->when($status['id'] == 1, function($query){
+                                    return $query->where('shifts.shift_status_id', 1);
+                                })//Atendido
+                                ->when($status['id'] == 2, function($query){
+                                    return $query->where('shifts.shift_status_id', 2);
+                                })//Abandonado
+                                ->when($status['id'] == 3, function($query){
+                                    return $query->where('shifts.shift_status_id', 3);
+                                })//Reasignado
+                                ->when($status['id'] == 4, function($query){
+                                    return $query->where('shifts.is_reassigned', true);
+                                })
+                                ->get();
 
             array_push($arrShift, array(
-                'type' => $status->shift_status,
-                'count' => $countShitf,
+                'type' => $status['shift_status'],
+                'count' => $countShitf->count()
             ));
+            
         }
 
         // TABLA POR ESPECIALIDADES
-        $objSpecialities = SpecialityType::all();
-        $statusId = [3,4];
-        foreach ($objSpecialities as $speciality) {
+        // BUSCAMOS LOS USARIOS DE SUCURSAL
+        $objUserOffices = UserOffice::join('users', 'user_offices.user_id', 'users.id')
+                                        ->select(
+                                            'user_offices.user_id',
+                                            'user_offices.office_id'
+                                        )
+                                        ->where([
+                                            ['user_offices.office_id', $officeId],
+                                            ['users.user_type_id', 3]
+                                        ])
+                                        ->get();
+
+        // BUSCAMOS LAS ESPECIALIDADES DE CADA USUARIO 
+        foreach ($objUserOffices as $user) {
+            $duplicateSpeciality = false;
+
+            // UN USUARIO PUEDE TENER MAS DE UNA ESPECIALIDAD
+            $objSpecialityUser = SpecialityTypeUser::join('speciality_types', 'speciality_type_users.speciality_type_id', '=', 'speciality_types.id')
+                                                ->where('speciality_type_users.user_id', $user->user_id)
+                                                ->select(
+                                                    'speciality_types.id AS speciality_id',
+                                                    'speciality_types.name AS speciality_name',
+                                                    'speciality_types.class_icon'
+                                                )
+                                                ->get();
+
+            // SI EL SUSUARIO TIENE MAS DE UNA ESPECIALIDAD SE DEBE BUSCAR QUE NO SE DUPLIQUEN EN LA 
+            // REPRESENTACION DE LA PANTALLA
+            foreach ($objSpecialityUser as $specialityUser) {
+                foreach ($arrSpecialities as $speciality) {
+                    if ($specialityUser->speciality_id == $speciality['id']) {
+                        $duplicateSpeciality = true;
+                    }
+                }
+
+                // SOLO SE INSERTA EN EL ARRAY SU NO ESTA DUPLICADO EL VALOR
+                if (!$duplicateSpeciality) {
+                    array_push($arrSpecialities, array(
+                        'id' => $specialityUser->speciality_id,
+                        'speciality' => $specialityUser->speciality_name,
+                        'class_btn' => $specialityUser->class_icon
+                    ));
+                } else {
+                    $duplicateSpeciality = false;
+                }
+            }            
+        }
+
+        $statusId = [2, 3];
+        foreach ($arrSpecialities as $speciality) {
             $arrStatus = array();
             $turn = 0;
             foreach ($statusId as $index => $id) {
@@ -88,7 +166,7 @@ class ReportsController extends Controller
                                                                 AND shifts.created_at like "'.OfficeController::setDate().'%"
                                                                 AND shifts.office_id = '.$officeId.'
                                                                 AND shifts.is_active = 1
-                                                                AND shifts.speciality_type_id = '.$speciality->id)));
+                                                                AND shifts.speciality_type_id = '.$speciality['id'])));
                 array_push($arrStatus, array(
                     'id'        => $countStatus[0]->id,
                     'type'      => $countStatus[0]->shift_status,
@@ -105,7 +183,7 @@ class ReportsController extends Controller
             }
 
             array_push($arrSpeciality, array(
-                'type' => $speciality->name,
+                'type' => $speciality['speciality'],
                 'shifts' => $arrStatus
                 
             ));
@@ -116,7 +194,7 @@ class ReportsController extends Controller
                                         ->join('boxes', 'user_offices.box_id', '=', 'boxes.id')
                                         ->where([
                                             ['user_offices.office_id', $officeId],
-                                            ['users.user_type_id', 2],
+                                            ['users.user_type_id', 3],
                                             ['users.is_active', 1]
                                         ])
                                         ->select(
@@ -147,7 +225,7 @@ class ReportsController extends Controller
             ));            
         }
 
-        $pdf = PDF::loadView('dashboard.contents.reports.pdf.generalReport', [
+        $pdf = PDF::loadView('dashboard.contents.reports.pdf.GeneralReport', [
                                                                                 'office'        => $objOffice,
                                                                                 'shifts'        => $arrShift,
                                                                                 'specialities'  => $arrSpeciality,
@@ -187,7 +265,7 @@ class ReportsController extends Controller
                                 'shift_types.shift_type',
                                 'speciality_types.name as speciality',
                                 'users.email',
-                                'shifts.has_incident',
+                                'shifts.is_reassigned',
                                 'shifts.created_at',
                                 'shifts.start_shift',
                                 'shifts.end_shift',
@@ -255,7 +333,7 @@ class ReportsController extends Controller
                                         ->join('speciality_types', 'shifts.speciality_type_id', 'speciality_types.id')
                                         ->where([
                                             ['incidents.created_at', 'like', OfficeController::setDate().'%'],
-                                            ['user_reassigned_id', $userAdvisorId],
+                                            ['incidents.user_reassigned_id', $userAdvisorId],
                                             ['incidents.is_active', 1]
                                         ])
                                         ->select(
@@ -272,11 +350,32 @@ class ReportsController extends Controller
                                         )
                                         ->get();
 
+        $objRaceivedShifts = Shift::join('incidents', 'shifts.id', 'incidents.shift_id')
+                                    ->join('shift_types', 'shifts.shift_type_id', 'shift_types.id')
+                                    ->join('speciality_types', 'shifts.speciality_type_id', 'speciality_types.id')
+                                    ->join('users', 'incidents.user_reassigned_id', 'users.id')
+                                    ->where([
+                                        ['shifts.is_reassigned', 1],
+                                        ['shifts.user_advisor_id', $userAdvisorId]
+                                    ])
+                                    ->select(
+                                        'shifts.id',
+                                        'shifts.shift',
+                                        'users.email',
+                                        'shift_types.shift_type',
+                                        'speciality_types.name as speciality',
+                                        'shifts.created_at',
+                                        'shifts.start_shift',
+                                        'shifts.end_shift',
+                                        DB::raw('TIMESTAMPDIFF(SECOND,shifts.start_shift,shifts.end_shift) as minute')
+                                    )
+                                    ->get();
 
         $pdf = PDF::loadView('dashboard.contents.reports.pdf.AdvisorReport', [
                                                                                 'office'        => $objOffice,
                                                                                 'shifts'        => $objShifts,
-                                                                                'reassigned'    => $objReassignedShifts
+                                                                                'reassigned'    => $objReassignedShifts,
+                                                                                'received'      => $objRaceivedShifts
                                                                             ]);
         $pdf->setPaper('A4');
         $return = $pdf->stream();

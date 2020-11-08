@@ -45,30 +45,30 @@
                 <div class="tile-body">
                     <div class="form-group">
                         <label class="control-label">Nombre</label>
-                        <input class="form-control" name="txtName" type="text" placeholder="Ingresa un nombre" required />
+                        <input class="form-control" name="txtName" type="text" placeholder="Ingresa un nombre" required autocomplete="off"/>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Apellido Paterno</label>
-                        <input class="form-control" name="txtFirstName" type="text" placeholder="Ingresa el apellido paterno" required />
+                        <input class="form-control" name="txtFirstName" type="text" placeholder="Ingresa el apellido paterno" required autocomplete="off"/>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Apellido Materno</label>
-                        <input class="form-control" name="txtSecondName" type="text" placeholder="Ingresa el apellido materno" required />
+                        <input class="form-control" name="txtSecondName" type="text" placeholder="Ingresa el apellido materno" required autocomplete="off"/>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Email</label>
-                        <input class="form-control" name="txtEmail" type="text" placeholder="Ingresa un correo para el usuario" required />
+                        <input class="form-control" name="txtEmail" type="text" placeholder="Ingresa un correo para el usuario" required autocomplete="off"/>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Contraseña</label>
-                        <input class="form-control" name="txtPassword" type="password" placeholder="Ingresa una contraseña para el usuario" required />
+                        <input class="form-control" name="txtPassword" type="password" placeholder="Ingresa una contraseña para el usuario"/>
                     </div>
                 </div>
                 <div class="tile-footer">
                     <button class="btn btn-primary" type="submit">
                         <i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar
                     </button>&nbsp;&nbsp;&nbsp;
-                    <a class="btn btn-secondary" href="/dashboard/users-admins">
+                    <a class="btn btn-secondary" href="{{ route('user-advisers.index') }}">
                         <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar
                     </a>
                 </div>

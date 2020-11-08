@@ -27,14 +27,11 @@ class CreateSpecialityTypesTable extends Migration
                 id, name, description, class_icon, is_active, created_at, updated_at
             )
             VALUES
-                ( 1, 'Electrico', '', 'fas fa-charging-station fa-3x', 1, NOW(), NOW()),
-                ( 2, 'Suspención y frenos', '', 'fas fa-tachometer-alt fa-3x', 1, NOW(), NOW()),
-                ( 3, 'Clutch', '', 'fas fa-car fa-3x', 1, NOW(), NOW()),
-                ( 4, 'Afinación', '', 'fas fa-tools fa-3x', 1, NOW(), NOW()),
-                ( 5, 'Alineación', '', 'fas fa-car-crash fa-3x', 1, NOW(), NOW()),
-                ( 6, 'Llantas', '', 'fas fa-life-ring fa-3x', 1, NOW(), NOW()),
-                ( 7, 'Fuel injection', '', 'fas fa-oil-can fa-3x', 1, NOW(), NOW()),
-                ( 8, 'Baterias', '', 'fas fa-car-battery fa-3x', 1, NOW(), NOW())
+                ( 1, 'Socio Mecánico', '', 'fas fa-wrench fa-3x', 1, NOW(), NOW()),
+                ( 2, 'Socio Comprador', '', 'fas fa-shopping-basket fa-3x', 1, NOW(), NOW()),
+                ( 3, 'Devoluciones', '', 'fas fa-reply fa-3x', 1, NOW(), NOW()),
+                ( 4, 'Damas', '', 'fas fa-female fa-3x', 1, NOW(), NOW()),
+                ( 5, 'Pedido Listo', '', 'fas fa-dolly fa-3x', 1, NOW(), NOW())
         ");
     }
 

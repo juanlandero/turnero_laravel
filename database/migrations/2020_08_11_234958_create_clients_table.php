@@ -33,8 +33,8 @@ class CreateClientsTable extends Migration
         )
         VALUES
             ( 1, '1234', 'José', 'Hernández', 'Diaz', 'M', 1, true, NOW(), NOW()),
-            ( 2, '4321', 'Ana', 'López', 'Sanchez', 'F', 2, true, NOW(), NOW()),
-            ( 3, '1243', 'Diana', 'Pérez', 'Montejo', 'F', 3, true, NOW(), NOW())
+            ( 2, '4321', 'Ana', 'López', 'Sanchez', 'F', 1, true, NOW(), NOW()),
+            ( 3, '1243', 'Diana', 'Pérez', 'Montejo', 'F', 1, true, NOW(), NOW())
         ");
     }
 

@@ -30,7 +30,7 @@
 			<!-- CONTENIDO -->
 			<div class="row height-content" style="margin: 0px;">
 				<!-- PANEL IZQUIERDO -->
-                <div class="col-4"  v-if="serviceOn">
+                <div class="col-md-4 col-sm-12"  v-if="serviceOn">
                     <div class="tile mb-2 ">
                         <div class="row text-center">
                             <div class="col line-head text-secondary"><h3>Turno</h3></div>
@@ -55,7 +55,7 @@
                     </div> 
 				</div>
 				
-				<div class="col-4" v-else>
+				<div class="col-md-4 col-sm-12" v-else>
 					<div class="row align-items-center justify-content-center" style="height: 100%;">
 						<div class="col-12">
 							<button class="btn btn-primary btn-lg btn-block" type="button"  v-on:click="pusher()">Iniciar servicio</button>
@@ -64,7 +64,7 @@
                 </div>
 
 				<!-- PANEL DERECHO -->
-				<div class="col-8 text-center">
+				<div class="col-md-8 col-sm-12 text-center">
 					<div class="row">
 						<div class="col-6">
 							<h1><i class="fa fa-dashboard"></i>${ attending.shift }</h1>

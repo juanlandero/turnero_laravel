@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
         $objUser1->name          = "Carlos";
         $objUser1->first_name    = "Rodriguez";
         $objUser1->second_name   = "Madrigal";
-        $objUser1->user_type_id  = 2;
+        $objUser1->user_type_id  = 3;
         $objUser1->email         = "carlos@dashboard.mx";
         $objUser1->password      = bcrypt('1234567*');
         $objUser1->is_active     = true;
@@ -37,7 +37,7 @@ class UserSeeder extends Seeder
         $objUser2->name          = "Lorena";
         $objUser2->first_name    = "Gomez";
         $objUser2->second_name   = "Gomez";
-        $objUser2->user_type_id  = 2;
+        $objUser2->user_type_id  = 3;
         $objUser2->email         = "lorena@dashboard.mx";
         $objUser2->password      = bcrypt('1234567*');
         $objUser2->is_active     = true;
@@ -47,7 +47,7 @@ class UserSeeder extends Seeder
         $objUser3->name          = "Diego";
         $objUser3->first_name    = "Hernandez";
         $objUser3->second_name   = "Hernandez";
-        $objUser3->user_type_id  = 2;
+        $objUser3->user_type_id  = 3;
         $objUser3->email         = "diego@dashboard.mx";
         $objUser3->password      = bcrypt('1234567*');
         $objUser3->is_active     = true;
@@ -60,8 +60,8 @@ class UserSeeder extends Seeder
             id, privilege_category, menu_order, icon
         )
         VALUES
-            (1, 'Turnos', 1, 'fa fa-ticket'),
-            (2, 'Reportes', 2, 'fa fa-line-chart'),
+            (1, 'Turnos', 1, 'fa fa-ticket-alt'),
+            (2, 'Reportes', 2, 'fa fa-chart-line'),
             (3, 'Especialidades', 3, 'fa fa-rocket'),
             (4, 'Administradores', 4, 'fa fa-user-tie'),
             (5, 'Supervisores', 5, 'fa fa-user-check'),
@@ -76,30 +76,42 @@ class UserSeeder extends Seeder
             id, privilege_category_id, privilege, description, menu, menu_order, menu_url, is_active
         )
         VALUES
-            (1, 4, 'USERS_ADMINS', 'Lista de administradores',         1, 1, 'users-admins', 1),
-            (2, 4, 'USERS_ADMINS_CREATE', 'Nuevo administrador',       1, 2, 'users-admins/create', 1),
-            (3, 4, 'USERS_ADMINS_EDIT', 'Editar administrador',        0, NULL, NULL, 1),
-            (4, 4, 'USERS_ADMINS_DELETE', 'Borrar administrador',      0, NULL, NULL, 1),
+            (1, 1, 'SHIFTS',            'Panel Turnos',     1, 1, 'shifts', 1),
+            (2, 1, 'SHIFTS_REASSIGNED', 'Reasignar turno',  1, 2, 'shifts/reassigned', 1),
 
-            (5, 5, 'USERS_SUPERVISORS', 'Lista de supervisores',         1, 1, 'users-supervisors', 1),
-            (6, 5, 'USERS_SUPERVISORS_CREATE', 'Nuevo supervisor',       1, 2, 'users-supervisors/create', 1),
-            (7, 5, 'USERS_SUPERVISORS_EDIT', 'Editar supervisor',        0, NULL, NULL, 1),
-            (8, 5, 'USERS_SUPERVISORS_DELETE', 'Borrar supervisor',      0, NULL, NULL, 1),
+            (3, 2, 'REPORTS',          'Lista de reportes',    1, 1, 'reports', 1), 
+            (4, 2, 'REPORTS_GENERAL',  'Reporte general',      0, NULL, NULL, 1),
+            (5, 2, 'REPORTS_SHIFT',    'Reporte de turnos',    0, NULL, NULL, 1),
+            (6, 2, 'REPORTS_ADVISOR',  'Reporte de asesores',  0, NULL, NULL, 1),
 
-            (9, 6, 'USERS_ADVISERS', 'Lista de asesores',               1, 1, 'users-advisers', 1),
-            (10, 6, 'USERS_ADVISERS_CREATE', 'Nuevo asesor',            1, 2, 'users-advisers/create', 1),
-            (11, 6, 'USERS_ADVISERS_EDIT', 'Editar asesor',             0, NULL, NULL, 1),
-            (12, 6, 'USERS_ADVISERS_DELETE', 'Borrar asesor',           0, NULL, NULL, 1),
+            (7, 3, 'SPECIALTIES', 'Lista de especialidades',           1, 1, 'specialties', 1),
+            (8, 3, 'SPECIALTIES_CREATE', 'Nueva especialidad',         1, 2, 'specialties/create', 1),
+            (9, 3, 'SPECIALTIES_EDIT', 'Editar especialidad',          0, NULL, NULL, 1),
+            (10, 3, 'SPECIALTIES_DELETE', 'Borrar especialidad',        0, NULL, NULL, 1),
+
+            (11, 4, 'USERS_ADMINS', 'Lista de administradores',         1, 1, 'users-admins', 1),
+            (12, 4, 'USERS_ADMINS_CREATE', 'Nuevo administrador',       1, 2, 'users-admins/create', 1),
+            (13, 4, 'USERS_ADMINS_EDIT', 'Editar administrador',        0, NULL, NULL, 1),
+            (14, 4, 'USERS_ADMINS_DELETE', 'Borrar administrador',      0, NULL, NULL, 1),
+
+            (15, 5, 'USERS_SUPERVISORS', 'Lista de supervisores',         1, 1, 'users-supervisors', 1),
+            (16, 5, 'USERS_SUPERVISORS_CREATE', 'Nuevo supervisor',       1, 2, 'users-supervisors/create', 1),
+            (17, 5, 'USERS_SUPERVISORS_EDIT', 'Editar supervisor',        0, NULL, NULL, 1),
+            (18, 5, 'USERS_SUPERVISORS_DELETE', 'Borrar supervisor',      0, NULL, NULL, 1),
+
+            (19, 6, 'USERS_ADVISERS', 'Lista de asesores',               1, 1, 'users-advisers', 1),
+            (20, 6, 'USERS_ADVISERS_CREATE', 'Nuevo asesor',            1, 2, 'users-advisers/create', 1),
+            (21, 6, 'USERS_ADVISERS_EDIT', 'Editar asesor',             0, NULL, NULL, 1),
+            (22, 6, 'USERS_ADVISERS_DELETE', 'Borrar asesor',           0, NULL, NULL, 1),
             
-            (13, 7, 'OFFICES', 'Lista de sucursales',                   1, 1, 'offices', 1),
-            (14, 7, 'OFFICES_CREATE', 'Nueva sucursal',                 1, 2, 'offices/create', 1),
-            (15, 7, 'OFFICES_EDIT', 'Editar sucursal',                  0, NULL, NULL, 1),
-            (16, 7, 'OFFICES_DELETE', 'Borrar sucursal',                0, NULL, NULL, 1),
-            
-            (17, 3, 'SPECIALTIES', 'Lista de especialidades',           1, 1, 'specialties', 1),
-            (18, 3, 'SPECIALTIES_CREATE', 'Nueva especialidad',         1, 2, 'specialties/create', 1),
-            (19, 3, 'SPECIALTIES_EDIT', 'Editar especialidad',          0, NULL, NULL, 1),
-            (20, 3, 'SPECIALTIES_DELETE', 'Borrar especialidad',        0, NULL, NULL, 1);;");
+            (23, 7, 'OFFICES', 'Lista de sucursales',                   1, 1, 'offices', 1),
+            (24, 7, 'OFFICES_CREATE', 'Nueva sucursal',                 1, 2, 'offices/create', 1),
+            (25, 7, 'OFFICES_EDIT', 'Editar sucursal',                  0, NULL, NULL, 1),
+            (26, 7, 'OFFICES_DELETE', 'Borrar sucursal',                0, NULL, NULL, 1),            
+
+            (27, 8, 'CAROUSEL', 'Lista de Anuncios', 1, 1, 'ads', 1), 
+            (28, 8, 'CAROUSEL_CREATE', 'Nuevo Anuncio', 1, 2, 'ads/create', 1);;");
+           
 
         // USER PRIVILEGES
         DB::statement("INSERT INTO
@@ -108,26 +120,37 @@ class UserSeeder extends Seeder
             user_id, privilege_id
         )
         VALUES
-            (4, 1),
-            (4, 2),
-            (4, 3),
-            (4, 4),
-            (4, 5),
-            (4, 6),
-            (4, 7),
-            (4, 8),
-            (4, 9),
-            (4, 10),
-            (4, 11),
-            (4, 12),
-            (4, 13),
-            (4, 14),
-            (4, 15),
-            (4, 16),
-            (4, 17),
-            (4, 18),
-            (4, 19),
-            (4, 20);");
+            (1, 1),
+            (1, 2),
+            (1, 3),
+            (1, 4),
+            (1, 5),
+            (1, 6),
+            (1, 7),
+            (1, 8),
+            (1, 9),
+            (1, 10),
+            (1, 11),
+            (1, 12),
+            (1, 13),
+            (1, 14),
+            (1, 15),
+            (1, 16),
+            (1, 17),
+            (1, 18),
+            (1, 19),
+            (1, 20),
+            (1, 21),
+            (1, 22),
+            (1, 23),
+            (1, 24),
+            (1, 25),
+            (1, 26),
+            (1, 27),
+            (1, 28),
+            (2, 1),
+            (3, 1),
+            (4, 1);");
 
         // USER OFFICES
         // DB::statement("INSERT INTO  user_offices

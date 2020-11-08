@@ -15,17 +15,17 @@
         </section>
         <section class="login-content">
             <div class="row justify-content-center" style="width: 80%">
-                <div class="col-6 tile text-center">
+                <div class="col-lg-7 col-md-10 col-sm-10 tile text-center">
                     <h3 class="tile-title">¿Qué pantalla deseas abrir?</h3>
                     <div class="tile-body">
                         <div class="row my-4">
-                            <div class="col-6">
+                            <div class="col-md-6 col-sm-12 mb-2">
                                 <a class="btn btn-dark btn-lg btn-block" href="{{ route('shift.generator') }}">
                                     <p><i class="fas fa-ticket-alt fa-3x"></i></p>
                                     Generador de turnos
                                 </a>
                             </div>
-                            <div class="col-6">
+                            <div class="col-md-6 col-sm-12 mb-2">
                                 <a class="btn btn-dark btn-lg btn-block" href="{{ route('shift.list') }}">
                                     <p><i class="fas fa-desktop fa-3x"></i></p>
                                     Lista de turnos

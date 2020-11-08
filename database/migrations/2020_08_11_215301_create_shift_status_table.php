@@ -25,9 +25,8 @@ class CreateShiftStatusTable extends Migration
             )
             VALUES
                 ( 1, 'En espera', NOW(), NOW()),
-                ( 2, 'Reasignado', NOW(), NOW()),
-                ( 3, 'Atendido', NOW(), NOW()),
-                ( 4, 'Abandonado', NOW(), NOW())
+                ( 2, 'Atendido', NOW(), NOW()),
+                ( 3, 'Abandonado', NOW(), NOW())
         ");
     }
 
