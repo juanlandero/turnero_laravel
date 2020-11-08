@@ -1,17 +1,12 @@
 @section('dashboard.components.Navbar')
     <!-- Navbar-->
     <header class="app-header">
-        {{-- <a class="app-header__logo" href="/dashboard">Dashboard</a> --}}
         <!-- Sidebar toggle button-->
-        <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
+        <a href="#" class="app-nav__item" data-toggle="sidebar" aria-label="Hide Sidebar"><i class="fas fa-bars fa-lg"></i></a>
   
         <!-- Navbar Right Menu-->
         <ul class="app-nav">
-            <li class="app-search">
-                <input class="app-search__input" type="search" placeholder="Search">
-                <button class="app-search__button"><i class="fa fa-search"></i></button>
-            </li>
-
+            
             <!-- User Menu-->
             <li class="dropdown">
                 <a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Open Profile Menu">

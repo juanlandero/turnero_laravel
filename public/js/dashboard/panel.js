@@ -49,10 +49,10 @@ var appPanel = new Vue({
     },
 
     methods: {
-        getListShift (dataChannel) {
+        getListShift () {
             var _that = this
                             
-            axios.post('shift/get', {
+            axios.post('shifts/get', {
                 type: 1,
                 userId: this.user
             })
@@ -69,7 +69,7 @@ var appPanel = new Vue({
 
             if (this.attending.id != 0) {
 
-                axios.get('shift/get-advisors')
+                axios.get('shifts/get-advisors')
                 .then(function (response) {
                     _that.advisors = response.data
                     $('#reassignment-modal').modal('show')
@@ -85,9 +85,8 @@ var appPanel = new Vue({
         setServiceOn () {
             var _that = this
 
-            axios.post('shift/get-data')
+            axios.post('shifts/get-data')
             .then(function (response) {
-
                 if (response.data['channel'] == null) {
                     _that.notify('warning', 'No estás vinculado a una oficina', 'fa fa-exclamation-triangle')
                 }else{
@@ -98,7 +97,6 @@ var appPanel = new Vue({
                     _that.userBreak(1)
                     _that.getListShift()
                 }
-
             })
             .catch(function (error) {
                 console.log(error)
@@ -130,8 +128,7 @@ var appPanel = new Vue({
             var bk = false
 
             if (dataChannel.idUser == this.user) {
-                            
-                axios.post('shift/get', {
+                axios.post('shifts/get', {
                     type: 2,
                     shiftId: shift_id
                 })
@@ -157,16 +154,16 @@ var appPanel = new Vue({
 
         nextShift () {
             var _that = this
+            this.disabledButtons.buttonNext = true
 
             if (this.shiftList.length > 0) {
                 this.attending.id = this.shiftList[0].id
 
-                axios.post('shift/next', {
+                axios.post('shifts/next', {
                     'shiftId': _that.attending.id,
                     'panel_channel': _that.panelChannel
                 })
                 .then(function (response) {
-
                     if (response.data.state == true) {
                         _that.attending.shift = _that.shiftList[0].shift
                         _that.attending.speciality = _that.shiftList[0].speciality
@@ -204,7 +201,7 @@ var appPanel = new Vue({
 
             if (data_form[2].value != 0) {
                 
-                axios.post('shift/reassignment',{
+                axios.post('shifts/reassignment',{
                     shift_id: _that.attending.id,
                     send_id: data_form[1].value,
                     recive_id: data_form[2].value,
@@ -212,7 +209,9 @@ var appPanel = new Vue({
                 })
                 .then(function (response) {
                     $('#reassignment-modal').modal('hide')
-                    _that.setNotShiftAttending()
+                    if (response.data.state) {
+                        _that.setNotShiftAttending()
+                    }
                     _that.notify(response.data.type, response.data.text, response.data.icon)
                 })
                 .catch(function (error) {
@@ -227,8 +226,7 @@ var appPanel = new Vue({
             var _that = this
 
             if (this.attending.id != 0) {
-
-                axios.post('shift/status', {
+                axios.post('shifts/status', {
                     shiftId: this.attending.id,
                     typeStatus: status
                 })
@@ -264,7 +262,7 @@ var appPanel = new Vue({
             var _that = this
             this.disabledButtons.buttonConnect = true
                             
-            axios.post('shift/break', {
+            axios.post('shifts/break', {
                 case: check
             })
             .then(function (response) {

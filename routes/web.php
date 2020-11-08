@@ -19,7 +19,7 @@ Route::post('/access', 'PublicDisplay\PublicDisplayController@verifyAccess');
 Route::group(['prefix' => 'public', 'middleware' => 'public'], function () {
     Route::get('/', 'PublicDisplay\PublicDisplayController@publicMenu')->name('public.menu');
 
-    Route::group(['prefix' => 'shift'], function () {
+    Route::group(['prefix' => 'shifts'], function () {
         Route::get('/', 'PublicDisplay\PublicDisplayController@shiftSelector')->name('shift.generator');
         Route::get('/get-data', 'PublicDisplay\SpecialityController@getSpeciality');
         Route::post('/get-client', 'PublicDisplay\ClientController@verifyClient');
@@ -71,7 +71,7 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::post('/create', ['as' => 'specialty-store', 'uses' => 'Dashboard\SpecialtiesController@store']);
     });
 
-    Route::group(['prefix' => 'shift'], function () {
+    Route::group(['prefix' => 'shifts'], function () {
         Route::get('/', 'Dashboard\DashboardController@adminShift')->name('shift.index');
         Route::post('/get', 'Dashboard\DashboardController@getShiftAdvisor');
         Route::post('/get-data', 'Dashboard\DashboardController@getDataPanel');
@@ -81,17 +81,17 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::post('/status', 'Dashboard\ShiftController@changeStatusShift');
         Route::post('/reassignment', 'Dashboard\ShiftController@reassignmentShift');
 
-        Route::post('/break', 'AdvisorController@break');
+        Route::post('/break', 'Dashboard\AdvisorController@break');
     });
 
-    Route::group(['prefix' => 'report'], function () {
+    Route::group(['prefix' => 'reports'], function () {
         Route::get('/', 'Dashboard\ReportsController@index')->name('report.index');
         Route::get('/general', 'Dashboard\ReportsController@generalReport')->name('general.report');
         Route::get('/shift', 'Dashboard\ReportsController@shiftReport')->name('shift.report');
         Route::post('/advisor', 'Dashboard\ReportsController@advisorReport')->name('advisor.report');
     });
 
-    Route::group(['prefix' => 'carousel'], function () {
+    Route::group(['prefix' => 'ads'], function () {
         Route::get('/', 'Dashboard\AdsController@index')->name('ads.index');
         Route::get('/create', 'Dashboard\AdsController@create')->name('ad.create');
         Route::post('/store', 'Dashboard\AdsController@store')->name('ad.store');

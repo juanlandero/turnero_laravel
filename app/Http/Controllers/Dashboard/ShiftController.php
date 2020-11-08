@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\OfficeController;
+use App\Http\Controllers\Dashboard;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request;
 use App\Events\MenuGeneratorMsg;
@@ -72,10 +73,10 @@ class ShiftController extends Controller
         $newTicket->speciality_type_id  = $specialityId;
         $newTicket->office_id           = session('OFFICE');
         $newTicket->shift_status_id     = 1;
-        $newTicket->user_advisor_id     = \App\Http\Controllers\AdvisorController::selectAdvisor($specialityId);
+        $newTicket->user_advisor_id     = AdvisorController::selectAdvisor($specialityId);
         $newTicket->sex_client          = $clientSex;
         $newTicket->number_client       = $clientNumber;
-        $newTicket->has_incident        = 0;
+        $newTicket->is_reassigned       = 0;
         $newTicket->is_active           = 1;
         $newTicket->save();
 
@@ -101,33 +102,32 @@ class ShiftController extends Controller
         $panelChannel = $request->input('panel_channel');
 
         $newStateShift = Shift::where('id', $shiftId)->first();
+        $newStateShift->shift_status_id = 2;
         $newStateShift->start_shift = now();
-        $newStateShift->save();
 
-        
-        if ($newStateShift->start_shift != null) {
-            event(new AdminPanelMsg($panelChannel, $shiftId));
+        try {
+            if ($newStateShift->save()) {
+                event(new AdminPanelMsg($panelChannel, $shiftId));
+                $return = [
+                    'state' => true,
+                    'text' => 'Turno iniciado - '.substr($newStateShift->start_shift, 11, 19),
+                    'type' => 'info',
+                    'icon' => 'fa fa-info-circle'
+                ];
+            } 
+        } catch (\Throwable $th) {
             $return = [
-                        'state' => true,
-                        'text' => 'Turno iniciado - '.substr($newStateShift->start_shift, 11, 19),
-                        'type' => 'info',
-                        'icon' => 'fa fa-info-circle'
-                    ];
-        } else {
-            $return = [
-                        'state' => false,
-                        'text' => 'No se pudo iniciar el turno. Recargue la pagina',
-                        'type' => 'danger',
-                        'icon' => 'fa fa-times-circle'
-                    ];
+                'state' => false,
+                'text' => 'No se pudo iniciar el turno. Recargue la pagina',
+                'type' => 'danger',
+                'icon' => 'fa fa-times-circle'
+            ];
         }
-
-
+        
         return $return;
     }
 
-    public function reassignmentShift(Request $request  ){
-
+    public function reassignmentShift(Request $request){
         $shiftId    = $request->input('shift_id');
         $reciveId   = $request->input('recive_id');
         $sendId     = $request->input('send_id');
@@ -135,10 +135,10 @@ class ShiftController extends Controller
 
         // CAMBIO DE USUARIO
         $reassignment = Shift::where('id', $shiftId)->first();
-        $reassignment->shift_status_id = 2;
+        $reassignment->shift_status_id = 1;
         $reassignment->user_advisor_id = $reciveId;
-        $reassignment->has_incident = 1;
-        $reassignment->save();
+        $reassignment->start_shift = null;
+        $reassignment->is_reassigned = 1;
 
         // REGISTRO DEL INCIDENTE CON EL USUARIO QUE ESTA HACIENDO LA REASIGNACIÓN
         $objIncident = new Incident();
@@ -146,17 +146,27 @@ class ShiftController extends Controller
         $objIncident->incident_type_id =  1;
         $objIncident->user_reassigned_id = $sendId;        
         $objIncident->is_active = 1;   
-        $objIncident->save();
 
-        event(new MenuGeneratorMsg($channel, $objIncident->shift_id, $reassignment->user_advisor_id));
+        try {
+            if ($reassignment->save() && $objIncident->save()) {
+                event(new MenuGeneratorMsg($channel, $objIncident->shift_id, $reassignment->user_advisor_id));
         
-        $return = [
-            'state' => true,
-            'text' => 'EL turno <b>'.$reassignment->shift.'</b> ha sido reasignado',
-            'type' => 'success',
-            'icon' => 'fa fa-exchange-alt'
-        ];
-
+                $return = [
+                    'state' => true,
+                    'text' => 'EL turno <b>'.$reassignment->shift.'</b> ha sido reasignado',
+                    'type' => 'success',
+                    'icon' => 'fa fa-exchange-alt'
+                ];
+            }
+        } catch (\Throwable $th) {
+            $return = [
+                'state' => false,
+                'text' => 'Error!',
+                'type' => 'danger',
+                'icon' => 'fa fa-times-circle'
+            ];
+        }
+        
         return $return;
     }
 
@@ -171,18 +181,27 @@ class ShiftController extends Controller
         $status = Shift::where('id', $shiftId)->first();
         
         if ($status->count() > 0) {
-            
-            $status->shift_status_id = $statusId;
-            $status->end_shift = now();
-            $status->save();
+            if ($status->shift_status_id != 3) {
+                $status->shift_status_id = $statusId;
+                $status->end_shift = now();
 
-            if ($statusId == 3) {
-                $shiftText = "Turno <b>finalizado</b>";
-                $shiftIcon = 'fa fa-exclamation-triangle';
-            } elseif ($statusId == 4) {
-                $shiftText = "Turno <b>abandonado</b>";
-                $shiftIcon = "fas fa-walking";
-            }
+                try {
+                    if ($status->save()) {
+                        if ($statusId == 2) {
+                            $shiftText = "Turno <b>finalizado</b>";
+                            $shiftIcon = 'fa fa-check-circle';
+                            $shiftType = 'success';
+                        } elseif ($statusId == 3) {
+                            $shiftText = "Turno <b>abandonado</b>";
+                            $shiftIcon = "fas fa-walking";
+                        }
+                    } 
+    
+                } catch (\Throwable $th) {
+                    $shiftText = "No se puede modificar.";
+                    $shiftIcon = "fa fa-exclamation-triangle";
+                }
+            }            
         }
 
         return [

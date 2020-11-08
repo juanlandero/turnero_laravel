@@ -45,23 +45,23 @@
                 <div class="tile-body">
                     <div class="form-group">
                         <label class="control-label">Nombre</label>
-                        <input class="form-control" name="txtName" type="text" placeholder="Ingresa el nombre de la sucursal" required />
+                        <input class="form-control" name="txtName" type="text" placeholder="Ingresa el nombre de la sucursal" required autocomplete="off"/>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Dirección</label>
-                        <textarea class="form-control" name="txtAddress" rows="4" placeholder="Ingresa la dirección de la sucursal" required></textarea>
+                        <textarea class="form-control" name="txtAddress" rows="4" placeholder="Ingresa la dirección de la sucursal" required autocomplete="off"></textarea>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Teléfono</label>
-                        <input class="form-control" name="txtPhone" type="text" placeholder="Número teléfonico de la sucursal" />
+                        <input class="form-control" name="txtPhone" type="text" placeholder="Número teléfonico de la sucursal" autocomplete="off"/>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Canal</label>
-                        <input class="form-control" name="txtChannel" type="text" placeholder="Ingresa una palabra que defina a la sucursal" required />
+                        <input class="form-control" name="txtChannel" type="text" placeholder="Ingresa una palabra que defina a la sucursal" required autocomplete="off"/>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Clave sucursal</label>
-                        <input class="form-control" name="txtOfficeKey" type="text" placeholder="Clave para accesar al apartado público del turnero" required />
+                        <input class="form-control" name="txtOfficeKey" type="text" placeholder="Clave para accesar al apartado público del turnero" required autocomplete="off"/>
                     </div>
                     <div class="form-group">
                         <label for="exampleSelect1">Municipio</label>

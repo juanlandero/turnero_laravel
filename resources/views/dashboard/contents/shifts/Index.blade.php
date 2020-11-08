@@ -106,12 +106,12 @@
 
                 <div class="row ">
                     <div class="col-4">
-                        <button class="btn btn-outline-danger btn-block" type="button" v-on:click="changeStatusShift(4)" v-bind:disabled="disabledButtons.buttonAbandoned">
+                        <button class="btn btn-outline-danger btn-block" type="button" v-on:click="changeStatusShift(3)" v-bind:disabled="disabledButtons.buttonAbandoned">
                             <i class="fas fa-running"></i> Abandonado
                         </button>
                     </div>
                     <div class="col-4">
-                        <button class="btn btn-outline-warning btn-block" type="button" v-on:click="changeStatusShift(3)" v-bind:disabled="disabledButtons.buttonFinalized">
+                        <button class="btn btn-outline-warning btn-block" type="button" v-on:click="changeStatusShift(2)" v-bind:disabled="disabledButtons.buttonFinalized">
                             <i class="fa fa-thumbs-up"></i> Finalizar
                         </button>
                     </div>
