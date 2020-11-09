@@ -27,6 +27,13 @@ class Messages {
 	const USER_SUPERVISOR_DELETE_TITLE 		= "Usuario.";
 	const USER_SUPERVISOR_DELETE_MESSAGE 	= "El usuario supervisor se eliminó exitosamente.";
 
+	const USER_ADVISER_CREATE_TITLE			= "Usuario.";
+	const USER_ADVISER_CREATE_MESSAGE		= "El nuevo usuario asesor se creó exitosamente.";
+	const USER_ADVISER_EDIT_TITLE 			= "Usuario.";
+	const USER_ADVISER_EDIT_MESSAGE 		= "El usuario asesor se modificó exitosamente.";
+	const USER_ADVISER_DELETE_TITLE 		= "Usuario.";
+	const USER_ADVISER_DELETE_MESSAGE 		= "El usuario asesor se eliminó exitosamente.";
+
 	const SPECIALTY_CREATE_TITLE 		= "Especialidad.";
 	const SPECIALTY_CREATE_MESSAGE		= "La especialidad se creó exitosamente.";
 	const SPECIALTY_EDIT_TITLE 			= "Especialidad.";

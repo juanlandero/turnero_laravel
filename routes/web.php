@@ -59,6 +59,8 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::get('/', 'Dashboard\UserSupervisorController@index')->name('user-supervisors.index');
         Route::get('/create', 'Dashboard\UserSupervisorController@create');
         Route::post('/create', ['as' => 'user-supervisor-store', 'uses' => 'Dashboard\UserSupervisorController@store']);
+        Route::get('/edit/{id}', 'Dashboard\UserSupervisorController@edit');
+        Route::put('/update', ['as' => 'user-supervisor-update', 'uses' => 'Dashboard\UserSupervisorController@update']);
     });
 
     Route::group(['prefix' => 'users-advisers'], function () {
