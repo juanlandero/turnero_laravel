@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Library\Returns\ActionReturn;
 use App\Library\Errors;
 use App\Library\Messages;
@@ -45,6 +46,48 @@ class SpecialtiesController extends Controller
             }
         } catch(Exception $exception) {
             $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
+        }
+
+        return $objReturn->getRedirectPath();
+    }
+
+    public function edit($idSpecialty) {
+        $objSpecialty = SpecialityType::where('id', $idSpecialty)->first();
+
+        if(!is_null($objSpecialty))
+            return View('dashboard.contents.specialties.Edit', ['objSpecialty' => $objSpecialty]);
+
+        return redirect()->to('/dashboard/specialties');
+    }
+
+    public function update(Request $request) {
+        $request->validate([
+            'name'             => ['required','string','max:255',Rule::unique('speciality_types')->ignore($request->hddIdSpecialty)],
+            'txtDescription'    => 'nullable|string|max:255',
+            'txtIcon'           => 'required|string|max:50',
+        ],[
+            'name.unique'   => 'La especialidad ingresada ya se encuentra registrada.'
+        ]);
+
+        $objReturn = new ActionReturn('dashboard/specialties/create', 'dashboard/specialties');
+        $objSpecialty    = SpecialityType::where('id', $request->hddIdSpecialty)->first();
+
+        if(!is_null($objSpecialty)) {
+            try {
+                $objSpecialty->name         = $request->name;
+                $objSpecialty->description  = $request->txtDescription;
+                $objSpecialty->class_icon   = $request->txtIcon;
+
+                if($objSpecialty->save()) {
+                    $objReturn->setResult(true, Messages::SPECIALTY_EDIT_TITLE, Messages::SPECIALTY_EDIT_MESSAGE);
+                } else {
+                    $objReturn->setResult(false, Errors::SPECIALTY_EDIT_02_TITLE, Errors::SPECIALTY_EDIT_02_MESSAGE);
+                }
+            } catch(Exception $exception) {
+                $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
+            }
+        } else {
+            $objReturn->setResult(false, Errors::SPECIALTY_EDIT_01_TITLE, Errors::SPECIALTY_EDIT_01_MESSAGE);
         }
 
         return $objReturn->getRedirectPath();

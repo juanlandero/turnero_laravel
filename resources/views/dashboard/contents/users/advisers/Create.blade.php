@@ -1,9 +1,9 @@
 @section('title', 'Asesores')
-@section('subtitle', 'Lista de Asesores')
+@section('subtitle', 'Crear Asesor')
 @section('icon', 'fa fa-user')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('user-advisers.index') }}">Asesores</a></li>
-    <li class="breadcrumb-item active"><a href="#">Crear</a></li>
+    <li class="breadcrumb-item active"><a href="#">Crear asesor</a></li>
 @endsection
 
 @section('content')
