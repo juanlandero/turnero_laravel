@@ -42,34 +42,34 @@
     <script src="{{ asset('js/vue.js') }}"></script>
 
     <script>
-var appLogin = new Vue({
-    delimiters: ['${', '}'],
-    el: '#app-login',
-    data: {
-        office: null,
-        text_result: null
-    },
-    methods: {
-        verifyPublicAccess (){
-            var _that = this
-        
-            axios.post('access', {
-                office: this.office
-            })
-            .then(function (response) {
-                if (response.data.success == "true") {
-                    location.href=response.data.text
-                } else {
-                    _that.text_result = response.data.text
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
-         
-        },
-    }
-})
+        var appLogin = new Vue({
+            delimiters: ['${', '}'],
+            el: '#app-login',
+            data: {
+                office: null,
+                text_result: null
+            },
+            methods: {
+                verifyPublicAccess (){
+                    var _that = this
+                
+                    axios.post('access', {
+                        office: this.office
+                    })
+                    .then(function (response) {
+                        if (response.data.success == "true") {
+                            location.href=response.data.text
+                        } else {
+                            _that.text_result = response.data.text
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+                
+                },
+            }
+        })
     </script>
     </body>
 </html>

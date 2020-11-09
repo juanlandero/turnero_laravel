@@ -16,7 +16,6 @@ class IndexController extends Controller
     public function index() {
         $objUser = null;
         $objSpecialities = null;
-        // $objShifts = null;
         $widget = [];
 
         if(!Auth::check()) {
@@ -39,6 +38,7 @@ class IndexController extends Controller
                                                     'speciality_types.name'
                                                 )
                                                 ->get();
+    
 
             for ($i=0; $i < 2; $i++) { 
                 $objShifts = Shift::where([
@@ -93,6 +93,5 @@ class IndexController extends Controller
 
 
         return [$label, $data];
-        // return $chart;
     }
 }

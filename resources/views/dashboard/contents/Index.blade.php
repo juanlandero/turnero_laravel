@@ -62,9 +62,15 @@
             </div>
             <div class="tile-footer text-center">
                 {{-- <a class="btn btn-primary" href="#">Link</a> --}}
-                @foreach ($specialities as $speciality)
-                    <span class="badge  badge-warning mx-1" style="font-size: 14px">{{ $speciality->name }}</span>
-                @endforeach
+                
+                
+                @if (sizeof($specialities) < 1)
+                    <span class="badge  badge-warning mx-1" style="font-size: 14px">Sin especialidades</span>
+                @else
+                    @foreach ($specialities as $speciality)
+                        <span class="badge  badge-warning mx-1" style="font-size: 14px">{{ $speciality->name }}</span>
+                    @endforeach
+                @endif
             </div>
         </div>
     </div>

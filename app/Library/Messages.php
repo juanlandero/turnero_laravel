@@ -40,6 +40,9 @@ class Messages {
 	const SPECIALTY_EDIT_MESSAGE 		= "La especialidad se modificó exitosamente.";
 	const SPECIALTY_DELETE_TITLE 		= "Especialidad.";
 	const SPECIALTY_DELETE_MESSAGE		= "La especialidad se eliminó exitosamente.";
+
+	const AD_CREATE_TITLE 		= "Anuncio.";
+	const AD_CREATE_MESSAGE		= "El anuncio se creó exitosamente.";
 }
 
 ?>
