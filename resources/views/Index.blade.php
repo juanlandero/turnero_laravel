@@ -14,9 +14,6 @@
             <div class="cover"></div>
         </section>
         <section class="login-content">
-            {{-- <div class="logo">
-                <h1>Madero</h1>
-            </div> --}}
             <div class="login-box" id="app-login">
                 <form class="login-form" v-on:submit.prevent="verifyPublicAccess">
                     @csrf
@@ -28,11 +25,17 @@
                         <button class="btn btn-primary btn-block">Entrar</button>
                     </div>
                     <div class="form-group btn-container mt-4">
-
                         <p class="text-danger text-center">${text_result}</p>
                     </div>
+                    <div class="form-group mt-5">
+                        <div class="utility">
+                            <p class="semibold-text mb-2"><a href="/dashboard/login" data-toggle="flip"><label>Eres usuario registrado?: </label> Inicia Sesión</a></p>
+                        </div>
+                    </div>
                 </form>
+                
             </div>
+
         </section>
 
     <script src="{{ asset('js/axios.js') }}"></script>

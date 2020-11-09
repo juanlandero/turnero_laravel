@@ -73,7 +73,7 @@
             
                     @foreach ($ads as $ad)
                         <div class="carousel-item {{ $ad->is_first }}">
-                            <img src="{{ asset('img/carousel/'.$ad->path) }}" class="d-block w-100" alt="...">
+                            <img src="{{Storage::url($ad->path)}}" class="d-block w-100" alt="...">
                         </div>
                     @endforeach
                   

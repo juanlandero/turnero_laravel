@@ -40,6 +40,7 @@ Route::get('dashboard/logout', ['as' => 'logout', 'uses' => 'Dashboard\LoginCont
 
 Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
     Route::get('/', 'Dashboard\IndexController@index')->name('dashboard.index');
+    Route::get('/data-chart', 'Dashboard\IndexController@getDataChart');
 
     Route::group(['prefix' => 'offices'], function () {
         Route::get('/', 'Dashboard\OfficeController@index')->name('offices.index');

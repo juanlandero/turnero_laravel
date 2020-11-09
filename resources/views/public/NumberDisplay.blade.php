@@ -24,7 +24,7 @@
             
                 <div><h1>Bienvenidos</h1></div>
             
-                <div><h5 class="text-success">${ hour }</h5></div>
+                {{-- <div><h5 class="text-success">${ hour }</h5></div> --}}
             </div>
 
 			<!-- CONTENIDO -->
@@ -88,19 +88,12 @@
 	</div>
 	
 	{{-- Scripts --}}
-	{{-- <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script> --}}
-	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
-	{{-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> --}}
-	
+	<script src="{{ asset('js/bootstrap.min.js') }}"></script>	
 	<script src="{{ asset('js/axios.js') }}"></script>
 	<script src="{{ asset('js/vue.js') }}"></script>
 	<script src="{{ asset('js/public/display.js') }}"></script>
 
 	<script>
-		// $('#carouselExampleInterval').carousel({
-		// 	interval: 100,
-		// 	touch: true
-		// })
 		$('.carousel').carousel()
 	</script>
 </body>
