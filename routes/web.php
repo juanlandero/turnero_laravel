@@ -67,12 +67,16 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::get('/', 'Dashboard\UserAdviserController@index')->name('user-advisers.index');
         Route::get('/create', 'Dashboard\UserAdviserController@create');
         Route::post('/create', ['as' => 'user-adviser-store', 'uses' => 'Dashboard\UserAdviserController@store']);
+        Route::get('/edit/{id}', 'Dashboard\UserAdviserController@edit');
+        Route::put('/update', ['as' => 'user-adviser-update', 'uses' => 'Dashboard\UserAdviserController@update']);
     });
 
     Route::group(['prefix' => 'specialties'], function () {
         Route::get('/', 'Dashboard\SpecialtiesController@index')->name('specialities.index');
         Route::get('/create', 'Dashboard\SpecialtiesController@create');
         Route::post('/create', ['as' => 'specialty-store', 'uses' => 'Dashboard\SpecialtiesController@store']);
+        Route::get('/edit/{id}', 'Dashboard\SpecialtiesController@edit');
+        Route::put('/update', ['as' => 'specialty-update', 'uses' => 'Dashboard\SpecialtiesController@update']);
     });
 
     Route::group(['prefix' => 'shifts'], function () {

@@ -80,4 +80,69 @@ class UserAdviserController extends Controller
 
         return $objReturn->getRedirectPath();
     }
+
+    public function edit($idUser) {
+        $objUser    = User::where('id', $idUser)->first();
+
+        if(!is_null($objUser)) {
+            $lstOffices = Office::where('is_active', true)->orderBy('name', 'ASC')->get();
+            $lstBoxes   = Box::where('is_active', true)->get();
+
+            return View('dashboard.contents.users.advisers.Edit', ["lstOffices" => $lstOffices, "lstBoxes" => $lstBoxes, "objUser" => $objUser]);
+        }
+
+        return redirect()->to('/dashboard/users-advisers');
+    }
+
+    public function update(Request $request) {
+        $request->validate([
+            'txtName'           => 'required|string|max:255',
+            'txtFirstName'      => 'required|string|max:50',
+            'txtSecondName'     => 'required|string|max:50',
+            'cmbOffice'         => 'required|integer|exists:offices,id',
+            'cmbBox'            => 'required|integer|exists:boxes,id',
+            'email'             => ['required','string','max:80',Rule::unique('users')->ignore($request->hddIdUser)],
+            'txtPassword'       => 'nullable|string|max:20'
+        ],[
+            'txtEmail.unique'   => 'El correo ingresado ya pertenece a otro usuario.'
+        ]);
+
+        $objReturn  = new ActionReturn('dashboard/users-advisers/edit/'.$request->hddIdUser, 'dashboard/users-advisers');
+        $objUser    = User::where('id', $request->hddIdUser)->first();
+
+        if(!is_null($objUser)) {
+            try {
+                $objUser->name            = $request->txtName;
+                $objUser->first_name      = $request->txtFirstName;
+                $objUser->second_name     = $request->txtSecondName;
+                $objUser->email           = $request->email;
+    
+                if(isset($request->txtPassword))
+                    $objUser->password        = bcrypt($request->txtPassword);
+                
+                DB::beginTransaction();
+                if($objUser->save()) {
+                    $objUserOffice              = UserOffice::where('user_id', $objUser->id)->first();
+                    $objUserOffice->office_id   = $request->cmbOffice;
+                    $objUserOffice->box_id      = $request->cmbBox;
+                    $objUserOffice->save();
+
+                    $objReturn->setResult(true, Messages::USER_ADVISER_EDIT_TITLE, Messages::USER_ADVISER_EDIT_MESSAGE);
+                    DB::commit();
+                } else {
+                    $objReturn->setResult(false, Errors::USER_EDIT_02_TITLE, Errors::USER_EDIT_02_MESSAGE);
+                    DB::rollBack();
+                }
+            } catch(Exception $exception) {
+                $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
+                DB::rollBack();
+            }
+        } else {
+            $objReturn->setResult(false, Errors::USER_EDIT_01_TITLE, Errors::USER_EDIT_01_MESSAGE);
+            DB::rollBack();
+        }
+
+
+        return $objReturn->getRedirectPath();
+    }
 }
