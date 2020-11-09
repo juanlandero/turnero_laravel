@@ -6,6 +6,20 @@
 @endsection
     
 @section('content')
+
+@if(Session::has('success_message'))
+<div class="row">
+    <div class="col-lg-6">
+        <div class="bs-component">
+            <div class="alert alert-dismissible alert-success">
+                <button class="close" type="button" data-dismiss="alert">×</button>
+                <strong>{{ Session::get('success_title' )}}</strong> {{ Session::get('success_message' )}}
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+
 <div class="row">
     <div class="col-10">
         <div class="tile">
@@ -37,20 +51,9 @@
                                     <td>{{ $ad->order }}</td>
                                     <td>{{ $ad->duration/1000 }}</td>
                                     <td class="text-center">
-                                        <a class="btn btn-primary btn-sm" href="/dashboard/carousel/delete/{{ $ad->id }}">
+                                        <a class="btn btn-primary btn-sm" href="/dashboard/ads/delete/{{ $ad->id }}">
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
-
-                                        {{-- <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                                            <button class="btn btn-primary" type="button"><i class="fa fa-cogs fa-lg"></i></button>
-                                            <div class="btn-group" role="group">
-                                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="/dashboard/carousel/edit/{{ $ad->id }}">Desactivar</a>
-                                                    <a class="dropdown-item" href="/dashboard/carousel/delete/{{ $ad->id }}">Eliminar</a>
-                                                </div>
-                                            </div>
-                                        </div> --}}
                                     </td>
                                 </tr>
                             @endforeach

@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Library\Returns\ActionReturn;
+use App\Library\Errors;
+use App\Library\Messages;
 use App\UserOffice;
 use App\Ad;
 
@@ -52,6 +55,9 @@ class AdsController extends Controller
 
         $officeId = UserOffice::where('user_id', Auth::id())->select('office_id')->first();
 
+        $objReturn = new ActionReturn('dashboard/ads/create', 'dashboard/ads');
+
+
         $objAd = new Ad();
         $objAd->name        = $request->txtName;
         $objAd->path        = $url;
@@ -61,9 +67,18 @@ class AdsController extends Controller
         $objAd->office_id   = $officeId->office_id;
         $objAd->is_active   = true;
 
-        $objAd->save();
+        try {
+            if( $objAd->save()) {
+                $objReturn->setResult(true, Messages::AD_CREATE_TITLE, Messages::AD_CREATE_MESSAGE);
+            } else {
+                $objReturn->setResult(false, Errors::AD_CREATE_01_TITLE, Errors::AD_CREATE_01_MESSAGE);
+            }
+        } catch(Exception $exception) {
+            $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
+        }
 
-        return redirect()->route('ad.create');
+        // return redirect()->route('ads.index');
+        return $objReturn->getRedirectPath();
     }
 
     public function delete($adId){
@@ -71,6 +86,6 @@ class AdsController extends Controller
         $adDelete = Ad::find($adId);
         $adDelete->delete();
 
-        return redirect()->route('ad.index');
+        return redirect()->route('ads.index');
     }
 }

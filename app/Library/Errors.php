@@ -56,5 +56,9 @@ class Errors {
     const SPECIALTY_EDIT_02_ID = "4_0003";
     const SPECIALTY_EDIT_02_TITLE = "Especialidad";
     const SPECIALTY_EDIT_02_MESSAGE = "Ocurrió un problema al modificar la especialidad, vuelve a intentar más tarde.";
+
+    const AD_CREATE_01_ID = "5_0001";
+    const AD_CREATE_01_TITLE = "Anuncio";
+    const AD_CREATE_01_MESSAGE = "Ocurrió un problema al crear el anuncio, vuelve a intentar más tarde.";
 }
 ?>
