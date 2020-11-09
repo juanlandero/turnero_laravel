@@ -49,5 +49,12 @@ class Errors {
     const SPECIALTY_CREATE_01_ID = "4_0001";
     const SPECIALTY_CREATE_01_TITLE = "Especialidad";
     const SPECIALTY_CREATE_01_MESSAGE = "Ocurrió un problema al crear la especialidad, vuelve a intentar más tarde.";
+
+    const SPECIALTY_EDIT_01_ID = "4_0002";
+    const SPECIALTY_EDIT_01_TITLE = "Especialidad";
+    const SPECIALTY_EDIT_01_MESSAGE = "La especialidad que intenta modificar no existe.";
+    const SPECIALTY_EDIT_02_ID = "4_0003";
+    const SPECIALTY_EDIT_02_TITLE = "Especialidad";
+    const SPECIALTY_EDIT_02_MESSAGE = "Ocurrió un problema al modificar la especialidad, vuelve a intentar más tarde.";
 }
 ?>

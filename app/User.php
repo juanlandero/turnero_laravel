@@ -40,4 +40,8 @@ class User extends Authenticatable
     public function privileges() {
         return $this->belongsToMany(Privilege::class, 'users_privileges', 'user_id', 'privilege_id');
     }
+
+    public function userOffice() {
+        return $this->hasOne(UserOffice::class);
+    }
 }

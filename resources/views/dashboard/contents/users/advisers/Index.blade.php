@@ -57,7 +57,7 @@
                                             <div class="btn-group" role="group">
                                                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                                                 <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="/dashboard/users-admins/edit/{{ $item->id }}">Editar</a>
+                                                    <a class="dropdown-item" href="/dashboard/users-advisers/edit/{{ $item->id }}">Editar</a>
                                                     <a class="dropdown-item" href="#">Eliminar</a>
                                                 </div>
                                             </div>
