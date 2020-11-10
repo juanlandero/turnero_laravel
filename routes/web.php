@@ -70,6 +70,10 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::post('/create', ['as' => 'user-adviser-store', 'uses' => 'Dashboard\UserAdviserController@store']);
         Route::get('/edit/{id}', 'Dashboard\UserAdviserController@edit');
         Route::put('/update', ['as' => 'user-adviser-update', 'uses' => 'Dashboard\UserAdviserController@update']);
+
+        Route::get('/speciality/{id}', 'Dashboard\UserAdviserController@speciality');
+        Route::post('/speciality/store', ['as' => 'speciality-store', 'uses' => 'Dashboard\UserAdviserController@storeSpeciality']);
+        Route::get('/speciality/delete/{id}', 'Dashboard\UserAdviserController@deleteSpeciality');
     });
 
     Route::group(['prefix' => 'specialties'], function () {
