@@ -33,6 +33,13 @@ class Errors {
     const OFFICE_CREATE_01_TITLE = "Sucursal";
     const OFFICE_CREATE_01_MESSAGE = "Ocurrió un problema al crear la sucursal, vuelve a intentar más tarde.";
 
+    const OFFICE_EDIT_01_ID = "3_0002";
+    const OFFICE_EDIT_01_TITLE = "Sucursal";
+    const OFFICE_EDIT_01_MESSAGE = "La sucursal que intenta modificar no existe.";
+    const OFFICE_EDIT_02_ID = "3_0003";
+    const OFFICE_EDIT_02_TITLE = "Sucursal";
+    const OFFICE_EDIT_02_MESSAGE = "Ocurrió un problema al modificar la sucursal, vuelve a intentar más tarde.";
+
     //USERS
     const USER_CREATE_01_ID = "3_0001";
     const USER_CREATE_01_TITLE = "Usuario";

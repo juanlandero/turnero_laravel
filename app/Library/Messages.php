@@ -10,7 +10,9 @@ class Messages {
     
     //OFFICES
     CONST OFFICE_CREATE_TITLE   = "Sucursal";
-    CONST OFFICE_CREATE_MESSAGE = "La nueva sucursal se creó exitosamente.";
+	CONST OFFICE_CREATE_MESSAGE = "La nueva sucursal se creó exitosamente.";
+	CONST OFFICE_EDIT_TITLE   	= "Sucursal";
+    CONST OFFICE_EDIT_MESSAGE 	= "La sucursal se modificó exitosamente.";
 	
 	//USUARIOS
 	const USER_ADMIN_CREATE_TITLE 	= "Usuario.";
