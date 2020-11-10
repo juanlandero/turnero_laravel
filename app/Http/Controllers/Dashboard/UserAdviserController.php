@@ -8,10 +8,12 @@ use Illuminate\Validation\Rule;
 use App\Library\Returns\ActionReturn;
 use App\Library\Errors;
 use App\Library\Messages;
-use App\User;
-use App\UserOffice;
+use App\SpecialityTypeUser;
+use App\SpecialityType;
 use App\UserPrivilege;
+use App\UserOffice;
 use App\Office;
+use App\User;
 use App\Box;
 use DB;
 
@@ -144,5 +146,63 @@ class UserAdviserController extends Controller
 
 
         return $objReturn->getRedirectPath();
+    }
+
+    public function speciality($userId){
+        $objUser = User::join('user_types', 'users.user_type_id', 'user_types.id')
+                        ->where('users.id', $userId)
+                        ->select(
+                            'users.id',
+                            'users.name',
+                            'users.email',
+                            'users.first_name',
+                            'users.second_name',
+                            'user_types.user_type'
+                        )
+                        ->first();
+
+        $objUserSpecialities = SpecialityTypeUser::join('speciality_types', 'speciality_type_users.speciality_type_id', 'speciality_types.id')
+                        ->where('speciality_type_users.user_id', $objUser->id)
+                        ->select(
+                            'speciality_type_users.id',
+                            'speciality_type_users.speciality_type_id',
+                            'speciality_types.name'
+                        )
+                        ->get();
+
+        $objSpecialities = SpecialityType::all();
+
+        return view('dashboard.contents.users.advisers.Speciality', [
+                                                                        'user'              => $objUser,
+                                                                        'specialities'      => $objUserSpecialities,
+                                                                        'specialityType'    => $objSpecialities
+                                                                    ]);
+    }
+
+    public function storeSpeciality(Request $request){
+        $countSpeciality = SpecialityType::where('is_active', 1)->count();
+
+        for ($i=1; $i < $countSpeciality+1; $i++) { 
+            if (isset($request->$i)) {
+                $speciality = new SpecialityTypeUser();
+
+                $speciality->speciality_type_id = $i;
+                $speciality->user_id = $request->user_id;
+                $speciality->save();
+            }
+        }
+
+        return redirect()->route('user-advisers.index');
+    }
+
+    public function deleteSpeciality($specialityId){
+        $specialiyUser = SpecialityTypeUser::where('id', $specialityId)->first();
+
+        $userId = $specialiyUser->user_id;
+
+        $specialiyUser->delete();
+
+        // return $specialiyUser;
+        return redirect('dashboard/users-advisers/speciality/'.$userId);
     }
 }
