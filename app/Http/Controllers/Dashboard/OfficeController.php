@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Request\OfficeValidator;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use App\Library\Returns\ActionReturn;
 use App\Library\Errors;
@@ -65,6 +66,55 @@ class OfficeController extends Controller
             }
         } catch(Exception $exception) {
             $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
+        }
+
+        return $objReturn->getRedirectPath();
+    }
+
+    public function edit($idOffice) {
+        $objOffice = Office::where('id', $idOffice)->first();
+
+        if(!is_null($objOffice)) {
+            $lstMunicipalities = Municipality::orderBy('name', 'ASC')->get();
+            return View('dashboard.contents.offices.Edit', ['lstMunicipalities' => $lstMunicipalities, 'objOffice' => $objOffice]);
+        }
+
+        return redirect()->to('/dashboard/offices');
+    }
+
+    public function update(Request $request) {
+        $request->validate([
+            'txtName'           => 'required|string|max:255',
+            'txtPhone'          => 'nullable|string|max:50',
+            'txtAddress'        => 'required|string',
+            'office_key'        => ['required','string','max:20',Rule::unique('offices')->ignore($request->hddIdOffice)],
+            'cmbMunicipality'   => 'required|integer|exists:municipalities,id'
+        ],[
+            'txtChannel.unique'     => 'El canal ingresado ya pertenece a otra sucursal.',
+            'txtOfficeKey.unique'   => 'Este código de sucursal no está disponible.'
+        ]);
+
+        $objReturn = new ActionReturn('dashboard/offices/edit/'.$request->hddIdOffice, 'dashboard/offices');
+        $objOffice = Office::where('id', $request->hddIdOffice)->first();
+
+        if(!is_null($objOffice)) {
+            $objOffice->name            = $request->txtName;
+            $objOffice->address         = $request->txtAddress;
+            $objOffice->phone           = $request->txtPhone;
+            $objOffice->office_key      = $request->office_key;
+            $objOffice->municipality_id = $request->cmbMunicipality;
+    
+            try {
+                if($objOffice->save()) {
+                    $objReturn->setResult(true, Messages::OFFICE_EDIT_TITLE, Messages::OFFICE_EDIT_MESSAGE);
+                } else {
+                    $objReturn->setResult(false, Errors::OFFICE_EDIT_02_TITLE, Errors::OFFICE_EDIT_02_MESSAGE);
+                }
+            } catch(Exception $exception) {
+                $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
+            }
+        } else {
+            $objReturn->setResult(false, Errors::OFFICE_EDIT_01_TITLE, Errors::OFFICE_EDIT_01_MESSAGE);
         }
 
         return $objReturn->getRedirectPath();

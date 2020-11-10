@@ -46,6 +46,8 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::get('/', 'Dashboard\OfficeController@index')->name('offices.index');
         Route::get('/create', 'Dashboard\OfficeController@create');
         Route::post('/create', ['as' => 'office-store', 'uses' => 'Dashboard\OfficeController@store']);
+        Route::get('/edit/{id}', 'Dashboard\OfficeController@edit');
+        Route::put('/update', ['as' => 'office-update', 'uses' => 'Dashboard\OfficeController@update']);
     });
 
     Route::group(['prefix' => 'users-admins'], function () {
