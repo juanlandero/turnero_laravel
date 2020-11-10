@@ -42,7 +42,6 @@ class IndexController extends Controller
 
             for ($i=0; $i < 2; $i++) { 
                 $objShifts = Shift::where([
-                                            // ['shifts.office_id', $officeId],
                                             ['shifts.is_active', 1],
                                             ['shifts.shift_status_id', $i+2],
                                             ['shifts.user_advisor_id', Auth::id()],
@@ -67,7 +66,6 @@ class IndexController extends Controller
                                     ->count();
         }
 
-
         return view('dashboard.contents.Index', [
                                                     'user'          => $objUser,
                                                     'specialities'  => $objSpecialities,
@@ -83,14 +81,14 @@ class IndexController extends Controller
                                                 speciality_types.name
                                             FROM shifts 
                                             JOIN speciality_types ON shifts.speciality_type_id = speciality_types.id
-                                            WHERE shifts.user_advisor_id = '.Auth::id().'
+                                            WHERE shifts.user_advisor_id = '.Auth::id().' AND
+                                                shifts.created_at like "'.OfficeController::setDate().'%"
                                             GROUP BY shifts.speciality_type_id')));
 
         foreach ($chart as $index => $value) {
             $data[$index]   = $value->total;
             $label[$index]  = $value->name;
         }
-
 
         return [$label, $data];
     }
