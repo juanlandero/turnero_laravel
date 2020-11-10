@@ -105,7 +105,7 @@
                         @foreach ($specialities as $speciality)
                             <span class="badge badge-warning mx-1 my-2" style="font-size: 14px">
                                 {{ $speciality->name }}
-                                <a href="delete/{{ $speciality->id }}" title="Eliminar"><i class="far fa-times-circle"></i></a>
+                                <a href="#" onclick="modal({{ $speciality->id }})" title="Eliminar"><i class="far fa-times-circle"></i></a>
                             </span>
                         @endforeach
                     @endif
@@ -115,10 +115,17 @@
 
         
     </div>
+
+    @include('dashboard.contents.users.advisers.modal.Delete')
 @endsection
 
 @section('scripts')
-
+<script>
+    function modal(speciality){
+        $('#confirm-delete-modal').modal('show')
+        $('#btnYes').attr('href', 'delete/'+speciality)
+    };
+</script>
 @endsection
 
 @include('dashboard.components.Navbar')
