@@ -113,6 +113,14 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::post('/store', 'Dashboard\AdsController@store')->name('ad.store');
         Route::get('/delete/{id}', 'Dashboard\AdsController@delete')->name('ad.delete');
     });
+
+    Route::group(['prefix' => 'boxes'], function () {
+        Route::get('/', 'Dashboard\BoxesController@index')->name('boxes.index');
+        Route::get('/create', 'Dashboard\BoxesController@create');
+        Route::post('/create', ['as' => 'box-store', 'uses' => 'Dashboard\BoxesController@store']);
+        Route::get('/edit/{id}', 'Dashboard\BoxesController@edit');
+        Route::put('/update', ['as' => 'box-update', 'uses' => 'Dashboard\BoxesController@update']);
+    });
 });
 
 

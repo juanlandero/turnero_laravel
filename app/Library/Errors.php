@@ -28,18 +28,6 @@ class Errors {
     const SESION_01_TITLE = "La sesión ha expirado.";
     const SESION_01_MESSAGE = "La sesión del usuario ha finalizado, debe iniciar sesión nuevamente.";
 
-    //OFFICES
-    const OFFICE_CREATE_01_ID = "3_0001";
-    const OFFICE_CREATE_01_TITLE = "Sucursal";
-    const OFFICE_CREATE_01_MESSAGE = "Ocurrió un problema al crear la sucursal, vuelve a intentar más tarde.";
-
-    const OFFICE_EDIT_01_ID = "3_0002";
-    const OFFICE_EDIT_01_TITLE = "Sucursal";
-    const OFFICE_EDIT_01_MESSAGE = "La sucursal que intenta modificar no existe.";
-    const OFFICE_EDIT_02_ID = "3_0003";
-    const OFFICE_EDIT_02_TITLE = "Sucursal";
-    const OFFICE_EDIT_02_MESSAGE = "Ocurrió un problema al modificar la sucursal, vuelve a intentar más tarde.";
-
     //USERS
     const USER_CREATE_01_ID = "3_0001";
     const USER_CREATE_01_TITLE = "Usuario";
@@ -64,8 +52,33 @@ class Errors {
     const SPECIALTY_EDIT_02_TITLE = "Especialidad";
     const SPECIALTY_EDIT_02_MESSAGE = "Ocurrió un problema al modificar la especialidad, vuelve a intentar más tarde.";
 
+    //ADS
     const AD_CREATE_01_ID = "5_0001";
     const AD_CREATE_01_TITLE = "Anuncio";
     const AD_CREATE_01_MESSAGE = "Ocurrió un problema al crear el anuncio, vuelve a intentar más tarde.";
+
+    //OFFICES
+    const OFFICE_CREATE_01_ID = "6_0001";
+    const OFFICE_CREATE_01_TITLE = "Sucursal";
+    const OFFICE_CREATE_01_MESSAGE = "Ocurrió un problema al crear la sucursal, vuelve a intentar más tarde.";
+
+    const OFFICE_EDIT_01_ID = "6_0002";
+    const OFFICE_EDIT_01_TITLE = "Sucursal";
+    const OFFICE_EDIT_01_MESSAGE = "La sucursal que intenta modificar no existe.";
+    const OFFICE_EDIT_02_ID = "6_0003";
+    const OFFICE_EDIT_02_TITLE = "Sucursal";
+    const OFFICE_EDIT_02_MESSAGE = "Ocurrió un problema al modificar la sucursal, vuelve a intentar más tarde.";
+
+    //OFFICES
+    const BOX_CREATE_01_ID = "7_0001";
+    const BOX_CREATE_01_TITLE = "Caja";
+    const BOX_CREATE_01_MESSAGE = "Ocurrió un problema al crear la caja, vuelve a intentar más tarde.";
+
+    const BOX_EDIT_01_ID = "7_0002";
+    const BOX_EDIT_01_TITLE = "Caja";
+    const BOX_EDIT_01_MESSAGE = "La caja que intenta modificar no existe.";
+    const BOX_EDIT_02_ID = "7_0003";
+    const BOX_EDIT_02_TITLE = "Caja";
+    const BOX_EDIT_02_MESSAGE = "Ocurrió un problema al modificar la caja, vuelve a intentar más tarde.";
 }
 ?>
