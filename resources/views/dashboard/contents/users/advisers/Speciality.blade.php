@@ -55,19 +55,19 @@
                                     }
                                     if ($ban) {
                                         echo '<div class="col-md-6">
-                                                <div class="animated-checkbox">
-                                                    <label>
-                                                        <input type="checkbox" name="'.$speciality->id.'"  disabled="">
-                                                        <span class="label-text">'.$speciality->name.'</span>
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" name="'.$speciality->id.'"  disabled="" title="Especialidad ya agregada">
+                                                        '.$speciality->name.'
                                                     </label>
                                                 </div>
                                             </div>';
                                     } else{
                                         echo '<div class="col-md-6">
-                                                <div class="animated-checkbox">
-                                                    <label>
-                                                        <input type="checkbox" name="'.$speciality->id.'">
-                                                        <span class="label-text">'.$speciality->name.'</span>
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" name="'.$speciality->id.'">
+                                                        '.$speciality->name.'
                                                     </label>
                                                 </div>
                                             </div>';

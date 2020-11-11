@@ -187,4 +187,30 @@ class AdvisorController extends Controller
         }
         return $return;
     }
+
+    public function reassined(){
+        $office = UserOffice::where('user_id', Auth::id())->first();
+
+        $shifts = Shift::join('speciality_types', 'shifts.speciality_type_id', 'speciality_types.id')
+                        ->join('shift_status', 'shifts.shift_status_id', 'shift_status.id')
+                        ->join('users', 'shifts.user_advisor_id', 'users.id')
+                        ->where([
+                            ['shifts.office_id', $office->office_id],
+                            ['shifts.is_active', true],
+                            ['shifts.created_at', 'like', OfficeController::setDate().'%']
+                        ])
+                        ->select(
+                            'shifts.id',
+                            'shifts.shift',
+                            'speciality_types.name as speciality',
+                            'shift_status.id as status_id',
+                            'shift_status.shift_status as status',
+                            'users.email',
+                            'shifts.is_reassigned',
+                            'shifts.created_at',
+                        )
+                        ->get();
+
+        return view('dashboard.contents.shifts.Reassigned', ['lstShifts' => $shifts]);
+    }
 }
