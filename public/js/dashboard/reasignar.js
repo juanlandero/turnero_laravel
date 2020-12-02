@@ -1,19 +1,3 @@
-Vue.component('item-my-list', {
-    props: [
-        'id',
-        'shift',
-        'type',
-        'speciality',
-    ],
-    template: `
-        <div class="row text-center mb-2">
-            <div class="col-4"><h6>{{ shift }}</h6></div>
-            <div class="col-4"><h6>{{ type }}</h6></div>
-            <div class="col-4"><h6>{{ speciality }}</h6></div>                  
-        </div>
-    `,
-})
-
 var appPanel = new Vue({
     delimiters: ['${', '}'],
     el: '#app-panel-tickets',

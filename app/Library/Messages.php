@@ -52,6 +52,11 @@ class Messages {
 
 	const AD_CREATE_TITLE 		= "Anuncio.";
 	const AD_CREATE_MESSAGE		= "El anuncio se creó exitosamente.";
+
+	const CLIENT_CREATE_TITLE		= "Cliente.";
+	const CLIENT_CREATE_MESSAGE		= "Cliente registrado exitosamente.";
+	const CLIENT_EDIT_TITLE			= "Cliente.";
+	const CLIENT_EDIT_MESSAGE		= "Cliente modificó exitosamente.";
 }
 
 ?>
