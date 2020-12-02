@@ -113,9 +113,15 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::post('/store', 'Dashboard\AdsController@store')->name('ad.store');
         Route::get('/delete/{id}', 'Dashboard\AdsController@delete')->name('ad.delete');
     });
+
+    Route::group(['prefix' => 'clients'], function () {
+        Route::get('/', 'Dashboard\ClientsController@index')->name('clients.index');
+        Route::get('/create', 'Dashboard\ClientsController@create')->name('clients.create');
+        Route::post('/create', ['as' => 'client-store', 'uses' => 'Dashboard\ClientsController@store']);
+        Route::get('/edit/{id}', 'Dashboard\ClientsController@edit');
+        Route::put('/update', ['as' => 'client-update', 'uses' => 'Dashboard\ClientsController@update']);
+    });
 });
-
-
 
 
 Route::get('prueba', 'PublicDisplay\PublicDisplayController@test');

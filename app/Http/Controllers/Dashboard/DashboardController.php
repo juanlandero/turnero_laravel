@@ -23,7 +23,6 @@ class DashboardController extends Controller
                             ->join('users', 'user_offices.user_id', 'users.id')
                             ->where([
                                 ['user_offices.user_id', Auth::id()],
-                                // ['users.user_type_id', 3]
                             ])
                             ->select(
                                 'offices.menu_channel',

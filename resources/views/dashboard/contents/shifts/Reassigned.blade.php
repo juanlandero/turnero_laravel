@@ -1,5 +1,5 @@
 @section('title', 'Turnos')
-@section('subtitle', 'Reassignar Turnos')
+@section('subtitle', 'Reasignar Turnos')
 @section('icon', 'fa fa-ticket-alt')
 @section('breadcrumb')
     <li class="breadcrumb-item active"><a href="#">Reasignar Turnos</a></li>

@@ -64,8 +64,21 @@ class Errors {
     const SPECIALTY_EDIT_02_TITLE = "Especialidad";
     const SPECIALTY_EDIT_02_MESSAGE = "Ocurrió un problema al modificar la especialidad, vuelve a intentar más tarde.";
 
+    //ADS
     const AD_CREATE_01_ID = "5_0001";
     const AD_CREATE_01_TITLE = "Anuncio";
     const AD_CREATE_01_MESSAGE = "Ocurrió un problema al crear el anuncio, vuelve a intentar más tarde.";
+
+    //CLIENTS
+    const CLIENT_CREATE_01_ID = "6_0001";
+    const CLIENT_CREATE_01_TITLE = "Cliente";
+    const CLIENT_CREATE_01_MESSAGE = "Ocurrió un problema al registrar al cliente, vuelve a intentar más tarde.";
+
+    const CLIENT_EDIT_01_ID = "6_0002";
+    const CLIENT_EDIT_01_TITLE = "Cliente";
+    const CLIENT_EDIT_01_MESSAGE = "El cliente que intenta modificar no existe.";
+    const CLIENT_EDIT_02_ID = "6_0003";
+    const CLIENT_EDIT_02_TITLE = "Cliente";
+    const CLIENT_EDIT_02_MESSAGE = "Ocurrió un problema al editar al cliente, vuelve a intentar más tarde.";
 }
 ?>
