@@ -48,7 +48,7 @@ class UserAdminController extends Controller
             if($objUser->save()) {
                 $privileges = array();
                   
-                  for($i = 1; $i < 25; $i++) {
+                  for($i = 1; $i < 32; $i++) {
                       if($i != 22) {
                         $objPriv = new UserPrivilege();
                         $objPriv->user_id       = $objUser->id;

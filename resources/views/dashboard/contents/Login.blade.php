@@ -32,7 +32,7 @@
             
 
             <div class="logo">
-                <h1>Madero Refacciones</h1>
+                <h1>Madero Refaccionarias</h1>
             </div>
 
             <div class="login-box">

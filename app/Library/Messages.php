@@ -43,6 +43,13 @@ class Messages {
 	const SPECIALTY_DELETE_TITLE 		= "Especialidad.";
 	const SPECIALTY_DELETE_MESSAGE		= "La especialidad se eliminó exitosamente.";
 
+	const BOX_CREATE_TITLE 			= "Caja.";
+	const BOX_CREATE_MESSAGE		= "La caja se creó exitosamente.";
+	const BOX_EDIT_TITLE 			= "Caja.";
+	const BOX_EDIT_MESSAGE 			= "La caja se modificó exitosamente.";
+	const BOX_DELETE_TITLE 			= "Caja.";
+	const BOX_DELETE_MESSAGE		= "La caja se eliminó exitosamente.";
+
 	const AD_CREATE_TITLE 		= "Anuncio.";
 	const AD_CREATE_MESSAGE		= "El anuncio se creó exitosamente.";
 
