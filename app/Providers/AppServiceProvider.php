@@ -15,8 +15,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->share('_PAGE_TITLE', 'Madero Refacciones');
-        view()->share('_SYSTEM_NAME', 'Madero Refacciones Dashboard'); 
+        view()->share('_PAGE_TITLE', 'Madero Refaccionarias');
+        view()->share('_SYSTEM_NAME', 'Madero Refaccionarias Dashboard'); 
         View()->share('_SYSTEM_FULL_NAME', 'Sistema de Administración de Turnos');
         View()->share('_SYSTEM_DESCRIPTION', 'La forma fácil de administrar los turnos de tu sucursal.');
         View()->share('_SYSTEM_VERSION', 'v1.0');

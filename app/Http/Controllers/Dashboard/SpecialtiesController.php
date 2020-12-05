@@ -69,7 +69,7 @@ class SpecialtiesController extends Controller
             'name.unique'   => 'La especialidad ingresada ya se encuentra registrada.'
         ]);
 
-        $objReturn = new ActionReturn('dashboard/specialties/create', 'dashboard/specialties');
+        $objReturn = new ActionReturn('dashboard/specialties/edit/'.$request->hddIdSpecialty, 'dashboard/specialties');
         $objSpecialty    = SpecialityType::where('id', $request->hddIdSpecialty)->first();
 
         if(!is_null($objSpecialty)) {

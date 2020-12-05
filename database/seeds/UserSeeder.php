@@ -67,7 +67,8 @@ class UserSeeder extends Seeder
             (5, 'Supervisores', 5, 'fa fa-user-check'),
             (6, 'Asesores', 6, 'fa fa-user'),
             (7, 'Sucursales', 7, 'fas fa-map-marker-alt'),
-            (8, 'Anuncios', 7, 'fas fa-photo-video')");
+            (8, 'Anuncios', 8, 'fas fa-photo-video'),
+            (9, 'Cajas', 9, 'fas fa-cash-register');");
 
         //PRIVILEGES
         DB::statement("INSERT INTO
@@ -107,10 +108,15 @@ class UserSeeder extends Seeder
             (23, 7, 'OFFICES', 'Lista de sucursales',                   1, 1, 'offices', 1),
             (24, 7, 'OFFICES_CREATE', 'Nueva sucursal',                 1, 2, 'offices/create', 1),
             (25, 7, 'OFFICES_EDIT', 'Editar sucursal',                  0, NULL, NULL, 1),
-            (26, 7, 'OFFICES_DELETE', 'Borrar sucursal',                0, NULL, NULL, 1),            
+            (26, 7, 'OFFICES_DELETE', 'Borrar sucursal',                0, NULL, NULL, 1),
 
             (27, 8, 'CAROUSEL', 'Lista de Anuncios', 1, 1, 'ads', 1), 
-            (28, 8, 'CAROUSEL_CREATE', 'Nuevo Anuncio', 1, 2, 'ads/create', 1);;");
+            (28, 8, 'CAROUSEL_CREATE', 'Nuevo Anuncio', 1, 2, 'ads/create', 1),
+            
+            (29, 9, 'BOXES', 'Lista de cajas',                    1, 1, 'boxes', 1),
+            (30, 9, 'BOXES_CREATE', 'Nueva caja',                 1, 2, 'boxes/create', 1),
+            (31, 9, 'BOXES_EDIT', 'Editar caja',                  0, NULL, NULL, 1),
+            (32, 9, 'BOXES_DELETE', 'Borrar caja',                0, NULL, NULL, 1);");
            
 
         // USER PRIVILEGES
@@ -148,6 +154,10 @@ class UserSeeder extends Seeder
             (1, 26),
             (1, 27),
             (1, 28),
+            (1, 29),
+            (1, 30),
+            (1, 31),
+            (1, 32),
             (2, 1),
             (3, 1),
             (4, 1);");

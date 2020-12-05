@@ -15,7 +15,7 @@ class CreateBoxesTable extends Migration
     {
         Schema::create('boxes', function (Blueprint $table) {
             $table->id();
-            $table->string('box_name', '10');
+            $table->string('box_name', '30');
             $table->boolean('is_active', true);
             $table->timestamps();
         });
