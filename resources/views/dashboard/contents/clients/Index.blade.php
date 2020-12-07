@@ -62,7 +62,7 @@
                                                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <a class="dropdown-item" href="/dashboard/clients/edit/{{ $item->id }}">Editar</a>
-                                                    <a class="dropdown-item" href="#">Eliminar</a>
+                                                    <a class="dropdown-item" href="#" onclick="modal({{ $item->id }})">Eliminar</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -76,6 +76,11 @@
         </div>
     </div>
 </div>
+
+@include('dashboard.contents.clients.modal.Delete')
+    
+@endsection
+
 @endsection
 
 @section('scripts')
@@ -92,6 +97,11 @@
                 "infoFiltered": "(filtrado de _MAX_ total registros)"
             }
         });
+            
+        function modal(client){
+            $('#confirm-delete-modal').modal('show')
+            $('#btnYes').attr('href', 'clients/delete/'+client)
+        };
     </script>
 @endsection
 

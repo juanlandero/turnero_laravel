@@ -2,7 +2,7 @@
 @section('subtitle', 'Modificar Especialidad')
 @section('icon', 'fa fa-rocket')
 @section('breadcrumb')
-    <li class="breadcrumb-item "><a href="{{ route('specialities.index') }}">Especialidades</a></li>
+    <li class="breadcrumb-item "><a href="{{ route('specialties.index') }}">Especialidades</a></li>
     <li class="breadcrumb-item active"><a href="#">Modificar</a></li>
 @endsection
 
@@ -62,7 +62,7 @@
                         <button class="btn btn-primary" type="submit">
                             <i class="fa fa-fw fa-lg fa-check-circle"></i>Guardar
                         </button>&nbsp;&nbsp;&nbsp;
-                        <a class="btn btn-secondary" href="{{ route('specialities.index') }}">
+                        <a class="btn btn-secondary" href="{{ route('specialties.index') }}">
                             <i class="fa fa-fw fa-lg fa-times-circle"></i>Cancelar
                         </a>
                     </div>

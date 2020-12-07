@@ -1,4 +1,4 @@
-@section('title', 'Administradores')
+@section('title', 'Supervisores')
 @section('subtitle', 'Listado de Supervisores')
 @section('icon', 'fas fa-user-check')
 @section('breadcrumb')

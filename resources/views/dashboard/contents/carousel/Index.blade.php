@@ -51,7 +51,7 @@
                                     <td>{{ $ad->order }}</td>
                                     <td>{{ $ad->duration/1000 }}</td>
                                     <td class="text-center">
-                                        <a class="btn btn-primary btn-sm" href="/dashboard/ads/delete/{{ $ad->id }}">
+                                        <a class="btn btn-primary btn-sm" onclick="modal({{ $ad->id }})" href="#">
                                             <i class="fas fa-trash-alt"></i>
                                         </a>
                                     </td>
@@ -64,10 +64,6 @@
 
         </div>
     </div>
-    {{-- <div class="col-5">
-        <img src="{{ asset('img/carousel/carousel/1.jpeg') }}" class="d-block w-100" alt="...">
-
-    </div> --}}
 
     <div class="col-7">
         <div class="tile">
@@ -86,6 +82,7 @@
     </div>
    
 </div>
+@include('dashboard.contents.carousel.modal.Delete')
 @endsection
 
 @section('scripts')
@@ -102,6 +99,11 @@
                 "infoFiltered": "(filtrado de _MAX_ total registros)"
             }
         });
+
+        function modal(ad){
+            $('#confirm-delete-modal').modal('show')
+            $('#btnYes').attr('href', 'ads/delete/'+ad)
+        };
     </script>
 @endsection
 

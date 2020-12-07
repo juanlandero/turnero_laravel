@@ -60,7 +60,7 @@
                                                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <a class="dropdown-item" href="/dashboard/offices/edit/{{ $item->id }}">Editar</a>
-                                                    <a class="dropdown-item" href="#">Eliminar</a>
+                                                    <a class="dropdown-item" href="#" onclick="modal({{ $item->id }})">Eliminar</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -74,6 +74,7 @@
         </div>
     </div>
 </div>
+@include('dashboard.contents.offices.modal.Delete')
 @endsection
 
 @section('scripts')
@@ -90,6 +91,11 @@
                 "infoFiltered": "(filtrado de _MAX_ total registros)"
             }
         });
+
+        function modal(office){
+            $('#confirm-delete-modal').modal('show')
+            $('#btnYes').attr('href', 'offices/delete/'+office)
+        };
     </script>
 @endsection
 

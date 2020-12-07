@@ -81,11 +81,20 @@ class AdsController extends Controller
         return $objReturn->getRedirectPath();
     }
 
-    public function delete($adId){
-
-        $adDelete = Ad::find($adId);
-        $adDelete->delete();
-
-        return redirect()->route('ads.index');
+    public function delete($idAd){
+        $adDelete = Ad::find($idAd);
+        $objReturn = new ActionReturn('dashboard/ads/delete', 'dashboard/ads');
+      
+        try {
+            if($adDelete->delete()) {
+                $objReturn->setResult(true, Messages::AD_DELETE_TITLE, Messages::AD_DELETE_MESSAGE);
+            } else {
+                $objReturn->setResult(false, Errors::AD_DELETE_02_TITLE, Errors::AD_DELETE_02_MESSAGE);
+            }
+        } catch(Exception $exception) {
+            $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
+        }
+    
+        return $objReturn->getRedirectPath();
     }
 }
