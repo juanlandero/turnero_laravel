@@ -23,36 +23,6 @@ class UserSeeder extends Seeder
         $objUser->is_active     = true;
         $objUser->save();
 
-        $objUser1                = new User();
-        $objUser1->name          = "Carlos";
-        $objUser1->first_name    = "Rodriguez";
-        $objUser1->second_name   = "Madrigal";
-        $objUser1->user_type_id  = 3;
-        $objUser1->email         = "carlos@dashboard.mx";
-        $objUser1->password      = bcrypt('1234567*');
-        $objUser1->is_active     = true;
-        $objUser1->save();
-
-        $objUser2                = new User();
-        $objUser2->name          = "Lorena";
-        $objUser2->first_name    = "Gomez";
-        $objUser2->second_name   = "Gomez";
-        $objUser2->user_type_id  = 3;
-        $objUser2->email         = "lorena@dashboard.mx";
-        $objUser2->password      = bcrypt('1234567*');
-        $objUser2->is_active     = true;
-        $objUser2->save();
-
-        $objUser3                = new User();
-        $objUser3->name          = "Diego";
-        $objUser3->first_name    = "Hernandez";
-        $objUser3->second_name   = "Hernandez";
-        $objUser3->user_type_id  = 3;
-        $objUser3->email         = "diego@dashboard.mx";
-        $objUser3->password      = bcrypt('1234567*');
-        $objUser3->is_active     = true;
-        $objUser3->save();
-
         //PRIVILEGES CATEGORIES
         DB::statement("INSERT INTO
             privileges_categories
@@ -157,10 +127,7 @@ class UserSeeder extends Seeder
             (1, 29),
             (1, 30),
             (1, 31),
-            (1, 32),
-            (2, 1),
-            (3, 1),
-            (4, 1);");
+            (1, 32);");
 
         // USER OFFICES
         // DB::statement("INSERT INTO  user_offices
