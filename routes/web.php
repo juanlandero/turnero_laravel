@@ -48,6 +48,7 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::post('/create', ['as' => 'office-store', 'uses' => 'Dashboard\OfficeController@store']);
         Route::get('/edit/{id}', 'Dashboard\OfficeController@edit');
         Route::put('/update', ['as' => 'office-update', 'uses' => 'Dashboard\OfficeController@update']);
+        Route::get('/delete/{id}', 'Dashboard\OfficeController@delete');
     });
 
     Route::group(['prefix' => 'users-admins'], function () {
@@ -79,11 +80,12 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
     });
 
     Route::group(['prefix' => 'specialties'], function () {
-        Route::get('/', 'Dashboard\SpecialtiesController@index')->name('specialities.index');
+        Route::get('/', 'Dashboard\SpecialtiesController@index')->name('specialties.index');
         Route::get('/create', 'Dashboard\SpecialtiesController@create');
         Route::post('/create', ['as' => 'specialty-store', 'uses' => 'Dashboard\SpecialtiesController@store']);
         Route::get('/edit/{id}', 'Dashboard\SpecialtiesController@edit');
         Route::put('/update', ['as' => 'specialty-update', 'uses' => 'Dashboard\SpecialtiesController@update']);
+        Route::get('/delete/{id}', 'Dashboard\SpecialtiesController@delete');
     });
 
     Route::group(['prefix' => 'shifts'], function () {
@@ -128,6 +130,7 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::post('/create', ['as' => 'client-store', 'uses' => 'Dashboard\ClientsController@store']);
         Route::get('/edit/{id}', 'Dashboard\ClientsController@edit');
         Route::put('/update', ['as' => 'client-update', 'uses' => 'Dashboard\ClientsController@update']);
+        Route::get('/delete/{id}', 'Dashboard\ClientsController@delete');
     });
 });
 

@@ -10,8 +10,9 @@ use Illuminate\Support\Str;
 use App\Library\Returns\ActionReturn;
 use App\Library\Errors;
 use App\Library\Messages;
-use App\Office;
 use App\Municipality;
+use App\UserOffice;
+use App\Office;
 
 class OfficeController extends Controller
 {
@@ -119,4 +120,39 @@ class OfficeController extends Controller
 
         return $objReturn->getRedirectPath();
     }
+
+    public function delete($idOffice){
+        $office = Office::where('id', $idOffice)->first();
+
+        $userOffice = UserOffice::Where('office_id', $office->id)->get();
+        $objReturn = new ActionReturn('dashboard/offices/delete', 'dashboard/offices');
+
+        if (sizeof($userOffice) > 0) {
+            $office->is_active = false;
+
+            try {
+                if($office->save()) {
+                    $objReturn->setResult(true, Messages::OFFICE_DELETE_TITLE, Messages::OFFICE_DELETE_MESSAGE);
+                } else {
+                    $objReturn->setResult(false, Errors::OFFICE_DELETE_03_TITLE, Errors::OFFICE_DELETE_03_MESSAGE);
+                }
+            } catch(Exception $exception) {
+                $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
+            }
+        } else {
+            try {
+                if($office->delete()) {
+                    $objReturn->setResult(true, Messages::OFFICE_DELETE_TITLE, Messages::OFFICE_DELETE_MESSAGE);
+                } else {
+                    $objReturn->setResult(false, Errors::OFFICE_DELETE_03_TITLE, Errors::OFFICE_DELETE_03_MESSAGE);
+                }
+            } catch(Exception $exception) {
+                $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
+            }
+            
+        }
+
+        return $objReturn->getRedirectPath();
+    }
+    
 }

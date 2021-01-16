@@ -37,6 +37,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre</th>
+                                <th>Icono</th>
                                 <th>Descripción</th>
                                 <th>Acciones</th>
                             </tr>
@@ -46,6 +47,7 @@
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
+                                    <td><i class="{{ $item->class_icon }}"></i></td>
                                     <td>{{ $item->description }}</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
@@ -54,7 +56,7 @@
                                                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <a class="dropdown-item" href="/dashboard/specialties/edit/{{ $item->id }}">Editar</a>
-                                                    <a class="dropdown-item" href="#">Eliminar</a>
+                                                    <a class="dropdown-item" href="#" onclick="modal({{ $item->id }})">Eliminar</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -68,6 +70,7 @@
         </div>
     </div>
 </div>
+@include('dashboard.contents.specialties.modal.Delete')
 @endsection
 
 @section('scripts')
@@ -84,6 +87,11 @@
                 "infoFiltered": "(filtrado de _MAX_ total registros)"
             }
         });
+       
+        function modal(speciality){
+            $('#confirm-delete-modal').modal('show')
+            $('#btnYes').attr('href', 'specialties/delete/'+speciality)
+        };
     </script>
 @endsection
 

@@ -52,10 +52,21 @@ class Errors {
     const SPECIALTY_EDIT_02_TITLE = "Especialidad";
     const SPECIALTY_EDIT_02_MESSAGE = "Ocurrió un problema al modificar la especialidad, vuelve a intentar más tarde.";
 
+    const SPECIALTY_DELETE_01_ID = "4_0004";
+    const SPECIALTY_DELETE_01_TITLE = "Especialidad";
+    const SPECIALTY_DELETE_01_MESSAGE = "La especialidad no se puede eliminar. Elimine primero la especialidad de sus asesores.";
+    const SPECIALTY_DELETE_02_ID = "4_0004";
+    const SPECIALTY_DELETE_02_TITLE = "Especialidad";
+    const SPECIALTY_DELETE_02_MESSAGE = "Ocurrió un problema al eliminar la especialidad, vuelve a intentar más tarde.";
+
     //ADS
     const AD_CREATE_01_ID = "5_0001";
     const AD_CREATE_01_TITLE = "Anuncio";
     const AD_CREATE_01_MESSAGE = "Ocurrió un problema al crear el anuncio, vuelve a intentar más tarde.";
+    
+    const AD_DELETE_02_ID = "5_0002";
+    const AD_DELETE_02_TITLE = "Anuncio";
+    const AD_DELETE_02_MESSAGE = "Ocurrió un problema al eliminar el anuncio, vuelve a intentar más tarde.";
 
     //OFFICES
     const OFFICE_CREATE_01_ID = "6_0001";
@@ -68,6 +79,10 @@ class Errors {
     const OFFICE_EDIT_02_ID = "6_0003";
     const OFFICE_EDIT_02_TITLE = "Sucursal";
     const OFFICE_EDIT_02_MESSAGE = "Ocurrió un problema al modificar la sucursal, vuelve a intentar más tarde.";
+    
+    const OFFICE_DELETE_03_ID = "6_0004";
+    const OFFICE_DELETE_03_TITLE = "Sucursal";
+    const OFFICE_DELETE_03_MESSAGE = "Ocurrió un problema al eliminar la sucursal, vuelve a intentar más tarde.";
 
     //OFFICES
     const BOX_CREATE_01_ID = "7_0001";
@@ -82,15 +97,19 @@ class Errors {
     const BOX_EDIT_02_MESSAGE = "Ocurrió un problema al modificar la caja, vuelve a intentar más tarde.";
 
     //CLIENTS
-    const CLIENT_CREATE_01_ID = "6_0001";
+    const CLIENT_CREATE_01_ID = "8_0001";
     const CLIENT_CREATE_01_TITLE = "Cliente";
     const CLIENT_CREATE_01_MESSAGE = "Ocurrió un problema al registrar al cliente, vuelve a intentar más tarde.";
 
-    const CLIENT_EDIT_01_ID = "6_0002";
+    const CLIENT_EDIT_01_ID = "8_0002";
     const CLIENT_EDIT_01_TITLE = "Cliente";
     const CLIENT_EDIT_01_MESSAGE = "El cliente que intenta modificar no existe.";
-    const CLIENT_EDIT_02_ID = "6_0003";
+    const CLIENT_EDIT_02_ID = "8_0003";
     const CLIENT_EDIT_02_TITLE = "Cliente";
     const CLIENT_EDIT_02_MESSAGE = "Ocurrió un problema al editar al cliente, vuelve a intentar más tarde.";
+    
+    const CLIENT_DELETE_03_ID = "8_0004";
+    const CLIENT_DELETE_03_TITLE = "Cliente";
+    const CLIENT_DELETE_03_MESSAGE = "Ocurrió un problema al eliminar al cliente, vuelve a intentar más tarde.";
 }
 ?>

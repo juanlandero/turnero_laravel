@@ -9,10 +9,12 @@ class Messages {
     const PUBLIC_LOGIN_MESSAGE = "Te has autentificado exitosamente!";
     
     //OFFICES
-    CONST OFFICE_CREATE_TITLE   = "Sucursal";
-	CONST OFFICE_CREATE_MESSAGE = "La nueva sucursal se creó exitosamente.";
-	CONST OFFICE_EDIT_TITLE   	= "Sucursal";
-    CONST OFFICE_EDIT_MESSAGE 	= "La sucursal se modificó exitosamente.";
+    CONST OFFICE_CREATE_TITLE   	= "Sucursal";
+	CONST OFFICE_CREATE_MESSAGE 	= "La nueva sucursal se creó exitosamente.";
+	CONST OFFICE_EDIT_TITLE   		= "Sucursal";
+	CONST OFFICE_EDIT_MESSAGE 		= "La sucursal se modificó exitosamente.";
+	CONST OFFICE_DELETE_TITLE   	= "Sucursal";
+    CONST OFFICE_DELETE_MESSAGE 	= "La sucursal se eliminó exitosamente.";
 	
 	//USUARIOS
 	const USER_ADMIN_CREATE_TITLE 	= "Usuario.";
@@ -52,11 +54,15 @@ class Messages {
 
 	const AD_CREATE_TITLE 		= "Anuncio.";
 	const AD_CREATE_MESSAGE		= "El anuncio se creó exitosamente.";
+	const AD_DELETE_TITLE 		= "Anuncio.";
+	const AD_DELETE_MESSAGE		= "El anuncio se eliminó exitosamente.";
 
 	const CLIENT_CREATE_TITLE		= "Cliente.";
 	const CLIENT_CREATE_MESSAGE		= "Cliente registrado exitosamente.";
 	const CLIENT_EDIT_TITLE			= "Cliente.";
 	const CLIENT_EDIT_MESSAGE		= "Cliente modificó exitosamente.";
+	const CLIENT_DELETE_TITLE		= "Cliente.";
+	const CLIENT_DELETE_MESSAGE		= "Cliente eliminó exitosamente.";
 }
 
 ?>

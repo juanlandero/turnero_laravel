@@ -16,7 +16,7 @@
     </div>
 
     <div class="col-md-6 col-lg-3">
-        <div class="widget-small info"><i class="icon fa fa-users fa-3x"></i>
+        <div class="widget-small info"><i class="icon fas fa-smile fa-3x"></i>
             <div class="info">
                 <h4>Atendidos</h4>
                 <p><b id="attended">{{ $widget[0] }}</b></p>
@@ -25,7 +25,7 @@
     </div>
 
     <div class="col-md-6 col-lg-3">
-        <div class="widget-small danger"><i class="icon fa fa-users fa-3x"></i>
+        <div class="widget-small danger"><i class="icon fas fa-running fa-3x"></i>
             <div class="info">
                 <h4>Abandonados</h4>
                 <p><b id="abandoned">{{ $widget[1] }}</b></p>
@@ -34,7 +34,7 @@
     </div>
 
     <div class="col-md-6 col-lg-3">
-        <div class="widget-small warning"><i class="icon fa fa-users fa-3x"></i>
+        <div class="widget-small warning"><i class="icon fas fa-people-arrows fa-3x"></i>
             <div class="info">
             <h4>Reasignados</h4>
             <p><b id="reassigned">{{ $widget[2] }}</b></p>

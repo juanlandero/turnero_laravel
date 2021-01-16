@@ -10,11 +10,12 @@ use App\Library\Messages;
 use App\Library\Errors;
 use App\UserOffice;
 use App\Client;
+use App\Shift;
 
 class ClientsController extends Controller
 {
     public function index(){
-        $officeId = UserOffice::where('user_id', Auth::id())->first();
+        // $officeId = UserOffice::where('user_id', Auth::id())->first();
         $objClients = Client::join('offices', 'clients.office_register_id', 'offices.id')
                             ->select(
                                 'clients.id',
@@ -26,7 +27,7 @@ class ClientsController extends Controller
                                 'clients.created_at',
                                 'offices.name as office'
                             )
-                            // ->where('office_register_id', $officeId->office_id)
+                            ->where('clients.is_active', true)
                             ->get();
         return view('dashboard.contents.clients.Index', ['lstClients' => $objClients]);
     }
@@ -122,6 +123,41 @@ class ClientsController extends Controller
             }
         } else {
             $objReturn->setResult(false, Errors::CLIENT_EDIT_01_TITLE, Errors::CLIENT_EDIT_01_TITLE);
+        }
+
+        return $objReturn->getRedirectPath();
+    }
+
+    
+    public function delete($idClient){
+        $client = Client::where('id', $idClient)->first();
+
+        $shifts = Shift::Where('number_client', $client->client_number)->get();
+        $objReturn = new ActionReturn('dashboard/clients/delete', 'dashboard/clients');
+
+        if (sizeof($shifts) > 0) {
+            $client->is_active = false;
+
+            try {
+                if($client->save()) {
+                    $objReturn->setResult(true, Messages::CLIENT_DELETE_TITLE, Messages::CLIENT_DELETE_MESSAGE);
+                } else {
+                    $objReturn->setResult(false, Errors::CLIENT_DELETE_03_TITLE, Errors::CLIENT_DELETE_03_MESSAGE);
+                }
+            } catch(Exception $exception) {
+                $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
+            }
+        } else {
+            try {
+                if($client->delete()) {
+                    $objReturn->setResult(true, Messages::CLIENT_DELETE_TITLE, Messages::CLIENT_DELETE_MESSAGE);
+                } else {
+                    $objReturn->setResult(false, Errors::CLIENT_DELETE_03_TITLE, Errors::CLIENT_DELETE_03_MESSAGE);
+                }
+            } catch(Exception $exception) {
+                $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
+            }
+            
         }
 
         return $objReturn->getRedirectPath();

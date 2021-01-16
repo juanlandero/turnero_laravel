@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use App\Library\Returns\ActionReturn;
 use App\Library\Errors;
 use App\Library\Messages;
+use App\SpecialityTypeUser;
 use App\SpecialityType;
 
 class SpecialtiesController extends Controller
@@ -88,6 +89,31 @@ class SpecialtiesController extends Controller
             }
         } else {
             $objReturn->setResult(false, Errors::SPECIALTY_EDIT_01_TITLE, Errors::SPECIALTY_EDIT_01_MESSAGE);
+        }
+
+        return $objReturn->getRedirectPath();
+    }
+
+    public function delete($idSpeciality){
+        $speciality = SpecialityType::where('id', $idSpeciality)->first();
+
+        $specialityTypeUser = SpecialityTypeUser::Where('speciality_type_id', $speciality->id)->get();
+        $objReturn = new ActionReturn('dashboard/specialties/delete', 'dashboard/specialties');
+        // return $idSpeciality;
+
+        if (sizeof($specialityTypeUser) > 0) {
+            $objReturn->setResult(true, Errors::SPECIALTY_DELETE_01_TITLE, Errors::SPECIALTY_DELETE_01_MESSAGE);
+        } else {
+            try {
+                if($speciality->delete()) {
+                    $objReturn->setResult(true, Messages::SPECIALTY_DELETE_TITLE, Messages::SPECIALTY_DELETE_MESSAGE);
+                } else {
+                    $objReturn->setResult(false, Errors::SPECIALTY_DELETE_02_TITLE, Errors::SPECIALTY_DELETE_02_MESSAGE);
+                }
+            } catch(Exception $exception) {
+                $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
+            }
+            
         }
 
         return $objReturn->getRedirectPath();
