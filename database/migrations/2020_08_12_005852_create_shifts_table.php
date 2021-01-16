@@ -18,15 +18,17 @@ class CreateShiftsTable extends Migration
             $table->string('shift', 10);
 
             $table->foreignId('shift_type_id')->constrained();
-            $table->string('sex_client', 15)->nullable();
             $table->foreignId('speciality_type_id')->constrained();
-            $table->foreignId('office_id')->constrained();
             $table->foreignId('shift_status_id')->constrained('shift_status');
+            $table->foreignId('office_id')->constrained();
             $table->foreignId('user_advisor_id')->constrained('users');
+
+            $table->string('sex_client', 5)->nullable();
+            $table->string('number_client', 25)->nullable();
 
             $table->time('start_shift')->nullable();
             $table->time('end_shift')->nullable();
-            $table->boolean('has_incident', false);
+            $table->boolean('is_reassigned', false);
             $table->boolean('is_active', true);
             $table->timestamps();
         });

@@ -1,0 +1,66 @@
+body {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  color: #37474f;
+}
+
+table {
+  width: 100%;
+}
+
+.titulo {
+  font-size: 35px;
+}
+
+.titulo1 {
+  font-size: 45px;
+}
+
+.subtitulo1 {
+  text-transform: uppercase;
+  color: #97bbcd;
+}
+
+.info-titulo1 {
+  text-align: right;
+  padding-right: 20px;
+  color: #3f841a;
+}
+
+.barra {
+  width: 100%;
+  border-left: 4px solid #3f841a;
+  padding-left: 20px;
+  margin-bottom: 35px;
+}
+
+.seccion {
+  font-size: 15px;
+}
+
+.tabla {
+  border: 1px solid #b0bec5;
+  border-radius: 5px;
+  border-spacing: 0;
+  display: table;
+}
+.tabla th {
+  background-color: #37474f;
+  color: white;
+  height: 35px;
+}
+.tabla td {
+  text-align: center;
+  height: 30px;
+}
+.tabla tr, .tabla td, .tabla th {
+  border-bottom: 1px solid #b0bec5;
+}
+
+.titulo-tabla {
+  text-align: center;
+  text-transform: uppercase;
+  color: #37474f;
+}
+
+/*# sourceMappingURL=pdf.css.map */

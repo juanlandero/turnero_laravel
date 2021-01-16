@@ -26,6 +26,16 @@ class CreateClientsTable extends Migration
             $table->boolean('is_active', true);
             $table->timestamps();
         });
+
+        DB::statement("INSERT INTO  clients
+        (
+            id, client_number, name, first_name, second_name, sex, office_register_id, is_active, created_at, updated_at
+        )
+        VALUES
+            ( 1, '1234', 'José', 'Hernández', 'Diaz', 'M', 1, true, NOW(), NOW()),
+            ( 2, '4321', 'Ana', 'López', 'Sanchez', 'F', 1, true, NOW(), NOW()),
+            ( 3, '1243', 'Diana', 'Pérez', 'Montejo', 'F', 1, true, NOW(), NOW())
+        ");
     }
 
     /**

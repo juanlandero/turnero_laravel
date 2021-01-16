@@ -5,20 +5,24 @@ Vue.component('item-shift', {
         'box',
     ],
     template: `
-        <div class="row text-center my-1">
-            <div class="col-12 line-head text-success"><h1>{{ shift }}</h1></div>
+        <div class="row text-center ">
+            <div class="col-12 line-head text-info mt-2"><h1 class="mb-0">{{ shift }}</h1></div>
         </div>
     `,
 })
 
-var appTodo = new Vue({
+var appDisplay = new Vue({
     delimiters: ['${', '}'],
     el: '#app-public-display',
     data: {
-        channel: null,
+        audio: new Audio("/audio/chime.mp3"),   
+        serviceOn: false,
+        menuChannel: null,
+        panelChannel: null,
         attending:{
-            shift: 'A001',
-            box: '02'
+            id: 0,
+            shift: '-',
+            box: '-'
         },
         shiftList: {},
         hour: null
@@ -32,12 +36,11 @@ var appTodo = new Vue({
         getListTickets () {
             var _that = this
 
-            axios.get('list-shift', {
-                client: this.ticketList
-            })
+            axios.get('display/list')
             .then(function (response) {
                 _that.shiftList = response.data['listShift']
-                _that.channel = response.data['channel'].channel
+                _that.menuChannel = response.data['channel'].menu_channel
+                _that.panelChannel = response.data['channel'].panel_channel
             })
             .catch(function (error) {
                 console.log(error);
@@ -58,13 +61,21 @@ var appTodo = new Vue({
             var pusher = new Pusher('56423364aba2e84b5180', {
                 cluster: 'us2'
             })
-            var channel = pusher.subscribe(this.channel);
+            var menuChannelPusher = pusher.subscribe(this.menuChannel)
+            var panelChannelPusher = pusher.subscribe(this.panelChannel)
 
-            channel.bind('toPanel', function(data) {
+            menuChannelPusher.bind('toPublicPanel', function(data) {
                 if (data != null) {
-                    _that.addShift(data.text)
+                    _that.addShift(data.idTicket)
                 }
             })
+
+            panelChannelPusher.bind('toPublicPanel', function(data) {
+                _that.atenddingShift (data.idTicket)
+                _that.audio.play()
+            })
+
+            this.serviceOn = true
         },
 
         addShift (data) {
@@ -73,13 +84,13 @@ var appTodo = new Vue({
 
             if (shift_id != null) {
                             
-                axios.post('get-shift', {
+                axios.post('display/get', {
                     shiftId: shift_id
                 })
                 .then(function (response) {
                     _that.shiftList.push (
                         response.data['shift']
-                        )
+                    )
                     console.log(response)
                 })
                 .catch(function (error) {
@@ -89,8 +100,29 @@ var appTodo = new Vue({
             
         },
 
-        atenddingShift () {
+        atenddingShift (shiftId) {
+            var _that = this
+            if (this.shiftList.length > 0) {
 
-        }
+                this.shiftList.forEach(function (shift, index, arr) {
+                    if (shift.id == shiftId) {
+                        _that.attending.id = shift.id
+                        _that.attending.shift = shift.shift
+                        _that.attending.box = shift.box_name
+
+                        _that.shiftList.splice(index, 1)
+                    } 
+                })
+                
+            } else {
+                this.setNotShiftAttending()
+            }
+        },
+
+        setNotShiftAttending () {
+            _that.attending.id = 0
+            _that.attending.shift = '-'
+            _that.attending.box = '-'
+        },
     }
 })

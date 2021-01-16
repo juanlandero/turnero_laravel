@@ -26,7 +26,7 @@ class CreateUserTypesTable extends Migration
             VALUES
                 ( 1, 'Administrador', NOW(), NOW()),
                 ( 2, 'Supervisor', NOW(), NOW()),
-                ( 3, 'Caja/Especialista', NOW(), NOW())
+                ( 3, 'Asesor', NOW(), NOW())
         ");
     }
 
