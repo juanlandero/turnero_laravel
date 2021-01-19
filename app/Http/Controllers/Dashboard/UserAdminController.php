@@ -49,7 +49,7 @@ class UserAdminController extends Controller
                 $privileges = array();
                   
                   for($i = 1; $i < 32; $i++) {
-                      if($i != 1 && $i != 2 && $i != 28) {
+                      if($i <= 6 && $i != 28) {
                         $objPriv = new UserPrivilege();
                         $objPriv->user_id       = $objUser->id;
                         $objPriv->privilege_id  = $i;
