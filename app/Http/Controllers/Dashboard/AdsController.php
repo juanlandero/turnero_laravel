@@ -37,28 +37,28 @@ class AdsController extends Controller
     }
 
     public function store(Request $request){
-        $file       = $request->file('imgAd');
-        $extension  = $file->getClientOriginalExtension();
-        $fileName   = time() . '_image_carousel.' . $extension;
-        $url        = '/carousel/' . $fileName;
-
-        $request->imgAd->storeAs('carousel', $fileName);
-
-        $officeId = UserOffice::where('user_id', Auth::id())->select('office_id')->first();
-
-        $objReturn = new ActionReturn('dashboard/ads/create', 'dashboard/ads');
-
-
-        $objAd = new Ad();
-        $objAd->name        = $request->txtName;
-        $objAd->path        = $url;
-        $objAd->order       = $request->intOrder;
-        $objAd->is_first    = (($request->intOrder == 1)? "active":"");
-        $objAd->duration    = ($request->intDuration*1000);
-        $objAd->office_id   = $officeId->office_id;
-        $objAd->is_active   = true;
-
         try {
+            $file       = $request->file('imgAd');
+            $extension  = $file->getClientOriginalExtension();
+            $fileName   = time() . '_image_carousel.' . $extension;
+            $url        = '/carousel/' . $fileName;
+    
+            $request->imgAd->storeAs('carousel', $fileName);
+    
+            $officeId = UserOffice::where('user_id', Auth::id())->select('office_id')->first();
+    
+            $objReturn = new ActionReturn('dashboard/ads/create', 'dashboard/ads');
+    
+    
+            $objAd = new Ad();
+            $objAd->name        = $request->txtName;
+            $objAd->path        = $url;
+            $objAd->order       = $request->intOrder;
+            $objAd->is_first    = (($request->intOrder == 1)? "active":"");
+            $objAd->duration    = ($request->intDuration*1000);
+            $objAd->office_id   = $officeId->office_id;
+            $objAd->is_active   = true;
+
             if( $objAd->save()) {
                 $objReturn->setResult(true, Messages::AD_CREATE_TITLE, Messages::AD_CREATE_MESSAGE);
             } else {
