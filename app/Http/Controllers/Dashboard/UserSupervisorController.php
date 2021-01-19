@@ -59,7 +59,7 @@ class UserSupervisorController extends Controller
                 $objUserOffice->is_active   = true;
                 $objUserOffice->save();
 
-                $privileges = [9, 10, 11, 12, 21, 22];
+                $privileges = [2,3,4,5,6,19,20,21,22,27,28];
                 foreach ($privileges as $key => $value) {
                     $objPriv = new UserPrivilege();
                     $objPriv->user_id       = $objUser->id;
