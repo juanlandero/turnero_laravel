@@ -16,36 +16,27 @@ class AdsController extends Controller
     public function index(){
         $officeId = UserOffice::where('user_offices.user_id', Auth::id())->first();
 
-        $objAds = Ad::where([
-            ['office_id', $officeId->office_id],
-            ['is_active', 1]
-        ])
-        ->orderBy('order', 'asc')
-        ->get();
+        if(is_null($officeId)) {
+            $objAds = Ad::where('is_active', 1)
+                        ->orderBy('order', 'asc')
+                        ->get();
+        } else {
+            $objAds = Ad::where([
+                            ['office_id', $officeId->office_id],
+                            ['is_active', 1]
+                        ])
+                        ->orderBy('order', 'asc')
+                        ->get();
+        }
 
         return view('dashboard.contents.carousel.Index', ['ads' => $objAds]);
     }
 
-    public function create(){
+    public function create() {
         return view('dashboard.contents.carousel.Create');
     }
 
     public function store(Request $request){
-        // $request->validate([
-        //     'txtName'           => 'required|string|max:255',
-        //     'txtPhone'          => 'nullable|string|max:50',
-        //     'txtAddress'        => 'required|string',
-        //     'txtChannel'        => 'required|string|unique:offices,channel|max:80',
-        //     'txtOfficeKey'      => 'required|string|unique:offices,office_key|max:20',
-        //     'cmbMunicipality'   => 'required|integer|exists:municipalities,id'
-        // ],[
-        //     'txtChannel.unique'     => 'El canal ingresado ya pertenece a otra sucursal.',
-        //     'txtOfficeKey.unique'   => 'Este código de sucursal no está disponible.'
-        // ]);
-
-        /* $file = $request->imgAd;
-        $path = $file->store('carousel'); */
-
         $file       = $request->file('imgAd');
         $extension  = $file->getClientOriginalExtension();
         $fileName   = time() . '_image_carousel.' . $extension;
