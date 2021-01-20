@@ -38,7 +38,8 @@ class UserSeeder extends Seeder
             (6, 'Asesores', 6, 'fa fa-user'),
             (7, 'Sucursales', 7, 'fas fa-map-marker-alt'),
             (8, 'Anuncios', 8, 'fas fa-photo-video'),
-            (9, 'Cajas', 9, 'fas fa-cash-register');");
+            (9, 'Cajas', 9, 'fas fa-cash-register'),
+            (10, 'Cajas', 10, 'fas fa-fire');");
 
         //PRIVILEGES
         DB::statement("INSERT INTO
@@ -86,7 +87,12 @@ class UserSeeder extends Seeder
             (29, 9, 'BOXES', 'Lista de cajas',                    1, 1, 'boxes', 1),
             (30, 9, 'BOXES_CREATE', 'Nueva caja',                 1, 2, 'boxes/create', 1),
             (31, 9, 'BOXES_EDIT', 'Editar caja',                  0, NULL, NULL, 1),
-            (32, 9, 'BOXES_DELETE', 'Borrar caja',                0, NULL, NULL, 1);");
+            (32, 9, 'BOXES_DELETE', 'Borrar caja',                0, NULL, NULL, 1),
+            
+            (33, 10, 'CLIENTS', 'Lista de clientes',                    1, 1, 'clients', 1),
+            (34, 10, 'CLIENTS_CREATE', 'Nuevo cliente',                 1, 2, 'clients/create', 1),
+            (35, 10, 'CLIENTS_EDIT', 'Editar cliente',                  0, NULL, NULL, 1),
+            (36, 10, 'CLIENTS_DELETE', 'Borrar cliente',                0, NULL, NULL, 1);");
            
 
         // USER PRIVILEGES
