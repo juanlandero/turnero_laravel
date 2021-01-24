@@ -73,7 +73,7 @@ class ReportsController extends Controller
 
         $officeId = $objOffice->id;
 
-        // PRIMERA TABLA                            
+        // ***** PRIMERA TABLA *****
         foreach ($objStatus as $status) {
             $countShitf = Shift::where([
                                     ['shifts.office_id', $officeId],
@@ -101,7 +101,7 @@ class ReportsController extends Controller
             
         }
 
-        // TABLA POR ESPECIALIDADES
+        // ***** TABLA POR ESPECIALIDADES *****
         // BUSCAMOS LOS USARIOS DE SUCURSAL
         $objUserOffices = UserOffice::join('users', 'user_offices.user_id', 'users.id')
                                         ->select(
@@ -153,71 +153,31 @@ class ReportsController extends Controller
         $statusId = [2, 3];
         foreach ($arrSpecialities as $speciality) {
             $arrStatus = array();
-            $turn = 0;
             foreach ($statusId as $index => $id) {
-                $turn++;
-                // $countStatus2q = collect(DB::select(DB::raw('SELECT
-                //                                                 COUNT(shifts.shift_status_id) as quantity,
-                //                                                 shift_status.shift_status,
-                //                                                 shift_status.id
-                //                                             FROM shifts
-                //                                             JOIN shift_status ON shifts.shift_status_id = shift_status.id
-                //                                             WHERE shifts.shift_status_id = '.$id.'
-                //                                                 AND shifts.created_at like "'.OfficeController::setDate().'%"
-                //                                                 AND shifts.office_id = '.$officeId.'
-                //                                                 AND shifts.is_active = 1
-                //                                                 AND shifts.speciality_type_id = '.$speciality['id'])));
+                $countShifts = Shift::where([
+                                    ['shifts.shift_status_id', $id],
+                                    ['shifts.created_at', 'like', OfficeController::setDate().'%'],
+                                    ['shifts.office_id', $officeId],
+                                    ['shifts.is_active', 1],
+                                    ['shifts.speciality_type_id', $speciality['id']]
+                                ])
+                                ->count();
 
-                $countStatus = Shift::join('shift_status', 'shifts.shift_status_id', '=', 'shift_status.id')
-                                        ->where([
-                                            ['shifts.shift_status_id', $id],
-                                            ['shifts.created_at', 'like', OfficeController::setDate().'%'],
-                                            ['shifts.office_id', $officeId],
-                                            ['shifts.is_active', 1],
-                                            ['shifts.speciality_type_id', $speciality['id']]
-                                        ])
-                                        ->select(
-                                            DB::raw('count(*) as quantity, shifts.shift_status_id'),
-                                            'shift_status.shift_status'
-                                            //'shift_status.id'
-                                        )
-                                        ->groupBy('shift_status.id')
-                                        ->get();
+                $typeStatus = ShiftStatus::where('shift_status.id', $id)->get();
 
-                
-                if(sizeof($countStatus) > 0){
-                    array_push($arrStatus, array(
-                        'id'        => $countStatus[0]->shift_status_id,
-                        'type'      => $countStatus[0]->shift_status,
-                        'quantity'  => $countStatus[0]->quantity,
-                    ));
-                } else {
-                    if($id == 2) {
-                        array_push($arrStatus, array(
-                            'id'        => $id,
-                            'type'      => 'Atendido',
-                            'quantity'  => 0, 
-                        ));
-                    }
-                    if($id == 3) {
-                        array_push($arrStatus, array(
-                            'id'        => $id,
-                            'type'      => 'Abandonado',
-                            'quantity'  => 0, 
-                        ));
-                    }
-                } 
-
-                if (sizeof($statusId) == $turn) {
-                    $total = $arrStatus[0]['quantity'] + $arrStatus[1]['quantity'];
-                    array_push($arrStatus, array(
-                        'id'        => 0,
-                        'type'      => 'Total',
-                        'quantity'  => $total,
-                    ));
-                }
+                array_push($arrStatus, array(
+                    'id'        => $typeStatus[0]->id,
+                    'type'      => $typeStatus[0]->shift_status,
+                    'quantity'  => (($countShifts>0)?$countShifts:0)
+                ));
             }
 
+            $total = $arrStatus[0]['quantity'] + $arrStatus[1]['quantity'];
+            array_push($arrStatus, array(
+                'id'        => 0,
+                'type'      => 'Total',
+                'quantity'  => $total,
+            ));
 
             array_push($arrSpeciality, array(
                 'type' => $speciality['speciality'],

@@ -59,7 +59,7 @@
                                                 <div class="dropdown-menu dropdown-menu-right">
                                                     <a class="dropdown-item" href="/dashboard/users-advisers/speciality/{{ $item->id }}">Especialidad</a>
                                                     <a class="dropdown-item" href="/dashboard/users-advisers/edit/{{ $item->id }}">Editar</a>
-                                                    <a class="dropdown-item" href="#">Eliminar</a>
+                                                    <a class="dropdown-item" href="#" onclick="modal({{ $item->id }})">Eliminar</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -73,10 +73,16 @@
         </div>
     </div>
 </div>
+@include('dashboard.contents.users.advisers.modal.Delete')
 @endsection
 
 @section('scripts')
-
+<script>
+    function modal(adviser){
+        $('#confirm-delete-modal').modal('show')
+        $('#btnYes').attr('href', 'users-advisers/delete/'+adviser)
+    };
+</script>
 @endsection
 
 @include('dashboard.components.Navbar')

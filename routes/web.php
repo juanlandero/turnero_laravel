@@ -57,6 +57,7 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::post('/create', ['as' => 'user-admin-store', 'uses' => 'Dashboard\UserAdminController@store']);
         Route::get('/edit/{id}', 'Dashboard\UserAdminController@edit');
         Route::put('/update', ['as' => 'user-admin-update', 'uses' => 'Dashboard\UserAdminController@update']);
+        Route::get('/delete/{id}', 'Dashboard\UserAdminController@delete');
     });
 
     Route::group(['prefix' => 'users-supervisors'], function () {
@@ -65,6 +66,7 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::post('/create', ['as' => 'user-supervisor-store', 'uses' => 'Dashboard\UserSupervisorController@store']);
         Route::get('/edit/{id}', 'Dashboard\UserSupervisorController@edit');
         Route::put('/update', ['as' => 'user-supervisor-update', 'uses' => 'Dashboard\UserSupervisorController@update']);
+        Route::get('/delete/{id}', 'Dashboard\UserSupervisorController@delete');
     });
 
     Route::group(['prefix' => 'users-advisers'], function () {
@@ -73,6 +75,7 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::post('/create', ['as' => 'user-adviser-store', 'uses' => 'Dashboard\UserAdviserController@store']);
         Route::get('/edit/{id}', 'Dashboard\UserAdviserController@edit');
         Route::put('/update', ['as' => 'user-adviser-update', 'uses' => 'Dashboard\UserAdviserController@update']);
+        Route::get('/delete/{id}', 'Dashboard\UserAdviserController@delete');
 
         Route::get('/speciality/{id}', 'Dashboard\UserAdviserController@speciality');
         Route::post('/speciality/store', ['as' => 'speciality-store', 'uses' => 'Dashboard\UserAdviserController@storeSpeciality']);

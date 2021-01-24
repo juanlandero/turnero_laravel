@@ -6,7 +6,7 @@
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
             </div>
             <div class="modal-body">
-                <h5>¿Estás seguro que deseas eliminar este asesor?</h5>
+                <h5>¿Estás seguro que deseas eliminar este administrador?</h5>
                 <p>Si das click en "Si" no podremos deshacer esta acción.</p>
               </div>
               <div class="modal-footer">

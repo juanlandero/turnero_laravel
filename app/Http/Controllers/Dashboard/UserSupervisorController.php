@@ -139,4 +139,23 @@ class UserSupervisorController extends Controller
 
         return $objReturn->getRedirectPath();
     }
+
+    public function delete($idSupervisor){
+        $userSupervisor = User::where('id', $idSupervisor)->first();
+        $userSupervisor->is_active = 0;
+
+        $objReturn = new ActionReturn('dashboard/users-supervisors/delete', 'dashboard/users-supervisors');
+    
+        try {
+            if($userSupervisor->save()) {
+                $objReturn->setResult(true, Messages::USER_SUPERVISOR_DELETE_TITLE, Messages::USER_SUPERVISOR_DELETE_MESSAGE);
+            } else {
+                $objReturn->setResult(false, Errors::USER_SUPERVISOR_03_TITLE, Errors::USER_SUPERVISOR_03_MESSAGE);
+            }
+        } catch(Exception $exception) {
+            $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
+        }
+
+        return $objReturn->getRedirectPath();
+    }
 }
