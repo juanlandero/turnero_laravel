@@ -84,7 +84,7 @@ class Errors {
     const OFFICE_DELETE_03_TITLE = "Sucursal";
     const OFFICE_DELETE_03_MESSAGE = "Ocurrió un problema al eliminar la sucursal, vuelve a intentar más tarde.";
 
-    //OFFICES
+    //BOXES
     const BOX_CREATE_01_ID = "7_0001";
     const BOX_CREATE_01_TITLE = "Caja";
     const BOX_CREATE_01_MESSAGE = "Ocurrió un problema al crear la caja, vuelve a intentar más tarde.";
@@ -111,5 +111,20 @@ class Errors {
     const CLIENT_DELETE_03_ID = "8_0004";
     const CLIENT_DELETE_03_TITLE = "Cliente";
     const CLIENT_DELETE_03_MESSAGE = "Ocurrió un problema al eliminar al cliente, vuelve a intentar más tarde.";
+
+    //USER-ADVISER
+    const USER_ADVISER_DELETE_03_ID = "9_0004";
+    const USER_ADVISER_03_TITLE = "Asesor";
+    const USER_ADVISER_03_MESSAGE = "Ocurrió un problema al eliminar al asesor, vuelve a intentar más tarde.";
+
+    //USER-SUPERVISOR
+    const USER_SUPERVISOR_DELETE_03_ID = "10_0004";
+    const USER_SUPERVISOR_03_TITLE = "Supervisor";
+    const USER_SUPERVISOR_03_MESSAGE = "Ocurrió un problema al eliminar al supervisor, vuelve a intentar más tarde.";
+
+    //USER-ADMIN
+    const USER_ADMIN_DELETE_03_ID = "11_0004";
+    const USER_ADMIN_03_TITLE = "Supervisor";
+    const USER_ADMIN_03_MESSAGE = "Ocurrió un problema al eliminar al administrador, vuelve a intentar más tarde.";
 }
 ?>

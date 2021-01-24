@@ -148,6 +148,26 @@ class UserAdviserController extends Controller
         return $objReturn->getRedirectPath();
     }
 
+    public function delete($idAdviser){
+        $userAdviser = User::where('id', $idAdviser)->first();
+        $userAdviser->is_active = 0;
+
+        $objReturn = new ActionReturn('dashboard/users-advisers/delete', 'dashboard/users-advisers');
+    
+        try {
+            if($userAdviser->save()) {
+                $objReturn->setResult(true, Messages::USER_ADVISER_DELETE_TITLE, Messages::USER_ADVISER_DELETE_MESSAGE);
+            } else {
+                $objReturn->setResult(false, Errors::USER_ADVISER_03_TITLE, Errors::USER_ADVISER_03_MESSAGE);
+            }
+        } catch(Exception $exception) {
+            $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
+        }
+
+        return $objReturn->getRedirectPath();
+    }
+
+
     public function speciality($userId){
         $objUser = User::join('user_types', 'users.user_type_id', 'user_types.id')
                         ->where('users.id', $userId)

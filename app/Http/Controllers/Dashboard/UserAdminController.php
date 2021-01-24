@@ -115,4 +115,23 @@ class UserAdminController extends Controller
 
         return $objReturn->getRedirectPath();
     }
+    
+    public function delete($idAdmin){
+        $userAdmin = User::where('id', $idAdmin)->first();
+        $userAdmin->is_active = 0;
+
+        $objReturn = new ActionReturn('dashboard/users-admins/delete', 'dashboard/users-admins');
+    
+        try {
+            if($userAdmin->save()) {
+                $objReturn->setResult(true, Messages::USER_ADMIN_DELETE_TITLE, Messages::USER_ADMIN_DELETE_MESSAGE);
+            } else {
+                $objReturn->setResult(false, Errors::USER_ADMIN_03_TITLE, Errors::USER_ADMIN_03_MESSAGE);
+            }
+        } catch(Exception $exception) {
+            $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
+        }
+
+        return $objReturn->getRedirectPath();
+    }
 }
