@@ -53,7 +53,7 @@ class OfficeController extends Controller
         $objOffice->address         = $request->txtAddress;
         $objOffice->phone           = $request->txtPhone;
         $objOffice->menu_channel    = "menu-".trim($request->txtChannel)."-".Str::random(4);
-        $objOffice->panel_channel   = Str::random(4).":".trim($request->txtChannel)."-panel";
+        $objOffice->panel_channel   = Str::random(4)."-".trim($request->txtChannel)."-panel";
         $objOffice->user_channel    = "user@".trim($request->txtChannel)."-".Str::random(4);
         $objOffice->office_key      = $request->txtOfficeKey;
         $objOffice->municipality_id = $request->cmbMunicipality;

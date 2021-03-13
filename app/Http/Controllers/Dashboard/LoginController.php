@@ -19,7 +19,8 @@ class LoginController extends Controller
 
     public function store(Request $request) {
         if(Auth::attempt([  'email'     => $request['txtEmail'],
-                            'password'  => $request['txtPassword']])) {
+                            'password'  => $request['txtPassword'],
+                            'is_active' => 1])) {
             
             Session::put('_DASHBOARD_SESSION_', $this::DASHBOARD_SESSION);
             return Redirect('dashboard');
