@@ -123,33 +123,17 @@ class OfficeController extends Controller
 
     public function delete($idOffice){
         $office = Office::where('id', $idOffice)->first();
-
-        $userOffice = UserOffice::Where('office_id', $office->id)->get();
         $objReturn = new ActionReturn('dashboard/offices/delete', 'dashboard/offices');
+        $office->is_active = false;
 
-        if (sizeof($userOffice) > 0) {
-            $office->is_active = false;
-
-            try {
-                if($office->save()) {
-                    $objReturn->setResult(true, Messages::OFFICE_DELETE_TITLE, Messages::OFFICE_DELETE_MESSAGE);
-                } else {
-                    $objReturn->setResult(false, Errors::OFFICE_DELETE_03_TITLE, Errors::OFFICE_DELETE_03_MESSAGE);
-                }
-            } catch(Exception $exception) {
-                $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
+        try {
+            if($office->save()) {
+                $objReturn->setResult(true, Messages::OFFICE_DELETE_TITLE, Messages::OFFICE_DELETE_MESSAGE);
+            } else {
+                $objReturn->setResult(false, Errors::OFFICE_DELETE_03_TITLE, Errors::OFFICE_DELETE_03_MESSAGE);
             }
-        } else {
-            try {
-                if($office->delete()) {
-                    $objReturn->setResult(true, Messages::OFFICE_DELETE_TITLE, Messages::OFFICE_DELETE_MESSAGE);
-                } else {
-                    $objReturn->setResult(false, Errors::OFFICE_DELETE_03_TITLE, Errors::OFFICE_DELETE_03_MESSAGE);
-                }
-            } catch(Exception $exception) {
-                $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
-            }
-            
+        } catch(Exception $exception) {
+            $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
         }
 
         return $objReturn->getRedirectPath();
