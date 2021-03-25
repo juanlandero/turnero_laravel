@@ -102,6 +102,7 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::post('/reassignment', 'Dashboard\ShiftController@reassignmentShift');
 
         Route::post('/break', 'Dashboard\AdvisorController@break');
+        Route::post('/user-status', 'Dashboard\AdvisorController@userStatusOn');
         Route::get('/reassigned', 'Dashboard\AdvisorController@reassined');
     });
 

@@ -116,6 +116,69 @@ class AdvisorController extends Controller
         return $return;
     }
 
+    public function userStatusOn(){
+        $userId = Auth::id();
+
+        $channel = Office::join('user_offices', 'offices.id', '=', 'user_offices.office_id')
+                        ->where('user_offices.user_id', $userId)
+                        ->select(
+                            'offices.user_channel',
+                            'offices.id as office'
+                        )
+                        ->first();
+
+        $changeStatus = UserOffice::where([
+                            ['office_id', $channel->office],
+                            ['user_id', $userId]
+                        ])
+                        ->first();
+
+        $changeStatus->is_active = 1;
+
+        if ($changeStatus->save()) {
+            $return = [
+                'type' => 'success',
+                'text' => 'Conectado. Ya puedes recibir turnos',
+                'icon' => 'btn-outline-success',
+            ];
+            event(new UserOnlineMsg($channel->user_channel, 1));
+        } else {
+            $return = [
+                'type' => 'info',
+                'text' => 'Error al conectar',
+                'icon' => 'btn-outline-danger',
+            ];
+        }
+
+        return $return;
+    }
+
+    public static function userStatusOff(){
+        $userId = Auth::id();
+
+        $channel = Office::join('user_offices', 'offices.id', '=', 'user_offices.office_id')
+                        ->where('user_offices.user_id', $userId)
+                        ->select(
+                            'offices.user_channel',
+                            'offices.id as office'
+                        )
+                        ->first();
+
+        $changeStatus = UserOffice::where([
+                            ['office_id', $channel->office],
+                            ['user_id', $userId]
+                        ])
+                        ->first();
+
+        if ($changeStatus->is_active) {
+            $changeStatus->is_active = 0;
+            $changeStatus->save();
+            event(new UserOnlineMsg($channel->user_channel, 1));
+        }
+
+        return true;
+    }
+
     public function break(Request $request){
         $case = $request->input('case');
         $userId = Auth::id();
