@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Dashboard\AdvisorController;
 use App\Http\Controllers\Controller;
 use App\Library\Errors;
 use Auth;
@@ -33,8 +34,9 @@ class LoginController extends Controller
 
     public function logout() {
         if(Auth::check()) {
-           Auth::logout();
-           Session::flush();
+            AdvisorController::userStatusOff();
+            Auth::logout();
+            Session::flush();
         }
         return Redirect('dashboard/login');
    }

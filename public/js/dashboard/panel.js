@@ -90,12 +90,17 @@ var appPanel = new Vue({
                 if (response.data['channel'] == null) {
                     _that.notify('warning', 'No estás vinculado a una oficina', 'fa fa-exclamation-triangle')
                 }else{
+                    _that.notify('info', 'Espere un momento estamos iniciando su servicio', 'btn-outline-danger')
                     _that.menuChannel = response.data['channel'].menu_channel
                     _that.panelChannel = response.data['channel'].panel_channel
                     _that.user = response.data['idUser']
                     _that.pusher()
-                    _that.userBreak(1)
                     _that.getListShift()
+
+                    setTimeout(() => {
+                        _that.setUserOn()
+                        _that.userBreak(1)
+                    }, 5000);
                 }
             })
             .catch(function (error) {
@@ -258,6 +263,18 @@ var appPanel = new Vue({
             this.disabledButtons.buttonReassigned = true
         },
 
+        setUserOn (status) {
+            var _that = this
+                            
+            axios.post('shifts/user-status')
+            .then(function (response) {
+                _that.notify(response.data.type, response.data.text, response.data.icon)
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+        },
+
         userBreak (check) {
             var _that = this
             this.disabledButtons.buttonConnect = true
@@ -271,7 +288,7 @@ var appPanel = new Vue({
 
                 setTimeout(() => {
                     _that.disabledButtons.buttonConnect = false
-                }, 5000);
+                }, 6000);
 
                 if (response.data.case == 2) {
                     _that.notify(response.data.type, response.data.text, response.data.icon)
