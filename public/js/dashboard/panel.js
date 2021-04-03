@@ -90,7 +90,7 @@ var appPanel = new Vue({
                 if (response.data['channel'] == null) {
                     _that.notify('warning', 'No estás vinculado a una oficina', 'fa fa-exclamation-triangle')
                 }else{
-                    _that.notify('info', 'Espere un momento estamos iniciando su servicio', 'btn-outline-danger')
+                    _that.notify('info', 'Conectando... Espere.', 'fa fa-info-circle')
                     _that.menuChannel = response.data['channel'].menu_channel
                     _that.panelChannel = response.data['channel'].panel_channel
                     _that.user = response.data['idUser']
@@ -138,6 +138,8 @@ var appPanel = new Vue({
                     shiftId: shift_id
                 })
                 .then(function (response) {
+                    console.log(response)
+
                     if (response.data[0].status == 1 || _that.shiftList.length == 0) {
                         _that.shiftList.push (response.data[0])
                     } else {

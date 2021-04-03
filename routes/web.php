@@ -139,4 +139,6 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
 });
 
 
-Route::get('prueba', 'PublicDisplay\PublicDisplayController@test');
+Route::get('prueba', 'Dashboard\AdvisorController@adviserAvialable');
+
+Route::get('adv/{specialityId}', 'Dashboard\AdvisorController@selectAdviser');

@@ -87,11 +87,11 @@ class DashboardController extends Controller
                 break;
 
             case 2:
-                $idShift = $request->input('shiftId');
+                $shiftId = $request->input('shiftId');
 
                 $objShift = Shift::join('shift_types', 'shifts.shift_type_id', '=', 'shift_types.id')
                                 ->join('speciality_types', 'shifts.speciality_type_id', '=', 'speciality_types.id')
-                                ->where('shifts.id', $idShift)
+                                ->where('shifts.id', $shiftId)
                                 ->select(
                                     'shifts.id',
                                     'shifts.shift',
