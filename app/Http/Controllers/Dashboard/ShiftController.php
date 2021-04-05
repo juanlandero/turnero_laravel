@@ -80,7 +80,7 @@ class ShiftController extends Controller
         $newTicket->is_active           = 1;
         $newTicket->save();
 
-        event(new MenuGeneratorMsg($channel, $newTicket->id, $newTicket->user_advisor_id));
+        event(new MenuGeneratorMsg($channel, $newTicket->id, $newTicket->user_advisor_id, 1));
 
         $ticket = Shift::join('shift_types', 'shifts.shift_type_id', '=', 'shift_types.id')
                         ->join('user_offices', 'shifts.user_advisor_id', '=', 'user_offices.user_id')
@@ -149,7 +149,7 @@ class ShiftController extends Controller
 
         try {
             if ($reassignment->save() && $objIncident->save()) {
-                event(new MenuGeneratorMsg($channel, $objIncident->shift_id, $reassignment->user_advisor_id));
+                event(new MenuGeneratorMsg($channel, $objIncident->shift_id, $reassignment->user_advisor_id, 0));
         
                 $return = [
                     'state' => true,

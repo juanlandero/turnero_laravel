@@ -57,7 +57,25 @@ var appPanel = new Vue({
                 userId: this.user
             })
             .then(function (response) {
-                _that.shiftList = response.data
+                response.data.forEach(shift => {
+
+                    if (shift.status == 1) {
+                        _that.shiftList.push(shift)
+                    } else {
+                        _that.attending.shift       = shift.shift
+                        _that.attending.speciality  = shift.speciality
+                        _that.attending.type        = shift.shift_type
+                        _that.attending.time        = shift.time.substring(11, 19)
+                        _that.attending.client      = shift.name_client
+                        _that.attending.number      = shift.number_client
+                        _that.attending.sex         = shift.sex_client
+            
+                        _that.disabledButtons.buttonNext = true
+                        _that.disabledButtons.buttonAbandoned = false
+                        _that.disabledButtons.buttonFinalized = false
+                        _that.disabledButtons.buttonReassigned = false
+                    }
+                });
             })
             .catch(function (error) {
                 console.log(error)
@@ -130,6 +148,7 @@ var appPanel = new Vue({
         addShift (dataChannel) {
             var _that = this
             var shift_id = dataChannel.idTicket
+            var is_new = dataChannel.isNew
             var bk = false
 
             if (dataChannel.idUser == this.user) {
@@ -138,13 +157,11 @@ var appPanel = new Vue({
                     shiftId: shift_id
                 })
                 .then(function (response) {
-                    console.log(response)
-
-                    if (response.data[0].status == 1 || _that.shiftList.length == 0) {
-                        _that.shiftList.push (response.data[0])
+                    if (is_new) {
+                        _that.shiftList.push(response.data[0])
                     } else {
-                        
                         _that.shiftList.forEach(function (shift, index){
+                            console.log(shift.id, '--', response.data[0].id, '->', bk)
                             if (shift.id > response.data[0].id && bk == false) {
                                 _that.shiftList.splice(index, 0, response.data[0])
                                 bk = true

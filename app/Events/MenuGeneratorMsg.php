@@ -17,16 +17,18 @@ class MenuGeneratorMsg implements ShouldBroadcast
     public $channel;
     public $idTicket;
     public $idUser;
+    public $isNew;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($channel, $idTicket, $idUser)
+    public function __construct($channel, $idTicket, $idUser, $isNew)
     {
         $this->channel = $channel;
         $this->idTicket = $idTicket;
         $this->idUser = $idUser;
+        $this->isNew= $isNew;
     }
 
     /**

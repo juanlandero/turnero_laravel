@@ -48,12 +48,13 @@ class DashboardController extends Controller
                                 ->join('speciality_types', 'shifts.speciality_type_id', '=', 'speciality_types.id')
                                 ->where([
                                     ['shifts.user_advisor_id', $idUser],
-                                    ['shifts.shift_status_id', 1],
+                                    ['shifts.shift_status_id', '<>',3],
                                     ['shifts.created_at', 'like', OfficeController::setDate().'%'],
                                     ['shifts.is_active', 1]
                                 ])
                                 ->select(
                                     'shifts.id',
+                                    'shifts.shift_status_id',
                                     'shifts.shift',
                                     'shifts.sex_client',
                                     'shifts.number_client',
@@ -74,6 +75,7 @@ class DashboardController extends Controller
 
                     array_push($arrShift, array(
                         'id'            => $shift->id,
+                        'status'        => $shift->shift_status_id,
                         'shift'         => $shift->shift,
                         'shift_type'    => $shift->shift_type,
                         'speciality'    => $shift->speciality,
