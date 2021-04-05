@@ -47,7 +47,7 @@
     <div class="col-md-6 col-sm-12">
         <div class="tile justify-content-center ">
             <div class="tile-title-w-btn">
-                <h3 class="title">{{ $user->user_type }}</h3>
+                <h3 class="title">{{ $userType }}</h3>
                 <div class="btn-group">
                     <a class="btn btn-outline-primary" href="{{ URL::to('/dashboard/logout') }}" title="Cerrar sesión">
                         <i class="fas fa-sign-out-alt"></i>
@@ -60,10 +60,7 @@
                 <h4 class="mt-3">{{ $user->name." ".$user->first_name." ".$user->second_name }}</h4>
                 <h4><small class="text-muted">{{ $user->email }}</small></h4>
             </div>
-            <div class="tile-footer text-center">
-                {{-- <a class="btn btn-primary" href="#">Link</a> --}}
-                
-                
+            <div class="tile-footer text-center">                
                 @if (sizeof($specialities) < 1)
                     <span class="badge  badge-warning mx-1" style="font-size: 14px">Sin especialidades</span>
                 @else
@@ -77,7 +74,7 @@
 
     <div class="col-md-6 col-sm-12">
         <div class="tile">
-          <h3 class="tile-title">Por Especialidades</h3>
+          <h3 class="tile-title">Total de turnos por especialidades</h3>
           <div style="min-height: 300">
             <canvas id="myChart" width="400" height="240"></canvas>
         </div>
@@ -101,10 +98,10 @@
             var myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: response.data[0],
+                    labels: response.data['label'],
                     datasets: [{
                         label: 'Turnos por especialidades',
-                        data: response.data[1],
+                        data: response.data['data'],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',
