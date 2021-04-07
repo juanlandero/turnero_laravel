@@ -21,16 +21,23 @@ class IndexController extends Controller
         if(!Auth::check()) {
             return Redirect('dashboard/login');
         } else {
-            $objUser = User::join('user_types', 'users.user_type_id', 'user_types.id')
-                            ->where('users.id', Auth::id())
-                            ->select(
-                                'users.name',
-                                'users.first_name',
-                                'users.second_name',
-                                'users.email',
-                                'user_types.user_type'
-                            )
-                            ->first();
+            $userType = 0;
+
+            switch (Auth::user()->user_type_id) {
+                case 1:
+                    $userType = "Administrador";
+                    break;
+                case 2:
+                    $userType = "Supervisor";
+                    break;
+                case 3:
+                    $userType = "Asesor";
+                    break;
+                
+                default:
+                    $userType = "No definido";
+                    break;
+            }
 
             $objSpecialities = SpecialityTypeUser::join('speciality_types', 'speciality_type_users.speciality_type_id', 'speciality_types.id')
                                                 ->where('speciality_type_users.user_id', Auth::id())
@@ -67,7 +74,8 @@ class IndexController extends Controller
         }
 
         return view('dashboard.contents.Index', [
-                                                    'user'          => $objUser,
+                                                    'user'          => Auth::user(),
+                                                    'userType'      => $userType,
                                                     'specialities'  => $objSpecialities,
                                                     'widget'        => $widget
                                                 ]);
@@ -76,20 +84,27 @@ class IndexController extends Controller
     public function getDataChart(){
         $data = [];
         $label = [];
-        $chart = collect(DB::select(DB::raw('SELECT 
-                                                COUNT(shifts.speciality_type_id) AS total,
-                                                speciality_types.name
-                                            FROM shifts 
-                                            JOIN speciality_types ON shifts.speciality_type_id = speciality_types.id
-                                            WHERE shifts.user_advisor_id = '.Auth::id().' AND
-                                                shifts.created_at like "'.OfficeController::setDate().'%"
-                                            GROUP BY shifts.speciality_type_id')));
 
-        foreach ($chart as $index => $value) {
-            $data[$index]   = $value->total;
-            $label[$index]  = $value->name;
+        $objSpecialities = SpecialityTypeUser::join('speciality_types', 'speciality_type_users.speciality_type_id', 'speciality_types.id')
+                                                ->where('speciality_type_users.user_id', Auth::id())
+                                                ->select(
+                                                    'speciality_types.id',
+                                                    'speciality_types.name'
+                                                )
+                                                ->get();
+        
+        foreach ($objSpecialities as $index => $speciality) {
+            $specialityCount = Shift::where([
+                                        ['shifts.user_advisor_id', Auth::id()],
+                                        ['shifts.speciality_type_id', $speciality->id],
+                                        ['shifts.created_at', 'like', OfficeController::setDate().'%']
+                                    ])
+                                    ->count();
+
+            $data[$index]   = $specialityCount;
+            $label[$index]  = $speciality->name;
         }
 
-        return [$label, $data];
+        return ['label' => $label, 'data' => $data];
     }
 }

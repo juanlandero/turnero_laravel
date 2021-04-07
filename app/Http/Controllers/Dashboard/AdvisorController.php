@@ -17,12 +17,45 @@ use App\User;
 
 class AdvisorController extends Controller
 {
-    static function selectAdvisor($specialityId){
+
+    static function selectAdviser($specialityId) {
         $officeId = session('OFFICE');
-        $arrayAdvisor = array();
+        $advisersData = AdvisorController::adviserAvialable($officeId, $specialityId);
+
+        if ($advisersData['adviserCount'] > 1) {
+            // MÁS DE UN ASESOR EN LÍNEA
+
+            $adviserSort = AdvisorController::arraySort($advisersData['arrAdvisers'], 'total_shifts');
+
+         
+            $return = $adviserSort[0]['id'];
+        } else {
+            // SOLO UN ASESOR EN LÍNEA CON LA ESPECIALIDAD
+            $return = $advisersData['arrAdvisers'][0]['id'];
+        }
         
-        // OBTENIENDO EL NÚMERO TOTAL DE ASESORES QUE TIENE LA SUCURSAL
-        $objAdvisorCount = User::join('user_offices','users.id', '=', 'user_offices.user_id')
+        return $return;
+    }
+
+    static function arraySort($array, $on) {
+        foreach ($array as $value) {
+            $lowerArray[] = strtolower($value[$on]);
+        }
+
+        asort($lowerArray);
+
+        foreach ($lowerArray as $key => $v) {
+            $newArray[] = $array[$key];
+        }
+
+        return $newArray;
+    }
+
+    static function adviserAvialable($officeId, $specialityId) {
+        $arrAdvisers = array();
+
+        // SE BUSCAN LOS ASESORES DISPONIBLES CON LA ESPECIALIDAD INDICADA
+        $objAdvisers = User::join('user_offices','users.id', '=', 'user_offices.user_id')
                                 ->join('speciality_type_users','users.id', '=', 'speciality_type_users.user_id')
                                 ->select(
                                     'users.id',
@@ -39,82 +72,30 @@ class AdvisorController extends Controller
                                 ])
                                 ->get();
 
-        if ($objAdvisorCount->count() > 1) {
-            // echo "1. Mas de un asesor <br/>";
-            // BUSCA LOS ASESORES QUE TIENEN TURNOS Y ELIGE UN ASESOR PARA ASIGNARLE EL NUEVO TURNO
-            $objAdvisorWithShift = Shift::join('users', 'shifts.user_advisor_id', '=', 'users.id')
-                                ->join('user_offices', 'users.id', '=', 'user_offices.user_id')
-                                ->where([
-                                    ['user_offices.office_id', $officeId],
-                                    ['shifts.speciality_type_id', $specialityId],
-                                    ['shifts.created_at', 'like', OfficeController::setDate().'%']
-                                ])
-                                ->select(
-                                    'shifts.id',
-                                    'shifts.shift',
-                                    'shifts.shift_type_id',
-                                    'shifts.created_at',
-                                    'user_offices.office_id',
-                                    'user_offices.user_id',
-                                    'users.name'
-                                )
-                                ->orderBy('shifts.id', 'desc')
-                                ->limit(sizeof($objAdvisorCount))
-                                ->get();
+        // SE CUENTA EL TOTAL DE TURNOS EN ESPERA DE CADA ASESOR Y SE GENEREA EL ARRAY A DEVOLVER
+        foreach ($objAdvisers as $adviser) {
+            $shiftAdviserCount = Shift::where([
+                                ['shifts.user_advisor_id', $adviser->id],
+                                ['shifts.shift_status_id', 1],
+                                ['shifts.created_at', 'like', OfficeController::setDate().'%'],
+                                ['shifts.is_active', 1]
+                            ])
+                            ->count();
 
-            if ($objAdvisorWithShift->count() == 0) {
-                // echo "2. Los asesores no tiene turnos<br/>";
-                $return = $objAdvisorCount[0]->id;
-            } else {
-                // SE PASA A UN ARRAY PARA ELIMINAR DUPLICADOS
-                // echo "2. Los asesores tiene turnos<br/>";
-                foreach ($objAdvisorWithShift as $advisor) {
-                    array_push($arrayAdvisor, $advisor->user_id );
-                }
-
-                $arrayAdvisor = array_unique($arrayAdvisor);
-
-                // EN CASO DE NO TENER DUPLICADOS SE ENVÍA EL ID DE UN ASESOR QUE NO HA TENIDO TURNOS
-                if (count($arrayAdvisor) == $objAdvisorCount->count()) {
-                    // echo "3. Todos los asesores estan trabando correctamente<br/>";
-                    $return = $objAdvisorWithShift[count($arrayAdvisor)-1]->user_id;
-
-                } else {
-                    // echo "3. Hay asesores que no han recibido turnos<br/>";
-                    // SI SE ELIMINAN DUPLICADOS SE BUSCA AL ASESOR QUE NO HA RECIBIDO TURNOS TOMANDOLO DEL PRIMERO OBJTETO
-                    $existId = false;
-                    $choicedId = 0;
-                    foreach ($objAdvisorCount as $advisor) {
-                        // echo "Asesor: ".$advisor->id."<br/>";
-
-                        foreach ($arrayAdvisor as $idAdvisor) {
-                            // echo "AT: ".$idAdvisor."<br/>";
-                            if ($idAdvisor == $advisor->id) {
-                                $existId = true;
-                                // echo "Coincide: ".$existId."* <br/>";
-                            }
-                        }
-
-                        if ($existId == true) {
-                            $existId = false;
-                        } else {
-                            $choicedId = $advisor->id;
-                            break;
-                            // echo "Elegido: ".$choicedId."...<br/>";
-                        }
-                    }
-                    $return = $choicedId;
-                }
-            }
-
-        } else {
-            // echo "1. Solo un asesor registrado<br/>";
-            // SI LA SUCURSAL SOLO TIENE UN ASESOR CON ESA ESPECIALIDAD LO ASIGNA
-            $return = $objAdvisorCount[0]->id;
+            array_push($arrAdvisers, array(
+                'id'                    => $adviser->id,
+                'adviser'               => $adviser->name,
+                'total_shifts'          => $shiftAdviserCount
+            ));
         }
-        
-        return $return;
-    }
+
+        return [
+            'office_id'         => $officeId,
+            'speciality_id'     => $specialityId,
+            'adviserCount'      => $objAdvisers->count(),
+            'arrAdvisers'       => $arrAdvisers, 
+        ];
+    } 
 
     public function userStatusOn(){
         $userId = Auth::id();
@@ -139,14 +120,14 @@ class AdvisorController extends Controller
             $return = [
                 'type' => 'success',
                 'text' => 'Conectado. Ya puedes recibir turnos',
-                'icon' => 'btn-outline-success',
+                'icon' => 'far fa-check-circle',
             ];
             event(new UserOnlineMsg($channel->user_channel, 1));
         } else {
             $return = [
                 'type' => 'info',
                 'text' => 'Error al conectar',
-                'icon' => 'btn-outline-danger',
+                'icon' => 'far fa-times-circle',
             ];
         }
 
