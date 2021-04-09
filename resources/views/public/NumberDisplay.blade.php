@@ -9,7 +9,7 @@
 		<link href="{{ asset('css/public-css.css') }}" rel="stylesheet">
 
 		<script src="{{ asset('js/jquery-3.5.1.slim.min.js') }}"></script>
-		<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+		<script src="{{ asset('js/pusher.js') }}"></script>
 </head>
 <body>
 	

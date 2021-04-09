@@ -73,6 +73,12 @@ var appMenu = new Vue({
             })
 
             setTimeout(function(){ _that.pusher() }, 3000);
+
+            // document.onreadystatechange = function () {
+            //     if(document.readyState == "complete")
+            //         _that.pusher()
+            // }
+
         },
 
         pusher () {        
