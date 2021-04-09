@@ -145,7 +145,7 @@ class ShiftController extends Controller
         $objIncident->shift_id = $shiftId;
         $objIncident->incident_type_id =  1;
         $objIncident->user_reassigned_id = $sendId;        
-        $objIncident->is_active = 1;   
+        $objIncident->is_active = 1;
 
         try {
             if ($reassignment->save() && $objIncident->save()) {

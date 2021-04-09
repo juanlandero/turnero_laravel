@@ -48,6 +48,16 @@ var appPanel = new Vue({
         }
     },
 
+    // mounted: function () {
+    //     var pusher = new Pusher('56423364aba2e84b5180', {
+    //         cluster: 'us2'
+    //     })
+
+    //     pusher.connection.bind('connected', function() {
+    //         alert('Realtime is go!')
+    //     });
+    // },
+
     methods: {
         getListShift () {
             var _that = this

@@ -135,7 +135,7 @@ class AdvisorController extends Controller
     public static function userStatusOff(){
         $userId = Auth::id();
 
-        if (Auth::user()->user_type_id != 1) {
+        if (Auth::user()->user_type_id == 3) {
             $channel = Office::join('user_offices', 'offices.id', '=', 'user_offices.office_id')
                             ->where('user_offices.user_id', $userId)
                             ->select(

@@ -6,6 +6,7 @@
 		<title>Pantalla de turnos</title>
 
 		<link rel="stylesheet" href="css/public-css.css">
+        <meta name="csrf-token" content="{{ csrf_token() }}" />
 		<link href="{{ asset('css/all.css') }}" rel="stylesheet">
 
 </head>
