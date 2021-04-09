@@ -4,21 +4,25 @@ var appPanel = new Vue({
     data: {
         menuChannel: null,
         panelChannel: null,
-        advisors: [],
+        advisers: [],
     },
 
     mounted() {
         this.setServiceOn();
     },
     methods: {
-        getListAdvisors (shift) {
+        getListAdvisers (shift) {
             var _that = this
+            var shift_id = $('#shift_id').val(shift)
 
-            axios.get('get-advisors')
+            axios.get('get-advisers?shift_id='+shift_id)
             .then(function (response) {
-                _that.advisors = response.data
-                $('#reassignment-modal').modal('show')
-                $('#shift_id').val(shift)
+                if (response.data.success) {
+                    _that.advisers = response.data.objAdvisers
+                    $('#reassignment-modal').modal('show')
+                } else {
+                    _that.notify(response.data.alert.type, response.data.alert.text, response.data.alert.icon)
+                }
             })
             .catch(function (error) {
                 console.log(error)
@@ -46,8 +50,6 @@ var appPanel = new Vue({
         reassignmentShift () {
             var data_form = $('#form-advisor').serializeArray()
             var _that = this
-
-            console.log(data_form)
 
             if (data_form[2].value != 0) {
                 

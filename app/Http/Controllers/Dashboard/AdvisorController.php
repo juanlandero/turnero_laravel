@@ -24,10 +24,8 @@ class AdvisorController extends Controller
 
         if ($advisersData['adviserCount'] > 1) {
             // MÁS DE UN ASESOR EN LÍNEA
-
             $adviserSort = AdvisorController::arraySort($advisersData['arrAdvisers'], 'total_shifts');
 
-         
             $return = $adviserSort[0]['id'];
         } else {
             // SOLO UN ASESOR EN LÍNEA CON LA ESPECIALIDAD
@@ -137,26 +135,28 @@ class AdvisorController extends Controller
     public static function userStatusOff(){
         $userId = Auth::id();
 
-        $channel = Office::join('user_offices', 'offices.id', '=', 'user_offices.office_id')
-                        ->where('user_offices.user_id', $userId)
-                        ->select(
-                            'offices.user_channel',
-                            'offices.id as office'
-                        )
-                        ->first();
+        if (Auth::user()->user_type_id != 1) {
+            $channel = Office::join('user_offices', 'offices.id', '=', 'user_offices.office_id')
+                            ->where('user_offices.user_id', $userId)
+                            ->select(
+                                'offices.user_channel',
+                                'offices.id as office'
+                            )
+                            ->first();
 
-        $changeStatus = UserOffice::where([
-                            ['office_id', $channel->office],
-                            ['user_id', $userId]
-                        ])
-                        ->first();
+            $changeStatus = UserOffice::where([
+                                ['office_id', $channel->office],
+                                ['user_id', $userId]
+                            ])
+                            ->first();
 
-        if ($changeStatus->is_active) {
-            $changeStatus->is_active = 0;
-            $changeStatus->save();
-            event(new UserOnlineMsg($channel->user_channel, 1));
-        }
-
+            if ($changeStatus->is_active) {
+                $changeStatus->is_active = 0;
+                $changeStatus->save();
+                event(new UserOnlineMsg($channel->user_channel, 1));
+            }
+        } 
+        
         return true;
     }
 

@@ -104,12 +104,12 @@
                 <th>Caja</th>
                 <th>Total</th>
             </tr>
-            @foreach ($advisors as $advisor)
+            @foreach ($advisers as $adviser)
                 <tr>
-                    <td>{{ $advisor['user'] }}</td>
-                    <td>{{ $advisor['mail'] }}</td>
-                    <td>{{ $advisor['box'] }}</td>
-                    <td>{{ $advisor['quantity'] }}</td>
+                    <td>{{ $adviser['user'] }}</td>
+                    <td>{{ $adviser['mail'] }}</td>
+                    <td>{{ $adviser['box'] }}</td>
+                    <td>{{ $adviser['quantity'] }}</td>
                 </tr>
             @endforeach
         </table>

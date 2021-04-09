@@ -34,7 +34,7 @@ var appPanel = new Vue({
             number: '-',
         },
         shiftList:[],
-        advisors: [],
+        advisers: [],
         disabledButtons: {
             buttonNext: false,
             buttonAbandoned: true,
@@ -44,7 +44,7 @@ var appPanel = new Vue({
         },
         userStatus: {
             text: 'Loading...',
-            btnType: 'btn-LIGHT'
+            btnType: 'btn-light'
         }
     },
 
@@ -62,6 +62,8 @@ var appPanel = new Vue({
                     if (shift.status == 1) {
                         _that.shiftList.push(shift)
                     } else {
+                        console.log(shift)
+                        _that.attending.id          = shift.id
                         _that.attending.shift       = shift.shift
                         _that.attending.speciality  = shift.speciality
                         _that.attending.type        = shift.shift_type
@@ -82,15 +84,19 @@ var appPanel = new Vue({
             })
         },
 
-        getListAdvisors () {
+        getListAdvisers () {
             var _that = this
 
             if (this.attending.id != 0) {
-
-                axios.get('shifts/get-advisors')
+                
+                axios.get('shifts/get-advisers?shift_id='+_that.attending.id)
                 .then(function (response) {
-                    _that.advisors = response.data
-                    $('#reassignment-modal').modal('show')
+                    if (response.data.success) {
+                        _that.advisers = response.data.objAdvisers
+                        $('#reassignment-modal').modal('show')
+                    } else {
+                        _that.notify(response.data.alert.type, response.data.alert.text, response.data.alert.icon)
+                    }
                 })
                 .catch(function (error) {
                     console.log(error)

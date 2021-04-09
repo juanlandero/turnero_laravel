@@ -49,6 +49,7 @@ class DashboardController extends Controller
                                 ->where([
                                     ['shifts.user_advisor_id', $idUser],
                                     ['shifts.shift_status_id', '<>',3],
+                                    ['shifts.end_shift', '=', null],
                                     ['shifts.created_at', 'like', OfficeController::setDate().'%'],
                                     ['shifts.is_active', 1]
                                 ])
@@ -135,27 +136,48 @@ class DashboardController extends Controller
         return $arrShift;
     }
 
-    public function getAdvisors () {
-        $office = UserOffice::where('user_id', Auth::id())->first();
+    public function getAdvisers (Request $request) {
+        $return = 0;
 
-        $objAdvisors = UserOffice::join('users', 'user_offices.user_id', '=', 'users.id')
-                                    ->where([
-                                        ['user_offices.office_id', $office->office_id],
-                                        ['user_offices.user_id', '<>', Auth::id()],
-                                        ['user_offices.is_active', 1],
-                                        ['users.user_type_id', 3]
-                                    ])
-                                    ->select(
-                                        'user_offices.id as user_office',
-                                        'user_offices.user_id as user',
-                                        'user_offices.box_id as box',
-                                        'users.user_type_id',
-                                        'users.name',
-                                        'users.first_name',
-                                        'users.second_name',
-                                    )
-                                    ->get();
+        $canReassined = Shift::where([
+                            ['id', $request->input('shift_id')],
+                            ['is_reassigned', 1],
+                            ['is_active', 1]
+                        ])
+                        ->get();
 
-        return $objAdvisors;
+        if ($canReassined->count() > 0) {
+            $alert = [
+                'type' => 'warning',
+                'text' => 'No puedes reasignar 2 veces este turno.',
+                'icon' => 'far fa-check-circle',
+            ];
+
+            return ['alert' => $alert, 'success' => 0];
+        } else {
+            $office = UserOffice::where('user_id', Auth::id())->first();
+
+            $objAdvisers = UserOffice::join('users', 'user_offices.user_id', '=', 'users.id')
+                                        ->where([
+                                            ['user_offices.office_id', $office->office_id],
+                                            ['user_offices.user_id', '<>', Auth::id()],
+                                            ['user_offices.is_active', 1],
+                                            ['users.user_type_id', 3]
+                                        ])
+                                        ->select(
+                                            'user_offices.id as user_office',
+                                            'user_offices.user_id as user',
+                                            'user_offices.box_id as box',
+                                            'users.user_type_id',
+                                            'users.name',
+                                            'users.first_name',
+                                            'users.second_name',
+                                        )
+                                        ->get();
+                                        
+            $return = ['objAdvisers' => $objAdvisers, 'success' => 1];
+        }
+
+        return $return;
     }
 }
