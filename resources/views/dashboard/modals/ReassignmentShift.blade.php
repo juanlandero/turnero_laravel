@@ -14,7 +14,7 @@
                             <div class="form-group">
                                 <select class="form-control" id="exampleSelect1" name="recive_id">
                                     <option value="0">Selecciona un supervisor</option>
-                                    <option :value="advisor.user" v-for="advisor in advisors">${ advisor.name } ${ advisor.first_name } ${ advisor.second_name }</option>
+                                    <option :value="adviser.user" v-for="adviser in advisers">${ adviser.name } ${ adviser.first_name } ${ adviser.second_name }</option>
                                 </select>
                             </div>
                         </div>   

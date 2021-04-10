@@ -34,10 +34,12 @@ var appMenu = new Vue({
             sex: null,
             type: 'Visitante',
             date: null
-        }
+        },
+        token: $('meta[name="csrf_token"]').attr('content')
     },
     mounted: function(){
         this.getData()
+        setTimeout(() => { this.pusher() }, 3000);
     },
     methods: {
 
@@ -72,7 +74,11 @@ var appMenu = new Vue({
                 console.log(error)
             })
 
-            setTimeout(function(){ _that.pusher() }, 3000);
+
+            // document.onreadystatechange = function () {
+            //     if(document.readyState == "complete")
+            //         _that.pusher()
+            // }
         },
 
         pusher () {        
@@ -86,6 +92,7 @@ var appMenu = new Vue({
             var menuChannelPusher = pusher.subscribe(this.office.userChannel)
 
             menuChannelPusher.bind('toMenu', function(data) {
+                console.log("****", data, _that.menu)
                 if (_that.menu != null) {
                     _that.getData()
                 }

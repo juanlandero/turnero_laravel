@@ -61,7 +61,7 @@
                                         <td>{{ substr($item->created_at, 11) }}</td>
                                         <td class="text-center">
                                             @if (!$item->is_reassigned  && $item->status_id == 1)
-                                                <button class="btn btn-primary btn-sm" v-on:click="getListAdvisors({{ $item->id }})" title="Reasignar">
+                                                <button class="btn btn-primary btn-sm" v-on:click="getListAdvisers({{ $item->id }})" title="Reasignar">
                                                     <i class="fas fa-retweet"></i>
                                                 </button>
                                             @endif

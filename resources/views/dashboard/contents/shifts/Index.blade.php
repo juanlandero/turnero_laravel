@@ -116,7 +116,7 @@
                         </button>
                     </div>
                     <div class="col-4">
-                        <button class="btn btn-outline-secondary btn-block" type="button" v-on:click="getListAdvisors()" v-bind:disabled="disabledButtons.buttonReassigned">
+                        <button class="btn btn-outline-secondary btn-block" type="button" v-on:click="getListAdvisers()" v-bind:disabled="disabledButtons.buttonReassigned">
                             <i class="fa fa-people-arrows"></i> Reasignar
                         </button>
                     </div>

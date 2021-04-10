@@ -59,8 +59,8 @@
                     <div class="form-group">
                         <label for="exampleSelect1">Selecciones un asesor</label>
                         <select class="form-control" id="exampleSelect1" name="advisor">
-                            @foreach ($advisors as $advisor)
-                                <option value="{{ $advisor->id }}">{{ $advisor->name." ".$advisor->first_name." ".$advisor->second_name }}</option>    
+                            @foreach ($advisers as $adviser)
+                                <option value="{{ $adviser->id }}">{{ $adviser->name." ".$adviser->first_name." ".$adviser->second_name }}</option>    
                             @endforeach
                         </select>
                     </div>

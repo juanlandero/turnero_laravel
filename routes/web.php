@@ -95,7 +95,7 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::get('/', 'Dashboard\DashboardController@adminShift')->name('shift.index');
         Route::post('/get', 'Dashboard\DashboardController@getShiftAdvisor');
         Route::post('/get-data', 'Dashboard\DashboardController@getDataPanel');
-        Route::get('/get-advisors', 'Dashboard\DashboardController@getAdvisors');
+        Route::get('/get-advisers', 'Dashboard\DashboardController@getAdvisers');
         
         Route::post('/next', 'Dashboard\ShiftController@nextShift');
         Route::post('/status', 'Dashboard\ShiftController@changeStatusShift');
@@ -139,6 +139,6 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
 });
 
 
-Route::get('prueba', 'Dashboard\AdvisorController@adviserAvialable');
+Route::get('prueba', 'Dashboard\AdvisorController@userStatusOff');
 
 Route::get('adv/{specialityId}', 'Dashboard\AdvisorController@selectAdviser');

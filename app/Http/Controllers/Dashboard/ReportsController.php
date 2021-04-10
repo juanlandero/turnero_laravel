@@ -34,7 +34,7 @@ class ReportsController extends Controller
                                 )
                                 ->get();
 
-        return view('dashboard.contents.reports.Index', ['advisors' => $objAdvisor]);
+        return view('dashboard.contents.reports.Index', ['advisers' => $objAdvisor]);
     }
 
     public function generalReport(){
@@ -226,7 +226,7 @@ class ReportsController extends Controller
                                                                                 'office'        => $objOffice,
                                                                                 'shifts'        => $arrShift,
                                                                                 'specialities'  => $arrSpeciality,
-                                                                                'advisors'      => $arrUserOffices
+                                                                                'advisers'      => $arrUserOffices
                                                                             ]);
         $pdf->setPaper('A4');
         $return = $pdf->stream();

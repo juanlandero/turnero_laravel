@@ -9,7 +9,9 @@
     <link href="{{ asset('css/all.css') }}" rel="stylesheet">
     <link href="{{ asset('css/animate.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/print.css') }}" rel="stylesheet">
-    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <script src="{{ asset('js/pusher.js') }}"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+
     
 </head>
 <body>
