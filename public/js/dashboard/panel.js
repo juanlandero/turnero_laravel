@@ -112,7 +112,7 @@ var appPanel = new Vue({
                     console.log(error)
                 })   
             } else {
-                _that.notify('warning', ' No tiene un turno en proceso', 'fa fa-exclamation-triangle')
+                _that.notify('danger', ' No tiene un turno en proceso', 'far fa-times-circle')
             }
         },
 
@@ -122,9 +122,9 @@ var appPanel = new Vue({
             axios.post('shifts/get-data')
             .then(function (response) {
                 if (response.data['channel'] == null) {
-                    _that.notify('warning', 'No estás vinculado a una oficina', 'fa fa-exclamation-triangle')
+                    _that.notify('danger', 'No estás vinculado a una oficina', 'fas fa-user-times')
                 }else{
-                    _that.notify('info', 'Conectando... Espere.', 'fa fa-info-circle')
+                    _that.notify('info', 'Conectando... Espere.', 'fas fa-info-circle')
                     _that.menuChannel = response.data['channel'].menu_channel
                     _that.panelChannel = response.data['channel'].panel_channel
                     _that.user = response.data['idUser']
@@ -173,14 +173,20 @@ var appPanel = new Vue({
                     shiftId: shift_id
                 })
                 .then(function (response) {
-                    if (is_new) {
+                    if (is_new == 1 || _that.shiftList.length == 0) {
+                        console.log('*** ', is_new)
                         _that.shiftList.push(response.data[0])
                     } else {
+                        console.log('*** no es nuevo', )
+
                         _that.shiftList.forEach(function (shift, index){
-                            console.log(shift.id, '--', response.data[0].id, '->', bk)
+                            console.log(shift.id, '--', response.data[0].id, '->', index, "==", _that.shiftList.length-1)
                             if (shift.id > response.data[0].id && bk == false) {
                                 _that.shiftList.splice(index, 0, response.data[0])
                                 bk = true
+                            }
+                            if (index == (_that.shiftList.length-1) && bk == false) {
+                                _that.shiftList.push(response.data[0])
                             }
                         })
                         
@@ -258,7 +264,7 @@ var appPanel = new Vue({
                     console.log(error)
                 }) 
             } else {
-                _that.notify('info', 'Debe elegir un nuevo asesor.', 'fa fa-info-circle')
+                _that.notify('warning', 'Debe elegir un nuevo asesor.', 'fas fa-exclamation-triangle')
             }
         },
 
@@ -284,6 +290,7 @@ var appPanel = new Vue({
         },
 
         setNotShiftAttending () {
+            this.attending.id = 0
             this.attending.shift = '-'
             this.attending.speciality = '-'
             this.attending.type = '-'

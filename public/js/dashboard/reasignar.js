@@ -35,7 +35,7 @@ var appPanel = new Vue({
             axios.post('get-data')
             .then(function (response) {
                 if (response.data['channel'] == null) {
-                    _that.notify('warning', 'Error! Intentalo más tarde.', 'fa fa-exclamation-triangle')
+                    _that.notify('danger', 'Error! Intentalo más tarde.', 'far fa-times-circle')
                 }else{
                     _that.menuChannel = response.data['channel'].menu_channel
                     _that.panelChannel = response.data['channel'].panel_channel
@@ -70,7 +70,7 @@ var appPanel = new Vue({
                     console.log(error)
                 }) 
             } else {
-                _that.notify('info', 'Debe elegir un nuevo asesor.', 'fa fa-info-circle')
+                _that.notify('warning', 'Debe elegir un nuevo asesor.', 'fas fa-exclamation-triangle')
             }
         },
 
