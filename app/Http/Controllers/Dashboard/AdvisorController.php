@@ -20,7 +20,7 @@ class AdvisorController extends Controller
 
     static function selectAdviser($specialityId) {
         $officeId = session('OFFICE');
-        $advisersData = AdvisorController::adviserAvialable($officeId, $specialityId);
+        $advisersData = AdvisorController::adviserAvailable($officeId, $specialityId);
 
         if ($advisersData['adviserCount'] > 1) {
             // MÁS DE UN ASESOR EN LÍNEA
@@ -49,7 +49,7 @@ class AdvisorController extends Controller
         return $newArray;
     }
 
-    static function adviserAvialable($officeId, $specialityId) {
+    static function adviserAvailable($officeId, $specialityId) {
         $arrAdvisers = array();
 
         // SE BUSCAN LOS ASESORES DISPONIBLES CON LA ESPECIALIDAD INDICADA
@@ -117,13 +117,13 @@ class AdvisorController extends Controller
         if ($changeStatus->save()) {
             $return = [
                 'type' => 'success',
-                'text' => 'Conectado. Ya puedes recibir turnos',
+                'text' => '<b>Conectado.</b> Ya puedes recibir turnos',
                 'icon' => 'far fa-check-circle',
             ];
             event(new UserOnlineMsg($channel->user_channel, 1));
         } else {
             $return = [
-                'type' => 'info',
+                'type' => 'danger',
                 'text' => 'Error al conectar',
                 'icon' => 'far fa-times-circle',
             ];
@@ -201,7 +201,7 @@ class AdvisorController extends Controller
                         'case' => 2,
                         'state' => $changeStatus->is_active,
                         'text' => '<b>Desconectado</b>: No se reciben turnos',
-                        'type' => 'info',
+                        'type' => 'warning',
                         'icon' => 'far fa-times-circle',
                         'btnText' => 'Conectar',
                         'btnType' => 'btn-outline-success'
@@ -214,7 +214,7 @@ class AdvisorController extends Controller
                         'case' => 2,
                         'state' => $changeStatus->is_active,
                         'text' => '<b>Conectado</b>: Disponible para atender',
-                        'type' => 'info',
+                        'type' => 'success',
                         'icon' => 'far fa-check-circle',
                         'btnText' => 'Desconectar',
                         'btnType' => 'btn-outline-danger'

@@ -112,7 +112,7 @@ class ShiftController extends Controller
                     'state' => true,
                     'text' => 'Turno iniciado - '.substr($newStateShift->start_shift, 11, 19),
                     'type' => 'info',
-                    'icon' => 'fa fa-info-circle'
+                    'icon' => 'fas fa-info-circle'
                 ];
             } 
         } catch (\Throwable $th) {
@@ -120,7 +120,7 @@ class ShiftController extends Controller
                 'state' => false,
                 'text' => 'No se pudo iniciar el turno. Recargue la pagina',
                 'type' => 'danger',
-                'icon' => 'fa fa-times-circle'
+                'icon' => 'far fa-times-circle'
             ];
         }
         
@@ -163,7 +163,7 @@ class ShiftController extends Controller
                 'state' => false,
                 'text' => 'Error!',
                 'type' => 'danger',
-                'icon' => 'fa fa-times-circle'
+                'icon' => 'far fa-times-circle'
             ];
         }
         
@@ -175,8 +175,8 @@ class ShiftController extends Controller
         $shiftId = $request->input('shiftId');
         $statusId = $request->input('typeStatus');
         $shiftText = '<b>Error.</b> No se pudo realizar la acción';
-        $shiftIcon = 'fa fa-times-circle';
-        $shiftType = 'warning';
+        $shiftIcon = 'far fa-times-circle';
+        $shiftType = 'danger';
 
         $status = Shift::where('id', $shiftId)->first();
         
@@ -189,7 +189,7 @@ class ShiftController extends Controller
                     if ($status->save()) {
                         if ($statusId == 2) {
                             $shiftText = "Turno <b>finalizado</b>";
-                            $shiftIcon = 'fa fa-check-circle';
+                            $shiftIcon = 'far fa-check-circle';
                             $shiftType = 'success';
                         } elseif ($statusId == 3) {
                             $shiftText = "Turno <b>abandonado</b>";
@@ -199,7 +199,6 @@ class ShiftController extends Controller
     
                 } catch (\Throwable $th) {
                     $shiftText = "No se puede modificar.";
-                    $shiftIcon = "fa fa-exclamation-triangle";
                 }
             }            
         }

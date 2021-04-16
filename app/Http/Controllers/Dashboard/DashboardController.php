@@ -150,7 +150,7 @@ class DashboardController extends Controller
             $alert = [
                 'type' => 'warning',
                 'text' => 'No puedes reasignar 2 veces este turno.',
-                'icon' => 'far fa-check-circle',
+                'icon' => 'fas fa-exclamation-triangle',
             ];
 
             return ['alert' => $alert, 'success' => 0];
@@ -175,7 +175,16 @@ class DashboardController extends Controller
                                         )
                                         ->get();
                                         
-            $return = ['objAdvisers' => $objAdvisers, 'success' => 1];
+            if ($objAdvisers->count() > 0) {
+                $return = ['objAdvisers' => $objAdvisers, 'success' => 1];
+            } else {
+                $alert = [
+                    'type' => 'warning',
+                    'text' => 'No hay más asesores en línea.',
+                    'icon' => 'fas fa-users-slash',
+                ];
+                return ['alert' => $alert, 'success' => 0];
+            }
         }
 
         return $return;
