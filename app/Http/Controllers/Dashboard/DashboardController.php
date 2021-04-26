@@ -138,9 +138,11 @@ class DashboardController extends Controller
 
     public function getAdvisers (Request $request) {
         $return = 0;
+        $userId = Auth::id();
+        $shiftId = $request->input('shift_id');
 
         $canReassined = Shift::where([
-                            ['id', $request->input('shift_id')],
+                            ['id', $shiftId],
                             ['is_reassigned', 1],
                             ['is_active', 1]
                         ])
@@ -156,11 +158,16 @@ class DashboardController extends Controller
             return ['alert' => $alert, 'success' => 0];
         } else {
             $office = UserOffice::where('user_id', Auth::id())->first();
+            
+            if (Auth::user()->user_type_id != 3) {
+                $user = Shift::find($shiftId);
+                $userId = $user->user_advisor_id;
+            }
 
             $objAdvisers = UserOffice::join('users', 'user_offices.user_id', '=', 'users.id')
                                         ->where([
                                             ['user_offices.office_id', $office->office_id],
-                                            ['user_offices.user_id', '<>', Auth::id()],
+                                            ['user_offices.user_id', '<>', $userId],
                                             ['user_offices.is_active', 1],
                                             ['users.user_type_id', 3]
                                         ])

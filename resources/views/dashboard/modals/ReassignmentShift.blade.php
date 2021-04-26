@@ -18,7 +18,7 @@
                                 </select>
                             </div>
                         </div>   
-                    <input type="hidden" value="" name="shift_id" id="shift_id">
+                        <input type="hidden" value="" name="shift_id" id="shift_id">
                         
                         <div class="col-3">
                             <button class="btn btn-success btn-block" type="submit" ><i class="fas fa-check"></i></button>

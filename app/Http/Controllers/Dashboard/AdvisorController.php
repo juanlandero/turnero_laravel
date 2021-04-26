@@ -253,6 +253,7 @@ class AdvisorController extends Controller
                             'shifts.is_reassigned',
                             'shifts.created_at',
                         )
+                        ->orderBy('shifts.id', 'asc')
                         ->get();
 
         return view('dashboard.contents.shifts.Reassigned', ['lstShifts' => $shifts]);

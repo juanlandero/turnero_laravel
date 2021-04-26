@@ -48,16 +48,6 @@ var appPanel = new Vue({
         }
     },
 
-    // mounted: function () {
-    //     var pusher = new Pusher('56423364aba2e84b5180', {
-    //         cluster: 'us2'
-    //     })
-
-    //     pusher.connection.bind('connected', function() {
-    //         alert('Realtime is go!')
-    //     });
-    // },
-
     methods: {
         getListShift () {
             var _that = this
@@ -72,7 +62,6 @@ var appPanel = new Vue({
                     if (shift.status == 1) {
                         _that.shiftList.push(shift)
                     } else {
-                        console.log(shift)
                         _that.attending.id          = shift.id
                         _that.attending.shift       = shift.shift
                         _that.attending.speciality  = shift.speciality
@@ -133,7 +122,6 @@ var appPanel = new Vue({
 
                     setTimeout(() => {
                         _that.setUserOn()
-                        _that.userBreak(1)
                     }, 5000);
                 }
             })
@@ -174,13 +162,9 @@ var appPanel = new Vue({
                 })
                 .then(function (response) {
                     if (is_new == 1 || _that.shiftList.length == 0) {
-                        console.log('*** ', is_new)
                         _that.shiftList.push(response.data[0])
                     } else {
-                        console.log('*** no es nuevo', )
-
                         _that.shiftList.forEach(function (shift, index){
-                            console.log(shift.id, '--', response.data[0].id, '->', index, "==", _that.shiftList.length-1)
                             if (shift.id > response.data[0].id && bk == false) {
                                 _that.shiftList.splice(index, 0, response.data[0])
                                 bk = true
@@ -305,12 +289,13 @@ var appPanel = new Vue({
             this.disabledButtons.buttonReassigned = true
         },
 
-        setUserOn (status) {
+        setUserOn () {
             var _that = this
                             
             axios.post('shifts/user-status')
             .then(function (response) {
                 _that.notify(response.data.type, response.data.text, response.data.icon)
+                _that.userBreak(1)                
             })
             .catch(function (error) {
                 console.log(error)

@@ -11,9 +11,10 @@ var appPanel = new Vue({
         this.setServiceOn();
     },
     methods: {
-        getListAdvisers (shift) {
+        getListAdvisers (shift_id) {
             var _that = this
-            var shift_id = $('#shift_id').val(shift)
+            
+            $('#shift_id').val(shift_id)
 
             axios.get('get-advisers?shift_id='+shift_id)
             .then(function (response) {
