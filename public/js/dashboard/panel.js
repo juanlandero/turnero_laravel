@@ -51,6 +51,8 @@ var appPanel = new Vue({
     methods: {
         getListShift () {
             var _that = this
+            this.shiftList = []
+
                             
             axios.post('shifts/get', {
                 type: 1,
@@ -117,12 +119,18 @@ var appPanel = new Vue({
                     _that.menuChannel = response.data['channel'].menu_channel
                     _that.panelChannel = response.data['channel'].panel_channel
                     _that.user = response.data['idUser']
-                    _that.pusher()
-                    _that.getListShift()
+                    if (_that.isActive == false) {
+                        _that.pusher()
+                        _that.getListShift()
 
-                    setTimeout(() => {
-                        _that.setUserOn()
-                    }, 5000);
+                        setTimeout(() => {
+                            _that.setUserOn()
+                        }, 5000);
+                    } else {
+                    _that.notify('warning', 'Ya se està iniciando el servicio', 'fas fa-user-times')
+
+                    }
+                    
                 }
             })
             .catch(function (error) {
@@ -164,21 +172,35 @@ var appPanel = new Vue({
                     if (is_new == 1 || _that.shiftList.length == 0) {
                         _that.shiftList.push(response.data[0])
                     } else {
-                        _that.shiftList.forEach(function (shift, index){
-                            if (shift.id > response.data[0].id && bk == false) {
-                                _that.shiftList.splice(index, 0, response.data[0])
-                                bk = true
-                            }
-                            if (index == (_that.shiftList.length-1) && bk == false) {
-                                _that.shiftList.push(response.data[0])
-                            }
-                        })
+                        // _that.shiftList.forEach(function (shift, index){
+                        //     if (shift.id > response.data[0].id && bk == false) {
+                        //         _that.shiftList.splice(index, 0, response.data[0])
+                        //         bk = true
+                        //     }
+                        //     if (index == (_that.shiftList.length-1) && bk == false) {
+                        //         _that.shiftList.push(response.data[0])
+                        //     }
+                        // })
+                        if (is_new == 0) {
+                            _that.getListShift()
+                        }
                         
                     }
                 })
                 .catch(function (error) {
                     console.log(error)
                 })
+            } else {
+                var ban = 0;
+                _that.shiftList.forEach(shift => {
+                    if (shift.id == shift_id) {
+                        ban = 1;
+                    }
+                });
+
+                if (ban == 1 && is_new == 0) {
+                    _that.getListShift()
+                }
             }
         },
 
