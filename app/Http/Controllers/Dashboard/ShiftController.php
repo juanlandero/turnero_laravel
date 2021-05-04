@@ -55,6 +55,7 @@ class ShiftController extends Controller
         $clientSex = $request->input('sex');
         $channel = $request->input('channel');
         $typeTicket = 1;
+        $ticket = [];
 
         if ($clientNumber != null) {
             $dataClient = Client::where([
@@ -73,25 +74,33 @@ class ShiftController extends Controller
         $newTicket->speciality_type_id  = $specialityId;
         $newTicket->office_id           = session('OFFICE');
         $newTicket->shift_status_id     = 1;
-        $newTicket->user_advisor_id     = AdvisorController::selectAdviser($specialityId);
+        $newTicket->user_advisor_id     = AdvisorController::selectAdviser();
         $newTicket->sex_client          = $clientSex;
         $newTicket->number_client       = $clientNumber;
         $newTicket->is_reassigned       = 0;
         $newTicket->is_active           = 1;
-        $newTicket->save();
 
-        event(new MenuGeneratorMsg($channel, $newTicket->id, $newTicket->user_advisor_id, 1));
+        if ($newTicket->save()) {
+            event(new MenuGeneratorMsg($channel, $newTicket->id, $newTicket->user_advisor_id, 1));
+        } else {
+            $ticket = [
+                'success'   => false,
+                'text'     => 'Error al guardar el ticket'
+            ];
+        }
 
-        $ticket = Shift::join('shift_types', 'shifts.shift_type_id', '=', 'shift_types.id')
-                        ->join('user_offices', 'shifts.user_advisor_id', '=', 'user_offices.user_id')
-                        ->join('boxes', 'user_offices.box_id', '=', 'boxes.id')
-                        ->select(
-                            'shifts.shift',
-                            'boxes.box_name as box',
+        $timeTicket = Shift::select(
                             'shifts.created_at as hora'
                         )
                         ->where('shifts.id', $newTicket->id)
                         ->first();
+
+        $ticket = [
+            'success'       => true,
+            'shift'         => $newTicket->shift,
+            'speciality'    => $newTicket->specialityType['name'],
+            'hora'          => $timeTicket->hora
+        ];
 
         return ['ticket' => $ticket];
     }

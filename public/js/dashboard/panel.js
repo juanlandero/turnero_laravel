@@ -127,8 +127,7 @@ var appPanel = new Vue({
                             _that.setUserOn()
                         }, 5000);
                     } else {
-                    _that.notify('warning', 'Ya se està iniciando el servicio', 'fas fa-user-times')
-
+                        _that.notify('warning', 'Ya se està iniciando el servicio', 'fas fa-user-times')
                     }
                     
                 }
@@ -143,16 +142,16 @@ var appPanel = new Vue({
             Pusher.logToConsole = true
     
             var _that = this
-            var pusher = new Pusher('56423364aba2e84b5180', {
-                cluster: 'us2'
-            })
-            var menuChannelPusher = pusher.subscribe(this.menuChannel)
+            // var pusher = new Pusher('56423364aba2e84b5180', {
+            //     cluster: 'us2'
+            // })
+            // var menuChannelPusher = pusher.subscribe(this.menuChannel)
 
-            menuChannelPusher.bind('toPublicPanel', function(data) {
-                if (data != null) {
-                    _that.addShift(data)
-                }
-            })
+            // menuChannelPusher.bind('toPublicPanel', function(data) {
+            //     if (data != null) {
+            //         _that.addShift(data)
+            //     }
+            // })
 
             this.isActive = true
         },

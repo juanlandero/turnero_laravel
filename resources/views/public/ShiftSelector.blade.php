@@ -11,8 +11,6 @@
     <link href="{{ asset('css/print.css') }}" rel="stylesheet">
     <script src="{{ asset('js/pusher.js') }}"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-
-    
 </head>
 <body>
 	<div class="full-display">

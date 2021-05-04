@@ -18,23 +18,42 @@ use App\User;
 class AdvisorController extends Controller
 {
 
-    static function selectAdviser($specialityId) {
+    static function selectAdviser() {
         $officeId = session('OFFICE');
-        $advisersData = AdvisorController::adviserAvailable($officeId, $specialityId);
+        // $advisersData = AdvisorController::adviserAvailable($officeId, $specialityId);
 
-        if ($advisersData['adviserCount'] > 1) {
-            // MÁS DE UN ASESOR EN LÍNEA
-            $adviserSort = AdvisorController::arraySort($advisersData['arrAdvisers'], 'total_shifts');
+        // if ($advisersData['adviserCount'] > 1) {
+        //     // MÁS DE UN ASESOR EN LÍNEA
+        //     $adviserSort = AdvisorController::arraySort($advisersData['arrAdvisers'], 'total_shifts');
 
-            $return = $adviserSort[0]['id'];
-        } else {
-            // SOLO UN ASESOR EN LÍNEA CON LA ESPECIALIDAD
-            $return = $advisersData['arrAdvisers'][0]['id'];
-        }
+        //     $return = $adviserSort[0]['id'];
+        // } else {
+        //     // SOLO UN ASESOR EN LÍNEA CON LA ESPECIALIDAD
+        //     $return = $advisersData['arrAdvisers'][0]['id'];
+        // }
+
+        $supervisorUser = User::join('user_offices','users.id', '=', 'user_offices.user_id')
+                                ->select(
+                                    'users.id',
+                                    'users.name',
+                                    'users.is_active',
+                                    'user_offices.office_id',
+                                )
+                                ->where([
+                                    ['user_offices.office_id', $officeId],
+                                    ['user_offices.is_active', 1],
+                                    ['users.user_type_id', 2]
+                                ])
+                                ->first();
+
+
         
-        return $return;
+        return $supervisorUser->id;
     }
 
+    /*
+    **  Ya no funcionan con el cambio
+    **
     static function arraySort($array, $on) {
         foreach ($array as $value) {
             $lowerArray[] = strtolower($value[$on]);
@@ -94,6 +113,7 @@ class AdvisorController extends Controller
             'arrAdvisers'       => $arrAdvisers, 
         ];
     } 
+    */
 
     public function userStatusOn(){
         $userId = Auth::id();

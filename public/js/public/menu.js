@@ -28,12 +28,13 @@ var appMenu = new Vue({
             changeModal:false
         },
         ticket:{
+            shift: null,
             speciality: 0,
             has_number: true,
             client_number:null,
             sex: null,
-            type: 'Visitante',
-            date: null
+            date: null,
+            hour: null
         },
         token: $('meta[name="csrf_token"]').attr('content')
     },
@@ -73,12 +74,6 @@ var appMenu = new Vue({
             .catch(function (error) {
                 console.log(error)
             })
-
-
-            // document.onreadystatechange = function () {
-            //     if(document.readyState == "complete")
-            //         _that.pusher()
-            // }
         },
 
         pusher () {        
@@ -92,7 +87,6 @@ var appMenu = new Vue({
             var menuChannelPusher = pusher.subscribe(this.office.userChannel)
 
             menuChannelPusher.bind('toMenu', function(data) {
-                console.log("****", data, _that.menu)
                 if (_that.menu != null) {
                     _that.getData()
                 }
@@ -152,7 +146,7 @@ var appMenu = new Vue({
                 })
                 .then(function (response) {
                     $('#shift').html(response.data.ticket.shift)
-                    $('#box').html('CAJA: '+response.data.ticket.box)
+                    $('#speciality').html(response.data.ticket.speciality)
                     $('#hours').html(response.data.ticket.hora.substring(11, 19))
 
                     printJS({
@@ -166,8 +160,6 @@ var appMenu = new Vue({
                     console.log(error)
                     _that.clearTicketData()
                 })
-            } else {
-
             }
         },
 
@@ -205,21 +197,33 @@ var appMenu = new Vue({
 
             if (this.office.twoModal) {
                 // DOS MODALES: Código y Sexo
-                if (action == 1) {
-                    this.verifyClientNumber()
-                }
+                switch (action) {
+                    case 1:
+                        this.verifyClientNumber()
+                        break;
+                
+                    case 2:
+                        this.office.changeModal = true
+                        break;
 
-                if (action == 2) {
-                    this.office.changeModal = true
-                }
+                    default:
+                        _that.notify("danger", "Error al lanzar el modal", "fa fa-times-circle")
+                        break;
+                }  
             } else {
                 // UN SOLO MODAL: Código
-                if (action == 1) {
-                    this.verifyClientNumber()
-                }
+                switch (action) {
+                    case 1:
+                        this.verifyClientNumber()
+                        break;
 
-                if (action == 2) {
-                    this.setSex('N/A')
+                    case 2:
+                        this.setSex('N/A')
+                        break;
+                
+                    default:
+                        _that.notify("danger", "Error al lanzar el modal", "fa fa-times-circle")
+                        break;
                 }
             }
             
