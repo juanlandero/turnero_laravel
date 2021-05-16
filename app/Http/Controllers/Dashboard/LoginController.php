@@ -34,7 +34,10 @@ class LoginController extends Controller
 
     public function logout() {
         if(Auth::check()) {
-            AdvisorController::userStatusOff();
+            if (Auth::user()->user_type_id == 3) {
+                AdvisorController::userStatusOff();
+            }
+            
             Auth::logout();
             Session::flush();
         }

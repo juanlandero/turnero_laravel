@@ -61,7 +61,7 @@ class UserAdviserController extends Controller
                 $objUserOffice->user_id     = $objUser->id;
                 $objUserOffice->office_id   = $request->cmbOffice;
                 $objUserOffice->box_id      = $request->cmbBox;
-                $objUserOffice->is_active   = true;
+                $objUserOffice->is_active   = false;
                 $objUserOffice->save();
 
                 $objPriv                = new UserPrivilege();

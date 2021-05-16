@@ -58,20 +58,20 @@ var appDisplay = new Vue({
             Pusher.logToConsole = true;
     
             var _that = this
-            var pusher = new Pusher('56423364aba2e84b5180', {
+            var pusher = new Pusher('edfdfd25a99f00107c87', {
                 cluster: 'us2'
             })
             var menuChannelPusher = pusher.subscribe(this.menuChannel)
             var panelChannelPusher = pusher.subscribe(this.panelChannel)
 
-            menuChannelPusher.bind('toPublicPanel', function(data) {
+            menuChannelPusher.bind('newShift', function(data) {
                 if (data != null) {
                     _that.addShift(data.idTicket)
                 }
             })
 
-            panelChannelPusher.bind('toPublicPanel', function(data) {
-                _that.atenddingShift (data.idTicket)
+            panelChannelPusher.bind('nextShift', function(data) {
+                _that.atenddingShift (data.idTicket, data.box)
                 _that.audio.play()
             })
 
@@ -100,7 +100,7 @@ var appDisplay = new Vue({
             
         },
 
-        atenddingShift (shiftId) {
+        atenddingShift (shiftId, box) {
             var _that = this
             if (this.shiftList.length > 0) {
 
@@ -108,7 +108,7 @@ var appDisplay = new Vue({
                     if (shift.id == shiftId) {
                         _that.attending.id = shift.id
                         _that.attending.shift = shift.shift
-                        _that.attending.box = shift.box_name
+                        _that.attending.box = box
 
                         _that.shiftList.splice(index, 1)
                     } 

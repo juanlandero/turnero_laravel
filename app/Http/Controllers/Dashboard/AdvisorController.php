@@ -136,6 +136,7 @@ class AdvisorController extends Controller
 
         if ($changeStatus->save()) {
             $return = [
+                'state'=> true,
                 'type' => 'success',
                 'text' => '<b>Conectado.</b> Ya puedes recibir turnos',
                 'icon' => 'far fa-check-circle',
@@ -143,6 +144,7 @@ class AdvisorController extends Controller
             event(new UserOnlineMsg($channel->user_channel, 1));
         } else {
             $return = [
+                'state'=> false,
                 'type' => 'danger',
                 'text' => 'Error al conectar',
                 'icon' => 'far fa-times-circle',
@@ -155,27 +157,25 @@ class AdvisorController extends Controller
     public static function userStatusOff(){
         $userId = Auth::id();
 
-        if (Auth::user()->user_type_id == 3) {
-            $channel = Office::join('user_offices', 'offices.id', '=', 'user_offices.office_id')
-                            ->where('user_offices.user_id', $userId)
-                            ->select(
-                                'offices.user_channel',
-                                'offices.id as office'
-                            )
-                            ->first();
+        $channel = Office::join('user_offices', 'offices.id', '=', 'user_offices.office_id')
+                        ->where('user_offices.user_id', $userId)
+                        ->select(
+                            'offices.user_channel',
+                            'offices.id as office'
+                        )
+                        ->first();
 
-            $changeStatus = UserOffice::where([
-                                ['office_id', $channel->office],
-                                ['user_id', $userId]
-                            ])
-                            ->first();
+        $changeStatus = UserOffice::where([
+                            ['office_id', $channel->office],
+                            ['user_id', $userId]
+                        ])
+                        ->first();
 
-            if ($changeStatus->is_active) {
-                $changeStatus->is_active = 0;
-                $changeStatus->save();
-                event(new UserOnlineMsg($channel->user_channel, 1));
-            }
-        } 
+        $changeStatus->is_active = 0;
+
+        if ($changeStatus->save()) {
+            event(new UserOnlineMsg($channel->user_channel, 1));
+        }
         
         return true;
     }
@@ -222,7 +222,7 @@ class AdvisorController extends Controller
                         'state' => $changeStatus->is_active,
                         'text' => '<b>Desconectado</b>: No se reciben turnos',
                         'type' => 'warning',
-                        'icon' => 'far fa-times-circle',
+                        'icon' => 'fas fa-exclamation-triangle',
                         'btnText' => 'Conectar',
                         'btnType' => 'btn-outline-success'
                     ];

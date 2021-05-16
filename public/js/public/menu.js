@@ -81,12 +81,12 @@ var appMenu = new Vue({
             Pusher.logToConsole = true
     
             var _that = this
-            var pusher = new Pusher('56423364aba2e84b5180', {
+            var pusher = new Pusher('edfdfd25a99f00107c87', {
                 cluster: 'us2'
             })
             var menuChannelPusher = pusher.subscribe(this.office.userChannel)
 
-            menuChannelPusher.bind('toMenu', function(data) {
+            menuChannelPusher.bind('userOnline', function(data) {
                 if (_that.menu != null) {
                     _that.getData()
                 }

@@ -57,16 +57,14 @@ class PublicDisplayController extends Controller
         $channel = Office::select(
                                 'menu_channel',
                                 'panel_channel'
-                        )
-                        ->where('id', session('OFFICE'))
-                        ->first();
+                            )
+                            ->where('id', session('OFFICE'))
+                            ->first();
 
-        $listShift = Shift::join('users', 'shifts.user_advisor_id', '=', 'users.id')
-                            ->join('user_offices', 'users.id', '=', 'user_offices.user_id')
-                            ->join('boxes', 'user_offices.box_id', 'boxes.id')
-                            ->where([
+        $listShift = Shift::where([
                                 ['shifts.is_active', 1],
                                 ['shifts.shift_status_id', 1],
+                                ['shifts.office_id', session('OFFICE')],
                                 ['shifts.created_at', 'like', OfficeController::setDate().'%']
                             ])
                             ->select(
@@ -75,7 +73,6 @@ class PublicDisplayController extends Controller
                                 'shifts.shift_status_id',
                                 'shifts.is_active',
                                 'shifts.created_at',
-                                'boxes.box_name'
                             )
                             ->orderBy('shifts.id', 'asc')
                             ->get();
@@ -86,10 +83,7 @@ class PublicDisplayController extends Controller
     public function getShift(Request $request){
         $shiftId = $request->input('shiftId');
 
-        $listShift = Shift::join('users', 'shifts.user_advisor_id', '=', 'users.id')
-                            ->join('user_offices', 'users.id', '=', 'user_offices.user_id')
-                            ->join('boxes', 'user_offices.box_id', 'boxes.id')
-                            ->where([
+        $newShift = Shift::where([
                                 ['shifts.shift_status_id', 1],
                                 ['shifts.is_active', 1],
                                 ['shifts.created_at', 'like', OfficeController::setDate().'%'],
@@ -100,11 +94,10 @@ class PublicDisplayController extends Controller
                                 'shifts.shift',
                                 'shifts.shift_status_id',
                                 'shifts.is_active',
-                                'shifts.created_at',
-                                'boxes.box_name'
+                                'shifts.created_at'
                             )
                             ->first();
 
-        return ['shift' => $listShift];
+        return ['shift' => $newShift];
     }
 }

@@ -6,10 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\Dashboard;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Events\MenuGeneratorMsg;
 use App\Events\AdminPanelMsg;
 use App\SpecialityType;
+use App\UserOffice;
 use App\Incident;
 use App\Client;
 use App\Shift;
@@ -81,7 +83,7 @@ class ShiftController extends Controller
         $newTicket->is_active           = 1;
 
         if ($newTicket->save()) {
-            event(new MenuGeneratorMsg($channel, $newTicket->id, $newTicket->user_advisor_id, 1));
+            event(new MenuGeneratorMsg($channel, $newTicket->id, $newTicket->speciality_type_id, 1));
         } else {
             $ticket = [
                 'success'   => false,
@@ -105,34 +107,137 @@ class ShiftController extends Controller
         return ['ticket' => $ticket];
     }
 
+    public function arraySort($array, $on) {
+        foreach ($array as $value) {
+            $lowerArray[] = strtolower($value[$on]);
+        }
+
+        asort($lowerArray);
+
+        foreach ($lowerArray as $key => $v) {
+            $newArray[] = $array[$key];
+        }
+
+        return $newArray;
+    }
+
     public function nextShift(Request $request){
-        $return = null;
-        $shiftId = $request->input('shiftId');
+        $userSpecialities = $request->input('specialities');
         $panelChannel = $request->input('panel_channel');
+        $officeId = $request->input('office');
+        $arrShifts = array();
+        $return = null;
 
-        $newStateShift = Shift::where('id', $shiftId)->first();
-        $newStateShift->shift_status_id = 2;
-        $newStateShift->start_shift = now();
+        $shifts = Shift::join('speciality_types', 'shifts.speciality_type_id', 'speciality_types.id')
+                    ->join('shift_types', 'shifts.shift_type_id', 'shift_types.id')
+                    ->where([
+                        ['shifts.is_active', 1],
+                        ['shifts.shift_status_id', 1],
+                        ['shifts.office_id', $officeId],
+                        ['shifts.created_at', 'like', OfficeController::setDate().'%']
+                    ])
+                    ->select(
+                        'shifts.id',
+                        'shifts.shift',
+                        'shifts.shift_type_id',
+                        'shift_types.shift_type as type',
+                        'shifts.speciality_type_id',
+                        'speciality_types.name as speciality',
+                        'shifts.created_at',
+                        'shifts.number_client'
+                    )
+                    ->orderBy('shifts.id', 'ASC')
+                    ->get();
 
-        try {
-            if ($newStateShift->save()) {
-                event(new AdminPanelMsg($panelChannel, $shiftId));
+        if (sizeof($shifts) > 0) {
+            $i = 0;
+            $index = null;
+            $shiftFound = false;
+            $shiftSelectedId = 0;
+
+            while ($i < sizeof($shifts) && $shiftFound == false) { 
+                foreach ($userSpecialities as $speciality) {
+                    if ($speciality['speciality_type_id'] == $shifts[$i]->speciality_type_id) {
+                        $shiftFound = true;
+                        $index = $i;
+                        $shiftSelectedId = $shifts[$i]->id;
+                    }
+                }
+                $i++;
+            }
+
+            if ($shiftSelectedId != 0) {
+
+                $newStateShift = Shift::find($shiftSelectedId);
+                $newStateShift->shift_status_id = 2;
+                $newStateShift->user_advisor_id = Auth::id();
+                $newStateShift->start_shift = now();
+
+                try {
+                    if ($newStateShift->save()) {
+                        $client = "Visitante";
+                        $number = "0";
+                        $sex = "N/A";
+
+                        if ($shifts[$index]->number_client != null) {
+                            $clientData = Client::where('client_number', $shifts[$index]->number_client)->first();
+
+                            $client = $clientData->name. " " . $clientData->first_name. " " . $clientData->second_name;
+                            $number = $clientData->client_number;
+                            $sex = $clientData->sex;
+                        }
+                        
+                        $shiftReturn = [
+                            'id'        => $shifts[$index]->id,
+                            'shift'     => $shifts[$index]->shift,
+                            'type'      => $shifts[$index]->type,
+                            'speciality'=> $shifts[$index]->speciality,
+                            'generate'  => $shifts[$index]->created_at->toDateTimeString(),
+                            'client'    => $client,
+                            'number'    => $number,
+                            'sex'       => $sex
+                        ];
+
+                        $box = UserOffice::join('boxes', 'user_offices.box_id', 'boxes.id')
+                                            ->where('user_offices.user_id', Auth::id())
+                                            ->first();
+
+                        event(new AdminPanelMsg($panelChannel, $newStateShift->id, $shifts[$index]->speciality_type_id, $box->box_name));
+
+                        $return = [
+                            'state' => true,
+                            'text'  => 'Turno iniciado - '.substr($newStateShift->start_shift, 11, 19),
+                            'type'  => 'info',
+                            'icon'  => 'fas fa-info-circle',
+                            'shift' => $shiftReturn
+                        ];
+                    } 
+                } catch (\Throwable $th) {
+                    $return = [
+                        'state' => false,
+                        'text' => 'No se pudo iniciar el turno. Recargue la pagina',
+                        'type' => 'danger',
+                        'icon' => 'far fa-times-circle'
+                    ];
+                }
+            } else {
                 $return = [
-                    'state' => true,
-                    'text' => 'Turno iniciado - '.substr($newStateShift->start_shift, 11, 19),
-                    'type' => 'info',
-                    'icon' => 'fas fa-info-circle'
+                    'state' => false,
+                    'text' => 'No hay turnos por el momento.',
+                    'type' => 'warning',
+                    'icon' => 'fas fa-exclamation-triangle'
                 ];
-            } 
-        } catch (\Throwable $th) {
+            }
+
+        } else {
             $return = [
                 'state' => false,
-                'text' => 'No se pudo iniciar el turno. Recargue la pagina',
-                'type' => 'danger',
-                'icon' => 'far fa-times-circle'
+                'text' => 'No hay turnos por el momento.',
+                'type' => 'warning',
+                'icon' => 'fas fa-exclamation-triangle'
             ];
         }
-        
+
         return $return;
     }
 
@@ -158,6 +263,7 @@ class ShiftController extends Controller
 
         try {
             if ($reassignment->save() && $objIncident->save()) {
+                // !** Revisar por que cambiaron los parametros
                 event(new MenuGeneratorMsg($channel, $objIncident->shift_id, $reassignment->user_advisor_id, 0));
         
                 $return = [

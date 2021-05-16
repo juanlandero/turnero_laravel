@@ -30,13 +30,13 @@ class CreateOfficesTable extends Migration
             $table->timestamps();
         });
 
-        DB::statement("INSERT INTO  offices
-            (
-                id, name, address, phone, menu_channel, panel_channel, user_channel, office_key, municipality_id, is_active, created_at, updated_at
-            )
-            VALUES
-                ( 1, 'Madero Matriz', 'Calle uno cruce con dos', '993128484', 'centro-0129-as', 'panel-12', 'user@matriz-543', '12345', 1, true, NOW(), NOW())
-        ");
+        // DB::statement("INSERT INTO  offices
+        //     (
+        //         id, name, address, phone, menu_channel, panel_channel, user_channel, office_key, municipality_id, is_active, created_at, updated_at
+        //     )
+        //     VALUES
+        //         ( 1, 'Madero Matriz', 'Calle uno cruce con dos', '993128484', 'centro-0129-as', 'panel-12', 'user@matriz-543', '12345', 1, true, NOW(), NOW())
+        // ");
     }
 
     /**

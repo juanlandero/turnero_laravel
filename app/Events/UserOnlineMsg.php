@@ -38,6 +38,6 @@ class UserOnlineMsg implements ShouldBroadcast
     }
 
     public function broadcastAs(){
-        return 'toMenu';
+        return 'userOnline';
     }
 }

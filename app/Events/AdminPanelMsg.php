@@ -16,17 +16,19 @@ class AdminPanelMsg implements ShouldBroadcast
 
     public $channel;
     public $idTicket;
-    // public $idUser;
+    public $idSpeciality;
+    public $box;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($channel, $idTicket)
+    public function __construct($channel, $idTicket, $idSpeciality, $box)
     {
         $this->channel = $channel;
         $this->idTicket = $idTicket;
-        // $this->idUser = $idUser;
+        $this->idSpeciality = $idSpeciality;
+        $this->box = $box;
     }
 
     /**
@@ -40,6 +42,6 @@ class AdminPanelMsg implements ShouldBroadcast
     }
 
     public function broadcastAs(){
-        return 'toPublicPanel';
+        return 'nextShift';
     }
 }

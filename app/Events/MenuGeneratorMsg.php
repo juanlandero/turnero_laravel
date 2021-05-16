@@ -16,18 +16,18 @@ class MenuGeneratorMsg implements ShouldBroadcast
 
     public $channel;
     public $idTicket;
-    public $idUser;
+    public $idSpeciality;
     public $isNew;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($channel, $idTicket, $idUser, $isNew)
+    public function __construct($channel, $idTicket, $idSpeciality, $isNew)
     {
         $this->channel = $channel;
         $this->idTicket = $idTicket;
-        $this->idUser = $idUser;
+        $this->idSpeciality = $idSpeciality;
         $this->isNew= $isNew;
     }
 
@@ -42,6 +42,6 @@ class MenuGeneratorMsg implements ShouldBroadcast
     }
 
     public function broadcastAs(){
-        return 'toPublicPanel';
+        return 'newShift';
     }
 }

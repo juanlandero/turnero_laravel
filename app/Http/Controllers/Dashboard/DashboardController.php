@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\OfficeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\SpecialityTypeUser;
 use App\UserOffice;
 use App\Client;
 use App\Shift;
@@ -19,6 +20,9 @@ class DashboardController extends Controller
     }
 
     public function getDataPanel(){
+        $arrSpecialities = array();
+        $countShift = 0;
+
         $channel = UserOffice::join('offices', 'user_offices.office_id', '=', 'offices.id')
                             ->join('users', 'user_offices.user_id', 'users.id')
                             ->where([
@@ -26,11 +30,43 @@ class DashboardController extends Controller
                             ])
                             ->select(
                                 'offices.menu_channel',
-                                'offices.panel_channel'
+                                'offices.panel_channel',
+                                'offices.id as office_id'
                                 )
                             ->first();
 
-        return ['channel' => $channel, 'idUser' => Auth::id()];
+        $userSpecialities = SpecialityTypeUser::join('speciality_types', 'speciality_type_users.speciality_type_id', 'speciality_types.id')
+                                                ->where('speciality_type_users.user_id', Auth::id())
+                                                ->select(
+                                                    'speciality_type_users.speciality_type_id',
+                                                    'speciality_types.name'
+                                                )
+                                                ->orderBy('speciality_type_users.speciality_type_id', 'ASC')
+                                                ->get();
+                    
+        foreach ($userSpecialities as $speciality) {
+
+            $countShift = Shift::where([
+                                    ['shifts.speciality_type_id', $speciality->speciality_type_id],
+                                    ['shifts.shift_status_id', 1],
+                                    ['shifts.office_id', $channel->office_id],
+                                    ['shifts.is_active', 1],
+                                ])
+                                ->count();
+
+            array_push($arrSpecialities, array(
+                'speciality_type_id'    => $speciality->speciality_type_id,
+                'name'                  => $speciality->name,
+                'total'                 => $countShift
+            ));
+        }
+
+        return [
+            'channel'       => $channel,
+            'idUser'        => Auth::id(),
+            'idOffice'      => $channel->office_id,
+            'specialities'  => $arrSpecialities
+        ];
     }
 
     public function getShiftAdvisor(Request $request){

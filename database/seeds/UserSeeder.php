@@ -15,10 +15,10 @@ class UserSeeder extends Seeder
     {
         $objUser                = new User();
         $objUser->name          = "Administrador";
-        $objUser->first_name    = ".";
+        $objUser->first_name    = "Centro";
         $objUser->second_name   = ".";
         $objUser->user_type_id  = 1;
-        $objUser->email         = "admin@dashboard.mx";
+        $objUser->email         = "admin@madero.com";
         $objUser->password      = bcrypt('A123456*');
         $objUser->is_active     = true;
         $objUser->save();
@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
             (7, 'Sucursales', 7, 'fas fa-map-marker-alt'),
             (8, 'Anuncios', 8, 'fas fa-photo-video'),
             (9, 'Cajas', 9, 'fas fa-cash-register'),
-            (10, 'Cajas', 10, 'fas fa-fire');");
+            (10, 'Caja', 10, 'fas fa-fire');");
 
         //PRIVILEGES
         DB::statement("INSERT INTO
