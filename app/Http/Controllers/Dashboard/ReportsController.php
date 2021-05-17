@@ -58,7 +58,7 @@ class ReportsController extends Controller
             ),
             array(
                 'id'              => 4,
-                'shift_status'    => 'Reasignado'
+                'shift_status'    => 'Total'
         ));
 
        $objOffice = Office::join('user_offices', 'offices.id', 'user_offices.office_id')
@@ -90,7 +90,7 @@ class ReportsController extends Controller
                                     return $query->where('shifts.shift_status_id', 3);
                                 })//Reasignado
                                 ->when($status['id'] == 4, function($query){
-                                    return $query->where('shifts.is_reassigned', true);
+                                    return $query->where('shifts.is_active', true);
                                 })
                                 ->get();
 
@@ -150,7 +150,7 @@ class ReportsController extends Controller
             }            
         }
 
-        $statusId = [2, 3];
+        $statusId = [1, 2, 3];
         foreach ($arrSpecialities as $speciality) {
             $arrStatus = array();
             foreach ($statusId as $index => $id) {
@@ -171,8 +171,8 @@ class ReportsController extends Controller
                     'quantity'  => (($countShifts>0)?$countShifts:0)
                 ));
             }
-
-            $total = $arrStatus[0]['quantity'] + $arrStatus[1]['quantity'];
+            // return $arrStatus;
+            $total = $arrStatus[0]['quantity'] + $arrStatus[1]['quantity'] + $arrStatus[2]['quantity'];
             array_push($arrStatus, array(
                 'id'        => 0,
                 'type'      => 'Total',

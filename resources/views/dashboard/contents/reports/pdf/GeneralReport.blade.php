@@ -36,7 +36,7 @@
 					<img src="img/madero-logo.jpeg" width="200px"/>
 				</td>
 				
-                <td width="70%" class="titulo" style="text-align: right">REPORTE DE SUCURSAL</td>
+                <td width="70%" class="titulo" style="text-align: right">REPORTE DE GENERAL</td>
             </tr>
         </table>
         
@@ -80,6 +80,7 @@
         <table class="tabla" style="margin-bottom: 40px;">
             <tr class="titulo-tabla" >
                 <th>Especialidad</th>
+                <th>En espera</th>
                 <th>Atendidos</th>
                 <th>Abandonado</th>
                 <th>Total</th>

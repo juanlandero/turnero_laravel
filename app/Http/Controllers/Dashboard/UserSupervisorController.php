@@ -17,7 +17,20 @@ use DB;
 class UserSupervisorController extends Controller
 {
     public function index() {
-        $lstUsers = User::where('is_active', true)->where('user_type_id', 2)->get();
+        $lstUsers = User::join('user_offices', 'users.id', 'user_offices.user_id')
+                        ->join('offices', 'offices.id', 'user_offices.office_id')
+                        ->where('users.is_active', true)
+                        ->where('users.user_type_id', 2)
+                        ->select(
+                            'users.id',
+                            'users.name',
+                            'users.first_name',
+                            'users.second_name',
+                            'users.email',
+                            'offices.name as office',
+                            'users.created_at'
+                        )
+                        ->get();
         return View('dashboard.contents.users.supervisors.Index', ['lstUsers' => $lstUsers]);
     }
 

@@ -6,7 +6,7 @@
             <img class="app-sidebar__user-avatar" src="{{ asset('img/user.png') }}" alt="User Image" width="20%"/>
             <div>
                 <p class="app-sidebar__user-name">{{ Auth::user()->name }}</p>
-                <p class="app-sidebar__user-designation">Administrador</p>
+                <p class="app-sidebar__user-designation">@yield('user_type')</p>
             </div>
         </div>
 

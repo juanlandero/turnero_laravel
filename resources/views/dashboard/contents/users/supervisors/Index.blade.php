@@ -39,6 +39,7 @@
                                 <th>Nombre</th>
                                 <th>Apellidos</th>
                                 <th>Email</th>
+                                <th>Sucursal</th>
                                 <th>Fecha Creación</th>
                                 <th>Acciones</th>
                             </tr>
@@ -50,6 +51,7 @@
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->first_name }} {{ $item->second_name }}</td>
                                     <td>{{ $item->email }}</td>
+                                    <td>{{ $item->office }}</td>
                                     <td>{{ $item->created_at }}</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Button group with nested dropdown">

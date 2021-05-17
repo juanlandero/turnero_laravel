@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use App\Library\Returns\ActionReturn;
 use App\Library\Errors;
 use App\Library\Messages;
@@ -20,7 +21,40 @@ use DB;
 class UserAdviserController extends Controller
 {
     public function index() {
-        $lstUsers = User::where('is_active', true)->where('user_type_id', 3)->get();
+        $office = null;
+        if (Auth::user()->user_type_id == 2) {
+            $user = User::join('user_offices', 'users.id', 'user_offices.user_id')
+                        ->where('users.id', Auth::id())
+                        ->select(
+                            'users.id',
+                            'users.user_type_id',
+                            'user_offices.office_id as office'
+                        )
+                        ->first();
+
+            $office = $user->office;
+        }
+
+        $lstUsers = User::join('user_offices', 'users.id', 'user_offices.user_id')
+                    ->join('boxes', 'user_offices.box_id', 'boxes.id')
+                    ->join('offices', 'offices.id', 'user_offices.office_id')
+                    ->where('users.is_active', true)
+                    ->where('users.user_type_id', 3)
+                    ->when($office, function($query, $office){
+                        return $query->where('user_offices.office_id', $office);
+                    })
+                    ->select(
+                        'users.id',
+                        'users.name',
+                        'users.first_name',
+                        'users.second_name',
+                        'users.email',
+                        'boxes.box_name',
+                        'offices.name as office',
+                        'users.created_at'
+                    )
+                    ->get();
+                    
         return View('dashboard.contents.users.advisers.Index', ['lstUsers' => $lstUsers]);
     }
 

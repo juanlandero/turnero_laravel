@@ -36,7 +36,7 @@
 					<img src="img/madero-logo.jpeg" width="200px"/>
 				</td>
 				
-                <td width="70%" class="titulo" style="text-align: right">REPORTE DE SUCURSAL</td>
+                <td width="70%" class="titulo" style="text-align: right">REPORTE DE TURNOS</td>
             </tr>
         </table>
         
@@ -65,7 +65,6 @@
                 <th>Turno</th>
                 <th>Tipo</th>
                 <th>Especialidad</th>
-                <th>Usuario</th>
                 <th>Generado</th>
             </tr>
             @foreach ($shifts as $shift)
@@ -74,7 +73,6 @@
                         <td>{{ $shift['shift'] }}</td>
                         <td>{{ $shift['shift_type'] }}</td>
                         <td>{{ $shift['speciality'] }}</td>
-                        <td>{{ $shift['email'] }}</td>
                         <td>{{ substr($shift['created_at'], 11) }}</td>
                     </tr>
                 @endif
@@ -90,6 +88,7 @@
                 <th>Turno</th>
                 <th>Tipo</th>
                 <th>Especialidad</th>
+                <th>Atendió</th>
                 <th>Generado</th>
                 <th>Inicio</th>
                 <th>Termino</th>
@@ -101,6 +100,7 @@
                         <td>{{ $shift['shift'] }}</td>
                         <td>{{ $shift['shift_type'] }}</td>
                         <td>{{ $shift['speciality'] }}</td>
+                        <td>{{ $shift['email'] }}</td>
                         <td>{{ substr($shift['created_at'], 11) }}</td>
                         <td>{{ $shift['start_shift'] }}</td>
                         <td>{{ $shift['end_shift'] }}</td>
@@ -126,13 +126,14 @@
 
          <!-- TABLA DE ABANDONADOS -->
          <div class="barra">
-            <p class="seccion">TURNOS REASIGNADOS</p>
+            <p class="seccion">TURNOS ABANDONADOS</p>
         </div>
         <table class="tabla" style="margin-bottom: 40px;">
             <tr class="titulo-tabla" >
                 <th>Turno</th>
                 <th>Tipo</th>
                 <th>Especialidad</th>
+                <th>Atendió</th>
                 <th>Generado</th>
                 <th>Inicio</th>
             </tr>
@@ -142,6 +143,7 @@
                         <td>{{ $shift['shift'] }}</td>
                         <td>{{ $shift['shift_type'] }}</td>
                         <td>{{ $shift['speciality'] }}</td>
+                        <td>{{ $shift['email'] }}</td>
                         <td>{{ substr($shift['created_at'], 11) }}</td>
                         <td>{{ $shift['start_shift'] }}</td>
                     @endif
@@ -149,9 +151,9 @@
             @endforeach
         </table>
 
-         <!-- TABLA DE REASIGNADOS -->
+         <!-- TABLA DE REASIGNADOS ->
          <div class="barra">
-            <p class="seccion">TURNOS ABANDONADOS</p>
+            <p class="seccion">TURNOS REASIGNADOS</p>
         </div>
         <table class="tabla" style="margin-bottom: 40px;">
             <tr class="titulo-tabla" >
@@ -188,7 +190,7 @@
                     </tr>
                 @endif
             @endforeach
-        </table>
+        </table-->
 	</div>
 
 </body>

@@ -35,7 +35,7 @@
 					<img src="img/madero-logo.jpeg" width="200px"/>
 				</td>
 				
-                <td width="70%" class="titulo" style="text-align: right">REPORTE DE SUCURSAL</td>
+                <td width="70%" class="titulo" style="text-align: right">REPORTE DE USUARIO</td>
             </tr>
         </table>
         
@@ -63,7 +63,7 @@
             </tr>
         </table>
 
-        <!-- TABLA DE ESPERA -->
+        <!-- TABLA DE ESPERA ->
         <div class="barra">
             <p class="seccion">TURNOS EN ESPERA</p>
         </div>
@@ -84,7 +84,7 @@
                     </tr>
                 @endif
             @endforeach
-        </table>
+        </table-->
 
         <!-- TABLA DE ATENDIDOS -->
         <div class="barra">
@@ -171,7 +171,7 @@
         </table>
 
 
-        <!-- TABLA DE REASIGNADOS -->
+        <!-- TABLA DE REASIGNADOS ->
         <div class="barra">
             <p class="seccion">TURNOS REASIGNADOS</p>
         </div>
@@ -212,9 +212,9 @@
                     @endphp
                 </tr>
             @endforeach
-        </table>
+        </table-->
 
-        <!-- TABLA DE RECIBIDOS -->
+        <!-- TABLA DE RECIBIDOS ->
         <div class="barra">
             <p class="seccion">TURNOS RECIBIDOS</p>
         </div>
@@ -255,7 +255,7 @@
                     @endphp
                 </tr>
             @endforeach
-        </table>
+        </table-->
 	</div>
 
 </body>
