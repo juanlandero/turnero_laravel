@@ -54,12 +54,13 @@ class ShiftController extends Controller
 
         $specialityId = $request->input('speciality');
         $clientNumber = $request->input('client_number');
+        $hasNumber = $request->input('has_number');
         $clientSex = $request->input('sex');
         $channel = $request->input('channel');
         $typeTicket = 1;
         $ticket = [];
 
-        if ($clientNumber != null) {
+        if ($hasNumber == true) {
             $dataClient = Client::where([
                                         ['client_number', $clientNumber],
                                         ['is_active', 1]

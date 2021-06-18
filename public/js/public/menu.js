@@ -30,7 +30,7 @@ var appMenu = new Vue({
         ticket:{
             shift: null,
             speciality: 0,
-            has_number: true,
+            has_number: false,
             client_number:null,
             sex: null,
             date: null,
@@ -120,6 +120,7 @@ var appMenu = new Vue({
                 })
                 .then(function (response) {
                     if (response.data.success == 'true') {
+                        _that.client.has_number = true
                         _that.setSex(response.data['client'].sex)
                     } else{
                         _that.notify("danger", "Número de cliente incorrecto.", "fa fa-times-circle")
@@ -176,7 +177,7 @@ var appMenu = new Vue({
         clearTicketData () {
             this.ticket.speciality = 0
             this.ticket.client_number = null
-            this.ticket.has_number = true
+            this.ticket.has_number = false
             this.ticket.sex = null
         },
 
