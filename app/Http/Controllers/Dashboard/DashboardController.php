@@ -50,6 +50,7 @@ class DashboardController extends Controller
                                     ['shifts.speciality_type_id', $speciality->speciality_type_id],
                                     ['shifts.shift_status_id', 1],
                                     ['shifts.office_id', $channel->office_id],
+                                    ['shifts.created_at', 'like', OfficeController::setDate().'%'],
                                     ['shifts.is_active', 1],
                                 ])
                                 ->count();
