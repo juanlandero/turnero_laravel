@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use App\Library\Returns\ActionReturn;
+use App\Ad;
+use Exception;
+use App\UserOffice;
 use App\Library\Errors;
 use App\Library\Messages;
-use App\UserOffice;
-use App\Ad;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Library\Returns\ActionReturn;
 
 class AdsController extends Controller
 {
@@ -38,18 +39,22 @@ class AdsController extends Controller
 
     public function store(Request $request){
         try {
+            $objReturn  = new ActionReturn('dashboard/ads/create', 'dashboard/ads');
+
+            if(Auth::user()->user_type_id == 1) {
+                $objReturn->setResult(false, Errors::AD_CREATE_02_TITLE, Errors::AD_CREATE_02_MESSAGE);
+                return $objReturn->getRedirectPath();
+            }
+
             $file       = $request->file('imgAd');
             $extension  = $file->getClientOriginalExtension();
             $fileName   = time() . '_image_carousel.' . $extension;
             $url        = '/carousel/' . $fileName;
-    
+
             $request->imgAd->storeAs('carousel', $fileName);
-    
-            $officeId = UserOffice::where('user_id', Auth::id())->select('office_id')->first();
-    
-            $objReturn = new ActionReturn('dashboard/ads/create', 'dashboard/ads');
-    
-    
+
+            $officeId   = UserOffice::where('user_id', Auth::id())->select('office_id')->first();
+
             $objAd = new Ad();
             $objAd->name        = $request->txtName;
             $objAd->path        = $url;
@@ -68,7 +73,6 @@ class AdsController extends Controller
             $objReturn->setResult(false, Errors::getErrors($exception->getCode())['title'], Errors::getErrors($exception->getCode())['message']);
         }
 
-        // return redirect()->route('ads.index');
         return $objReturn->getRedirectPath();
     }
 

@@ -63,8 +63,11 @@ class Errors {
     const AD_CREATE_01_ID = "5_0001";
     const AD_CREATE_01_TITLE = "Anuncio";
     const AD_CREATE_01_MESSAGE = "Ocurrió un problema al crear el anuncio, vuelve a intentar más tarde.";
+    const AD_CREATE_02_ID = "5_0002";
+    const AD_CREATE_02_TITLE = "Anuncio";
+    const AD_CREATE_02_MESSAGE = "El perfil administrador no tiene permitido crear registros de anuncios, solamente el supervisor.";
     
-    const AD_DELETE_02_ID = "5_0002";
+    const AD_DELETE_02_ID = "5_0003";
     const AD_DELETE_02_TITLE = "Anuncio";
     const AD_DELETE_02_MESSAGE = "Ocurrió un problema al eliminar el anuncio, vuelve a intentar más tarde.";
 
