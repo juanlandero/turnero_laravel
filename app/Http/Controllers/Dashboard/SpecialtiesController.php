@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
-use App\Library\Returns\ActionReturn;
+use Exception;
 use App\Library\Errors;
+use App\SpecialityType;
 use App\Library\Messages;
 use App\SpecialityTypeUser;
-use App\SpecialityType;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
+use App\Library\Returns\ActionReturn;
 
 class SpecialtiesController extends Controller
 {
@@ -99,13 +100,13 @@ class SpecialtiesController extends Controller
 
         $specialityTypeUser = SpecialityTypeUser::Where('speciality_type_id', $speciality->id)->get();
         $objReturn = new ActionReturn('dashboard/specialties/delete', 'dashboard/specialties');
-        // return $idSpeciality;
 
         if (sizeof($specialityTypeUser) > 0) {
             $objReturn->setResult(true, Errors::SPECIALTY_DELETE_01_TITLE, Errors::SPECIALTY_DELETE_01_MESSAGE);
         } else {
             try {
-                if($speciality->delete()) {
+                $speciality->is_active = 0;
+                if($speciality->save()) {
                     $objReturn->setResult(true, Messages::SPECIALTY_DELETE_TITLE, Messages::SPECIALTY_DELETE_MESSAGE);
                 } else {
                     $objReturn->setResult(false, Errors::SPECIALTY_DELETE_02_TITLE, Errors::SPECIALTY_DELETE_02_MESSAGE);

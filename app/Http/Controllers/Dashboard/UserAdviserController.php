@@ -234,14 +234,14 @@ class UserAdviserController extends Controller
     }
 
     public function storeSpeciality(Request $request){
-        $countSpeciality = SpecialityType::where('is_active', 1)->count();
+        $arrSpeciality = SpecialityType::where('is_active', 1)->get();
 
-        for ($i=1; $i < $countSpeciality+1; $i++) { 
-            if (isset($request->$i)) {
+        foreach($arrSpeciality as $speciality) {
+            if (isset($request->{$speciality->id})) {
                 $speciality = new SpecialityTypeUser();
 
-                $speciality->speciality_type_id = $i;
-                $speciality->user_id = $request->user_id;
+                $speciality->speciality_type_id = $speciality->id;
+                $speciality->user_id            = $request->user_id;
                 $speciality->save();
             }
         }
@@ -250,13 +250,10 @@ class UserAdviserController extends Controller
     }
 
     public function deleteSpeciality($specialityId){
-        $specialiyUser = SpecialityTypeUser::where('id', $specialityId)->first();
-
-        $userId = $specialiyUser->user_id;
-
+        $specialiyUser  = SpecialityTypeUser::where('id', $specialityId)->first();
         $specialiyUser->delete();
 
-        // return $specialiyUser;
-        return redirect('dashboard/users-advisers/speciality/'.$userId);
+
+        return redirect('dashboard/users-advisers/speciality/'.$specialiyUser->user_id);
     }
 }
