@@ -11,10 +11,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Library\Returns\ActionReturn;
+use Illuminate\Support\Facades\Session;
 
 class AdsController extends Controller
 {
-    public function index(){
+    public function index() {
         $officeId = UserOffice::where('user_offices.user_id', Auth::id())->first();
 
         if(is_null($officeId)) {
@@ -34,17 +35,21 @@ class AdsController extends Controller
     }
 
     public function create() {
+        if(Auth::user()->user_type_id == 1) {
+            Session::flash("error_title", Errors::AD_CREATE_02_TITLE);
+            Session::flash("error_message", Errors::AD_CREATE_02_MESSAGE);
+            Session::flash("title", Errors::AD_CREATE_02_TITLE);
+            Session::flash("message", Errors::AD_CREATE_02_MESSAGE);
+
+            return Redirect('dashboard/ads');
+        }
+
         return view('dashboard.contents.carousel.Create');
     }
 
-    public function store(Request $request){
+    public function store(Request $request) {
         try {
             $objReturn  = new ActionReturn('dashboard/ads/create', 'dashboard/ads');
-
-            if(Auth::user()->user_type_id == 1) {
-                $objReturn->setResult(false, Errors::AD_CREATE_02_TITLE, Errors::AD_CREATE_02_MESSAGE);
-                return $objReturn->getRedirectPath();
-            }
 
             $file       = $request->file('imgAd');
             $extension  = $file->getClientOriginalExtension();
@@ -76,7 +81,7 @@ class AdsController extends Controller
         return $objReturn->getRedirectPath();
     }
 
-    public function delete($idAd){
+    public function delete($idAd) {
         $adDelete = Ad::find($idAd);
         $objReturn = new ActionReturn('dashboard/ads/delete', 'dashboard/ads');
       
