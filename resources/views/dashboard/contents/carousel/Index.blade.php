@@ -20,6 +20,19 @@
 </div>
 @endif
 
+@if(Session::has('error_message'))
+<div class="row">
+    <div class="col-lg-4">
+        <div class="bs-component">
+          <div class="alert alert-dismissible alert-danger">
+            <button class="close" type="button" data-dismiss="alert">×</button>
+            <strong>{{ Session::get('error_title' )}}</strong> {{ Session::get('error_message' )}}
+          </div>
+        </div>
+    </div>
+</div>
+@endif
+
 <div class="row">
     <div class="col-10">
         <div class="tile">
