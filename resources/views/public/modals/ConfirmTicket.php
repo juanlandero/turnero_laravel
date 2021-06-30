@@ -27,7 +27,6 @@
 
         <!-- CODE MODAL -->
         <div class="modal-content" v-else>
-            
             <div class="modal-header">
                 <h5 class="modal-title">¿Cuenta con un número de cliente?</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -47,7 +46,7 @@
                     <div class="col-4 text-center">
                         <button class="btn btn-secondary btn-lg btn-block" type="button" @click="actionModal(2)"><i class="fas fa-times"></i> No</button>
                     </div>
-                </div>            
+                </div>
             </div>
         </div>
     </div>

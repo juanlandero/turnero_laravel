@@ -13,9 +13,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 </head>
 <body>
-	<div class="full-display">
+    <div class="full-display">
         <!-- CONTENIDO -->
-		<main class="app-public-display" id="app-ticket-generator">
+        <main class="app-public-display" id="app-ticket-generator">
             <div class="container">
                 <div class="row text-center mb-5">
                     <div class="col-12">
@@ -27,7 +27,7 @@
                 </div>
 
                 <div class="row justify-content-center">
-                    <speciality-button v-for="button in menu" 
+                    <speciality-button v-for="button in menu"
                         v-bind:key="button.id"
                         :id="button.id"
                         :speciality="button.speciality"
@@ -39,14 +39,14 @@
 
             @include('public.modals.ConfirmTicket')
             @include('public.components.Ticket')
-		</main>     
+        </main>
     </div>
 
     <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('js/popper.min.js') }}"></script>
-	<script src="{{ asset('js/bootstrap.min.js') }}"></script>
-	<script src="{{ asset('js/plugins/bootstrap-notify.min.js') }}"></script>
-	<script src="{{ asset('js/plugins/print.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/bootstrap-notify.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/print.min.js') }}"></script>
     
     <script src="{{ asset('js/axios.js') }}"></script>
     <script src="{{ asset('js/vue.js') }}"></script>

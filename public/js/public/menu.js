@@ -76,7 +76,7 @@ var appMenu = new Vue({
             })
         },
 
-        pusher () {        
+        pusher () {
             // Enable pusher logging - don't include this in production
             Pusher.logToConsole = true
     
@@ -99,13 +99,14 @@ var appMenu = new Vue({
             }
 
             this.ticket.speciality = speciality
-            $('#client-modal').modal('show')
+            this.actionModal(2);
+            /* $('#client-modal').modal('show')
             $('#client-modal').on('shown.bs.modal', function () {
                 $('#client').trigger('focus')
-            })
+            }) */
         },
 
-        verifyClientNumber (){
+        verifyClientNumber () {
             var _that = this
 
             //En caso de que entre sin especialidad
@@ -166,7 +167,7 @@ var appMenu = new Vue({
 
         setSex (sex) {
             this.ticket.sex = sex
-            $('#client-modal').modal('hide')
+            //$('#client-modal').modal('hide')
             this.createTicket()
             
             if (this.office.twoModal == true) {
@@ -181,11 +182,11 @@ var appMenu = new Vue({
             this.ticket.sex = null
         },
 
-        notify (type, message, icon) { 
+        notify (type, message, icon) {
             $.notify({
                 title: "",
                 message: message,
-                icon: icon 
+                icon: icon
             },{
                 newest_on_top: true,
                 type: type,
@@ -202,7 +203,7 @@ var appMenu = new Vue({
                     case 1:
                         this.verifyClientNumber()
                         break;
-                
+
                     case 2:
                         this.office.changeModal = true
                         break;
@@ -210,7 +211,7 @@ var appMenu = new Vue({
                     default:
                         _that.notify("danger", "Error al lanzar el modal", "fa fa-times-circle")
                         break;
-                }  
+                }
             } else {
                 // UN SOLO MODAL: Código
                 switch (action) {
@@ -221,14 +222,12 @@ var appMenu = new Vue({
                     case 2:
                         this.setSex('N/A')
                         break;
-                
+
                     default:
                         _that.notify("danger", "Error al lanzar el modal", "fa fa-times-circle")
                         break;
                 }
             }
-            
-           
         }
     }
 })
