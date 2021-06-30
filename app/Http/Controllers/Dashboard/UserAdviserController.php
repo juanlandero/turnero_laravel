@@ -239,11 +239,11 @@ class UserAdviserController extends Controller
         foreach($arrSpeciality as $speciality) {
             if (isset($request->{$speciality->id})) {
                 dd($speciality);
-                $speciality = new SpecialityTypeUser();
+                $objSpeciality = new SpecialityTypeUser();
 
-                $speciality->speciality_type_id = $speciality->id;
-                $speciality->user_id            = $request->user_id;
-                $speciality->save();
+                $objSpeciality->speciality_type_id = $speciality->id;
+                $objSpeciality->user_id            = $request->user_id;
+                $objSpeciality->save();
             }
         }
 
