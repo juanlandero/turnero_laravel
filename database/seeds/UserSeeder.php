@@ -39,7 +39,7 @@ class UserSeeder extends Seeder
             (7, 'Sucursales', 7, 'fas fa-map-marker-alt'),
             (8, 'Anuncios', 8, 'fas fa-photo-video'),
             (9, 'Cajas', 9, 'fas fa-cash-register'),
-            (10, 'Caja', 10, 'fas fa-fire');");
+            (10, 'Clientes', 10, 'fas fa-fire');");
 
         //PRIVILEGES
         DB::statement("INSERT INTO
