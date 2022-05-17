@@ -30,7 +30,7 @@ Route::group(['prefix' => 'public', 'middleware' => 'public'], function () {
         Route::get('/', 'PublicDisplay\PublicDisplayController@numberDisplay')->name('shift.list');
         Route::get('/list', 'PublicDisplay\PublicDisplayController@getListShifts');
         Route::post('/get', 'PublicDisplay\PublicDisplayController@getShift');
-    });   
+    });
 });
 
 
@@ -38,7 +38,7 @@ Route::get('dashboard/login', ['as' => 'login', 'uses' => 'Dashboard\LoginContro
 Route::post('dashboard/login', ['as' => 'login-dashboard', 'uses' => 'Dashboard\LoginController@store']);
 Route::get('dashboard/logout', ['as' => 'logout', 'uses' => 'Dashboard\LoginController@logout']);
 
-Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
+Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     Route::get('/', 'Dashboard\IndexController@index')->name('dashboard.index');
     Route::get('/data-chart', 'Dashboard\IndexController@getDataChart');
 
@@ -96,7 +96,7 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
         Route::post('/get', 'Dashboard\DashboardController@getShiftAdvisor');
         Route::post('/get-data', 'Dashboard\DashboardController@getDataPanel');
         Route::get('/get-advisers', 'Dashboard\DashboardController@getAdvisers');
-        
+
         Route::post('/next', 'Dashboard\ShiftController@nextShift');
         Route::post('/status', 'Dashboard\ShiftController@changeStatusShift');
         Route::post('/reassignment', 'Dashboard\ShiftController@reassignmentShift');
@@ -108,8 +108,8 @@ Route::group(['prefix' => 'dashboard', 'middleware'=> 'auth'], function() {
 
     Route::group(['prefix' => 'reports'], function () {
         Route::get('/', 'Dashboard\ReportsController@index')->name('report.index');
-        Route::get('/general', 'Dashboard\ReportsController@generalReport')->name('general.report');
         Route::get('/shift', 'Dashboard\ReportsController@shiftReport')->name('shift.report');
+        Route::post('/general', 'Dashboard\ReportsController@generalReport')->name('general.report');
         Route::post('/advisor', 'Dashboard\ReportsController@advisorReport')->name('advisor.report');
     });
 

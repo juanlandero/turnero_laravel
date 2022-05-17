@@ -1,6 +1,11 @@
 @section('title', 'Reportes')
 @section('subtitle', 'Listado de reportes')
 @section('icon', 'fa fa-chart-line')
+
+@section('stylesheets')
+    <link href="{{ asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet" />
+@endsection
+
 @section('breadcrumb')
     <li class="breadcrumb-item active"><a href="#">Reportes</a></li>
 @endsection
@@ -26,10 +31,33 @@
         <div class="tile">
             <div class="tile-title-w-btn">
                 <h3 class="title">Reporte general</h3>
-                <p><a class="btn btn-primary icon-btn" href="{{ route('general.report') }}"><i class="fa fa-file"></i>Generar</a></p>
             </div>
             <div class="tile-body">
                 Genere un reporte con los todos los datos de su sucursal.
+
+                <form id="general-form" action="{{ route('general.report') }}" formtarget="_blank" target="_blank" method="POST" class="row mt-3">
+                    @csrf
+                    <div class="form-group col-md-6">
+                        <div class="input-daterange input-group" id="datepicker">
+                            <div class="input-group-prepend"><span class="input-group-text">Del</span></div>
+                            <input type="text" class="input-sm form-control" name="dateStart" placeholder="Fecha inicial" />
+                            <div class="input-group-append"><span class="input-group-text">al</span></div>
+                            <input type="text" class="input-sm form-control" name="dateEnd" placeholder="Fecha final" />
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="excel">¿Exportar en Excel?
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <button class="btn btn-primary icon-btn float-right" type="submit"><i class="fa fa-file"></i>Generar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -60,7 +88,7 @@
                         <label for="exampleSelect1">Selecciones un asesor</label>
                         <select class="form-control" id="exampleSelect1" name="advisor">
                             @foreach ($advisers as $adviser)
-                                <option value="{{ $adviser->id }}">{{ $adviser->name." ".$adviser->first_name." ".$adviser->second_name }}</option>    
+                                <option value="{{ $adviser->id }}">{{ $adviser->name." ".$adviser->first_name." ".$adviser->second_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -72,20 +100,15 @@
 @endsection
 
 @section('scripts')
-    <!-- Data table plugin-->
-    <script type="text/javascript" src="{{ asset('js/plugins/jquery.dataTables.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/plugins/dataTables.bootstrap.min.js') }}"></script>
-    <script type="text/javascript">
-        $('#dataTable').DataTable( {
-            "language": {
-                "lengthMenu": "Mostrar _MENU_ registros por página",
-                "zeroRecords": "No existen registros",
-                "info": "Mostrando página _PAGE_ de _PAGES_",
-                "infoEmpty": "No hay registros disponibles",
-                "infoFiltered": "(filtrado de _MAX_ total registros)"
-            }
-        });
-    </script>
+<script type="text/javascript" src="{{ asset('js/plugins/bootstrap-datepicker.min.js') }}"></script>
+<script type="text/javascript">
+    $('#general-form .input-daterange').datepicker({
+        format: "dd/mm/yyyy",
+        autoclose: true,
+        todayHighlight: true
+    });
+
+</script>
 @endsection
 
 @include('dashboard.components.Navbar')

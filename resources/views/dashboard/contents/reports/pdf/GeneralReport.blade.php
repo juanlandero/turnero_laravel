@@ -11,35 +11,17 @@
     </style>
 </head>
 <body>
-    @php
-    //sdd($datos);
-    function fechaCastellano ($fecha) {
-        $fecha = substr($fecha, 0, 10);
-        $numeroDia = date('d', strtotime($fecha));
-        $dia = date('l', strtotime($fecha));
-        $mes = date('F', strtotime($fecha));
-        $anio = date('Y', strtotime($fecha));
-        $dias_ES = array("Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo");
-        $dias_EN = array("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday");
-        $nombredia = str_replace($dias_EN, $dias_ES, $dia);
-        $meses_ES = array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
-        $meses_EN = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
-        $nombreMes = str_replace($meses_EN, $meses_ES, $mes);
-        return $nombredia." ".$numeroDia." de ".$nombreMes." de ".$anio;
-    }              
-    @endphp
-	<div class="container">
+    <div class="container">
         <!-- LOGO Y TITULO -->
-		<table>
+       <table>
             <tr>
-				<td width="30%" style="text-align: left">
-					<img src="img/madero-logo.jpeg" width="200px"/>
-				</td>
-				
+               <td width="30%" style="text-align: left">
+                   <img src="img/madero-logo.jpeg" width="200px"/>
+               </td>
                 <td width="70%" class="titulo" style="text-align: right">REPORTE DE GENERAL</td>
             </tr>
         </table>
-        
+
         <!-- DATOS DE LA SUCURSAL -->
         <table style="margin: 40px">
             <tr>
@@ -51,14 +33,14 @@
                 <td class="info-titulo">{{ $office->address }}</td>
             </tr>
             <tr>
-                <th class="info-titulo1">Fecha y hora</th>
-                <td class="info-titulo">{{fechaCastellano(date('Y-m-d'))}}</td>
+                <th class="info-titulo1">Fecha</th>
+                <td class="info-titulo">{{ $fechaReporte }}</td>
             </tr>
         </table>
 
         <!-- NUMEROS GENERALES -->
         <div class="barra">
-            <p class="seccion">TURNOS DE HOY</p>
+            <p class="seccion">TOTAL DE TURNOS</p>
         </div>
         <table style="margin-bottom: 40px;">
             <tr>
