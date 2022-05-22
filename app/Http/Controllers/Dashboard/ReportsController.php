@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Dashboard;
 
 use PDF;
+use DateTime;
 use App\Shift;
 use App\Office;
+use DatePeriod;
 use App\Incident;
+use DateInterval;
 use App\UserOffice;
 use App\ShiftStatus;
 use App\SpecialityType;
@@ -41,9 +44,115 @@ class ReportsController extends Controller
 
     public function generalReport(Request $request)
     {
+        $isExcelFile = false;
+
+        if (isset($request->excel))
+            $isExcelFile = true;
+
+        if (!$isExcelFile) {
+            return $this->generalReportPDF($request);
+        } else {
+            return $this->generalReportExcel($request);
+        }
+    }
+
+    public function generalReportExcel(Request $request)
+    {
         $initialDate = null;
         $finalDate = null;
-        $isExcelFile = false;
+        $dates = collect();
+        $datesFormated = collect();
+        $headings = array('ASESOR', 'E-MAIL', 'CAJA');
+        $data = array();
+
+        if (isset($request->dateStart)) {
+            $initialDate = $this->dateFormat($request->dateStart);
+            $objInitialDt = new DateTime($initialDate);
+        }
+
+        if (isset($request->dateEnd)) {
+            $finalDate = $this->dateFormat($request->dateEnd);
+            $objFinalDt = new DateTime($finalDate);
+            $objFinalDt->add(new DateInterval('P1D'));
+        }
+
+        if (!is_null($initialDate) && !is_null($finalDate))
+            $fecha = "{$request->dateStart} al {$request->dateEnd}";
+        else
+            $fecha = $this->fechaCastellano(date('Y-m-d'));
+
+        $period = new DatePeriod($objInitialDt, new DateInterval('P1D'), $objFinalDt);
+
+        foreach ($period as $date) {
+            $datesFormated->push($date->format('d/m/Y'));
+            $dates->push($date->format('Y-m-d'));
+        }
+
+        $headings = array_merge($headings, $datesFormated->toArray());
+
+        $objOffice = Office::join('user_offices', 'offices.id', 'user_offices.office_id')
+            ->where('user_offices.user_id', Auth::id())
+            ->select(
+                'offices.id',
+                'offices.name',
+                'offices.address',
+                'offices.phone',
+            )
+            ->first();
+
+        $objUserOffices = UserOffice::join('users', 'user_offices.user_id', 'users.id')
+            ->join('boxes', 'user_offices.box_id', '=', 'boxes.id')
+            ->where([
+                ['user_offices.office_id', $objOffice->id],
+                ['users.user_type_id', 3],
+                ['users.is_active', 1]
+            ])
+            ->select(
+                'user_offices.office_id',
+                'user_offices.user_id',
+                'users.name',
+                'users.first_name',
+                'users.second_name',
+                'users.email',
+                'boxes.box_name'
+            )
+            ->get();
+
+        $headings = [
+            ['', 'REPORTE GENERAL'],
+            ['', "Sucursal: {$objOffice->name}"],
+            ['', "Dirección: {$objOffice->address}"],
+            ['', "Fecha: {$fecha}"],
+            [''],
+            [''],
+            $headings
+        ];
+
+        foreach ($objUserOffices as $index => $userOffice) {
+            $row = array("{$userOffice->name} {$userOffice->first_name} {$userOffice->second_name}", $userOffice->email, $userOffice->box_name);
+            foreach ($dates as $date) {
+                $shiftCounts = Shift::where(['shifts.user_advisor_id' => $userOffice->user_id, 'shifts.is_active' => 1])
+                    ->where('shifts.created_at', 'like', "{$date}%")
+                    ->count();
+
+                array_push($row, $shiftCounts);
+            }
+
+            array_push($data, $row);
+        }
+
+        $reportExcel = new GeneralReportExport();
+        $reportExcel->setParameters(
+            $headings,
+            $data
+        );
+        return $reportExcel->download('reporte_general.xlsx', \Maatwebsite\Excel\Excel::XLSX);
+    }
+
+    public function generalReportPDF(Request $request)
+    {
+        $initialDate = null;
+        $finalDate = null;
         $arrShift = array();
         $arrSpeciality = array();
         $arrSpecialities = array();
@@ -77,9 +186,6 @@ class ReportsController extends Controller
             $fecha = "{$request->dateStart} al {$request->dateEnd}";
         else
             $fecha = $this->fechaCastellano(date('Y-m-d'));
-
-        if (isset($request->excel))
-            $isExcelFile = true;
 
         $objOffice = Office::join('user_offices', 'offices.id', 'user_offices.office_id')
             ->where('user_offices.user_id', Auth::id())
@@ -260,27 +366,15 @@ class ReportsController extends Controller
             ));
         }
 
-        if (!$isExcelFile) {
-            $pdf = PDF::loadView('dashboard.contents.reports.pdf.GeneralReport', [
-                'fechaReporte'  => $fecha,
-                'office'        => $objOffice,
-                'shifts'        => $arrShift,
-                'specialities'  => $arrSpeciality,
-                'advisers'      => $arrUserOffices
-            ]);
-            $pdf->setPaper('A4');
-            return $pdf->stream();
-        } else {
-            $reportExcel = new GeneralReportExport();
-            $reportExcel->setParameters(
-                $fecha,
-                $objOffice,
-                $arrShift,
-                $arrSpeciality,
-                $arrUserOffices
-            );
-            return $reportExcel->download('reporte_general.xlsx', \Maatwebsite\Excel\Excel::XLSX);
-        }
+        $pdf = PDF::loadView('dashboard.contents.reports.pdf.GeneralReport', [
+            'fechaReporte'  => $fecha,
+            'office'        => $objOffice,
+            'shifts'        => $arrShift,
+            'specialities'  => $arrSpeciality,
+            'advisers'      => $arrUserOffices
+        ]);
+        $pdf->setPaper('A4');
+        return $pdf->stream();
     }
 
     public function shiftReport()

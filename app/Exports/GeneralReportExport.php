@@ -2,47 +2,37 @@
 
 namespace App\Exports;
 
-use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Events\AfterSheet;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use Maatwebsite\Excel\Concerns\FromArray;
+use PhpOffice\PhpSpreadsheet\Style\Color;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithDrawings;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
-use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class GeneralReportExport implements FromView, WithColumnWidths, WithStyles
+class GeneralReportExport implements WithStyles, WithHeadings, FromArray, ShouldAutoSize, WithDrawings
 {
     use Exportable;
 
-    public function setParameters($fecha, $objOffice, $arrShift, $arrSpeciality, $arrUserOffices)
+    public function setParameters($headings, $data)
     {
-        $this->fecha = $fecha;
-        $this->objOffice = $objOffice;
-        $this->arrShift = $arrShift;
-        $this->arrSpeciality = $arrSpeciality;
-        $this->arrUserOffices = $arrUserOffices;
+        $this->headings = $headings;
+        $this->data = $data;
     }
 
-    public function view(): View
+    public function headings(): array
     {
-        return view('dashboard.contents.reports.pdf.GeneralReport', [
-            'fechaReporte'  => $this->fecha,
-            'office'        => $this->objOffice,
-            'shifts'        => $this->arrShift,
-            'specialities'  => $this->arrSpeciality,
-            'advisers'      => $this->arrUserOffices
-        ]);
+        return $this->headings;
     }
 
-    public function columnWidths(): array
+    public function array(): array
     {
-        return [
-            'A' => 55,
-            'B' => 35,
-            'C' => 35,
-            'D' => 35,
-            'E' => 20
-        ];
+        return $this->data;
     }
 
     public function styles(Worksheet $sheet)
@@ -50,13 +40,61 @@ class GeneralReportExport implements FromView, WithColumnWidths, WithStyles
         return [
             'B1' => [
                 'font' => [
+                    'name' => 'Arial',
                     'size' => 16,
                     'bold' => true
                 ],
                 'alignment' => [
                     'horizontal' => Alignment::HORIZONTAL_CENTER
                 ]
-            ]
+            ],
+            'A7:ZZ7' => [
+                'font' => [
+                    'name' => 'Arial',
+                    'size' => 9.5,
+                    'bold' => true,
+                    'color' => array('rgb' => 'FFFFFF')
+                ],
+                'alignment' => [
+                    'horizontal' => Alignment::HORIZONTAL_CENTER
+                ],
+                'fill' => [
+                    'fillType'   => Fill::FILL_SOLID,
+                    'startColor' => ['rgb' => '37464F'],
+                ],
+            ],
+            'A8:ZZ100' => [
+                'font' => [
+                    'name' => 'Arial',
+                    'size' => 9.5
+                ],
+                'alignment' => [
+                    'horizontal' => Alignment::HORIZONTAL_CENTER
+                ]
+            ],
         ];
+    }
+
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                for ($i = 7; $i < 50; $i++) {
+                    $event->sheet->getDelegate()->getRowDimension($i)->setRowHeight(30, 'px');
+                }
+            }
+        ];
+    }
+
+    public function drawings()
+    {
+        $drawing = new Drawing();
+        $drawing->setName('Logo');
+        $drawing->setDescription('This is my logo');
+        $drawing->setPath(public_path('/img/madero-logo.jpeg'));
+        $drawing->setHeight(40);
+        $drawing->setCoordinates('A1');
+
+        return $drawing;
     }
 }
