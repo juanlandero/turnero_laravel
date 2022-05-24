@@ -219,8 +219,8 @@ class ReportsController extends Controller
                 });
 
             if (!is_null($initialDate) && !is_null($finalDate)) {
-                $shiftsQry->where('shifts.created_at', '>=', $initialDate);
-                $shiftsQry->where('shifts.created_at', '<=', $finalDate);
+                $shiftsQry->where('shifts.created_at', '>=', "{$initialDate} 00:00:01");
+                $shiftsQry->where('shifts.created_at', '<=', "{$finalDate} 23:59:59");
             } else {
                 $shiftsQry->where('shifts.created_at', 'like', OfficeController::setDate() . "%");
             }
@@ -294,8 +294,8 @@ class ReportsController extends Controller
                 ]);
 
                 if (!is_null($initialDate) && !is_null($finalDate)) {
-                    $shiftsQry->where('shifts.created_at', '>=', $initialDate);
-                    $shiftsQry->where('shifts.created_at', '<=', $finalDate);
+                    $shiftsQry->where('shifts.created_at', '>=', "{$initialDate} 00:00:01");
+                    $shiftsQry->where('shifts.created_at', '<=', "{$finalDate} 23:59:59");
                 } else {
                     $shiftsQry->where('shifts.created_at', 'like', OfficeController::setDate() . "%");
                 }
@@ -350,8 +350,8 @@ class ReportsController extends Controller
             ]);
 
             if (!is_null($initialDate) && !is_null($finalDate)) {
-                $shiftsQry->where('shifts.created_at', '>=', $initialDate);
-                $shiftsQry->where('shifts.created_at', '<=', $finalDate);
+                $shiftsQry->where('shifts.created_at', '>=', "{$initialDate} 00:00:01");
+                $shiftsQry->where('shifts.created_at', '<=', "{$finalDate} 23:59:59");
             } else {
                 $shiftsQry->where('shifts.created_at', 'like', OfficeController::setDate() . "%");
             }
